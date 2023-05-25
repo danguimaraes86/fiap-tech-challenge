@@ -1,13 +1,13 @@
-package br.com.fiap.techchallenge;
+package br.com.fiap.techchallenge.enderecoInstalacao;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TechChallengeApplication {
+public class ApiEnderecoInstalacao {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TechChallengeApplication.class, args);
+		SpringApplication.run(ApiEnderecoInstalacao.class, args);
 	}
 
 }
