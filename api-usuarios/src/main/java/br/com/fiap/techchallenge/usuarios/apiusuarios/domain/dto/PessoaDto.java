@@ -4,7 +4,7 @@ import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade.Pessoa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 public record PessoaDto(
@@ -23,7 +23,7 @@ public record PessoaDto(
     }
 
     public Pessoa toPessoa(){
-        LocalDateTime dataNascimento = LocalDateTime.parse(this.dataNascimento);
+        LocalDate dataNascimento = LocalDate.parse(this.dataNascimento);
         return new Pessoa(this.nome, dataNascimento, this.sexo, this.parentesco);
     }
 

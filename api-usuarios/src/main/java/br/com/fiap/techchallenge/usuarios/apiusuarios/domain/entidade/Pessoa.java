@@ -3,7 +3,7 @@ package br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 
@@ -22,7 +22,7 @@ public class Pessoa {
     private String nome;
 
     @Column(nullable = false)
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
     @Column(nullable = false)
     private String sexo;
@@ -30,7 +30,7 @@ public class Pessoa {
     @Column(nullable = false)
     private String parentesco;
 
-    public Pessoa(String nome, LocalDateTime dataNascimento, String sexo, String parentesco) {
+    public Pessoa(String nome, LocalDate dataNascimento, String sexo, String parentesco) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
