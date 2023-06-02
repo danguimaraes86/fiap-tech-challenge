@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pessoa")
@@ -19,15 +20,22 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @PostMapping
-    public ResponseEntity createPessoa(@RequestBody @Valid PessoaDto pessoaDto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity createPessoa(@RequestBody @Valid PessoaDto pessoaDto, UriComponentsBuilder uriBuilder) {
         Pessoa pessoa = pessoaService.create(pessoaDto);
         URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(pessoa.getId()).toUri();
         return ResponseEntity.created(uri).body(new PessoaDto(pessoa));
     }
 
+    @GetMapping
+    public ResponseEntity findAll(){
+        List<Pessoa> listPessoas = pessoaService.findAll();
+        return ResponseEntity.ok().body(listPessoas);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity deletePessoa(@PathVariable Long id){
-        pessoaService.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity deletePessoa(@PathVariable Long id) {
+        return pessoaService.delete(id) ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.badRequest().build();
     }
 }

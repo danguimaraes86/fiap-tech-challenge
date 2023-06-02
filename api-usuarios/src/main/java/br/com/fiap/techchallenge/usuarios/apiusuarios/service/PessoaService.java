@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,18 +21,21 @@ public class PessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
-    public Pessoa create(PessoaDto pessoaDto){
+    public Pessoa create(PessoaDto pessoaDto) {
         Pessoa pessoa = pessoaDto.toPessoa();
         return pessoaRepository.save(pessoa);
     }
 
-    public Boolean delete(Long id){
+    public Boolean delete(Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        if(pessoa.isPresent()){
+        if (pessoa.isPresent()) {
             pessoaRepository.delete(pessoa.get());
             return true;
         }
         return false;
     }
 
+    public List<Pessoa> findAll() {
+        return pessoaRepository.findAll();
+    }
 }
