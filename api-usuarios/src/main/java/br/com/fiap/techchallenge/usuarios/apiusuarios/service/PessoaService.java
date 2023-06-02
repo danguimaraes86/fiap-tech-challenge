@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,5 +43,15 @@ public class PessoaService {
     public Pessoa findById(Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
         return pessoa.isPresent() ? pessoa.get() : null;
+    }
+
+    public Pessoa update(Long id, PessoaDto pessoaDto) {
+        Pessoa pessoaId = findById(id);
+        pessoaId.setSexo(pessoaDto.getSexo());
+        pessoaId.setNome(pessoaDto.getNome());
+        pessoaId.setParentesco(pessoaDto.getParentesco());
+        pessoaId.setDataNascimento(LocalDate.parse(pessoaDto.getDataNascimento()));
+
+       return pessoaRepository.save(pessoaId);
     }
 }

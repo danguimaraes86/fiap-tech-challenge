@@ -3,18 +3,19 @@ package br.com.fiap.techchallenge.usuarios.apiusuarios.domain.dto;
 import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade.Pessoa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
 
 public record PessoaDto(
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String nome,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String dataNascimento,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String sexo,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String parentesco
 ) {
 

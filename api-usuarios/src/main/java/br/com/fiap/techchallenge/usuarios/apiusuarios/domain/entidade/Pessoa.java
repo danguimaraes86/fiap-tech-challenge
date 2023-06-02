@@ -11,6 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Getter
+@Setter
 @Table(name = "pessoa")
 public class Pessoa {
 
