@@ -38,4 +38,9 @@ public class PessoaService {
     public List<Pessoa> findAll() {
         return pessoaRepository.findAll();
     }
+
+    public Pessoa findById(Long id) {
+        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+        return pessoa.isPresent() ? pessoa.get() : null;
+    }
 }

@@ -27,9 +27,16 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity findAll(){
+    public ResponseEntity findAll() {
         List<Pessoa> listPessoas = pessoaService.findAll();
         return ResponseEntity.ok().body(listPessoas);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable Long id) {
+        Pessoa pessoa = pessoaService.findById(id);
+        return pessoa != null ? ResponseEntity.ok().body(pessoa) :
+                ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{id}")
