@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class PessoaService {
 
     private final PessoaRepository pessoaRepository;
@@ -22,11 +21,13 @@ public class PessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
+    @Transactional
     public Pessoa create(PessoaDto pessoaDto) {
         Pessoa pessoa = pessoaDto.toPessoa();
         return pessoaRepository.save(pessoa);
     }
 
+    @Transactional
     public Boolean delete(Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
         if (pessoa.isPresent()) {
@@ -42,9 +43,10 @@ public class PessoaService {
 
     public Pessoa findById(Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        return pessoa.isPresent() ? pessoa.get() : null;
+        return pessoa.orElse(null);
     }
 
+    @Transactional
     public Pessoa update(Long id, PessoaDto pessoaDto) {
         Pessoa pessoaId = findById(id);
         pessoaId.setSexo(pessoaDto.getSexo());
