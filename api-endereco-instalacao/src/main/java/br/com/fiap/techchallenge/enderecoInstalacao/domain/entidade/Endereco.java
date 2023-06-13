@@ -2,10 +2,12 @@ package br.com.fiap.techchallenge.enderecoInstalacao.domain.entidade;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table (name = "Enderecos")
 @Getter
+@Setter
 public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
