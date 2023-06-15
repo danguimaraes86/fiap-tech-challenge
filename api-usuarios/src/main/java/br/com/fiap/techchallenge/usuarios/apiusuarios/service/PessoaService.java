@@ -28,13 +28,9 @@ public class PessoaService {
     }
 
     @Transactional
-    public Boolean delete(Long id) {
+    public void delete(Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        if (pessoa.isPresent()) {
-            pessoaRepository.delete(pessoa.get());
-            return true;
-        }
-        return false;
+        pessoaRepository.delete(pessoa.orElseThrow());
     }
 
     public List<Pessoa> findAll() {
@@ -42,18 +38,18 @@ public class PessoaService {
     }
 
     public Pessoa findById(Long id) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
-        return pessoa.orElse(null);
+        return pessoaRepository.findById(id).orElseThrow();
     }
 
     @Transactional
     public Pessoa update(Long id, PessoaDto pessoaDto) {
         Pessoa pessoaId = findById(id);
+
         pessoaId.setSexo(pessoaDto.getSexo());
         pessoaId.setNome(pessoaDto.getNome());
         pessoaId.setParentesco(pessoaDto.getParentesco());
         pessoaId.setDataNascimento(LocalDate.parse(pessoaDto.getDataNascimento()));
 
-       return pessoaRepository.save(pessoaId);
+        return pessoaRepository.save(pessoaId);
     }
 }
