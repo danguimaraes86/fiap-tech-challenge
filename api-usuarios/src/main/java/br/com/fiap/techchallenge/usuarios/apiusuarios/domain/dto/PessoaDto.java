@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
 
 public record PessoaDto(
         @Getter @NotBlank @JsonProperty
@@ -24,7 +22,7 @@ public record PessoaDto(
         this(pessoa.getNome(), pessoa.getDataNascimento().toString(), pessoa.getSexo(), pessoa.getParentesco());
     }
 
-    public Pessoa toPessoa() throws DateTimeParseException {
+    public Pessoa toPessoa() {
         LocalDate dataNascimento = LocalDate.parse(this.dataNascimento);
         return new Pessoa(this.nome, dataNascimento, this.sexo, this.parentesco);
     }
