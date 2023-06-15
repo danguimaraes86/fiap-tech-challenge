@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Eletrodomesticos")
+@Table(name = "eletrodomestico")
 public class Eletrodomestico {
 
     @Id
