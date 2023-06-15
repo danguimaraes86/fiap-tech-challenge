@@ -20,26 +20,26 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<Pessoa>> findAll() {
         List<Pessoa> listPessoas = pessoaService.findAll();
         return ResponseEntity.ok().body(listPessoas);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
         Pessoa pessoa = pessoaService.findById(id);
-        return pessoa != null ? ResponseEntity.ok().body(pessoa) :
-                ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().body(pessoa);
     }
+
     @PostMapping
-    public ResponseEntity<?> createPessoa(@RequestBody @Valid PessoaDto pessoaDto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<PessoaDto> createPessoa(@RequestBody @Valid PessoaDto pessoaDto, UriComponentsBuilder uriBuilder) {
         Pessoa pessoa = pessoaService.create(pessoaDto);
         URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(pessoa.getId()).toUri();
         return ResponseEntity.created(uri).body(new PessoaDto(pessoa));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePessoa(@PathVariable Long id, @RequestBody @Valid PessoaDto pessoaDto) {
+    public ResponseEntity<Pessoa> updatePessoa(@PathVariable Long id, @RequestBody @Valid PessoaDto pessoaDto) {
         Pessoa pessoa = pessoaService.update(id, pessoaDto);
         return ResponseEntity.ok().body(pessoa);
     }
@@ -47,8 +47,7 @@ public class PessoaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePessoa(@PathVariable Long id) {
-        return pessoaService.delete(id) ?
-                ResponseEntity.ok().build() :
-                ResponseEntity.badRequest().build();
+        pessoaService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
