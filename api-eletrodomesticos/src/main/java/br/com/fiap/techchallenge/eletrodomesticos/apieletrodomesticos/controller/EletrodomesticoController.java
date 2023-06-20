@@ -33,14 +33,14 @@ public class EletrodomesticoController {
                 ResponseEntity.badRequest().build();
     }
     @PostMapping
-    public ResponseEntity<?> createEletro(@RequestBody @Valid EletrodomesticoDTO eletroDTO, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> createEletro(@RequestBody EletrodomesticoDTO eletroDTO, UriComponentsBuilder uriBuilder) {
         Eletrodomestico eletro = service.create(eletroDTO);
         URI uri = uriBuilder.path("/eletrodomestico/{id}").buildAndExpand(eletro.getId()).toUri();
         return ResponseEntity.created(uri).body(new EletrodomesticoDTO(eletro));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEletro(@PathVariable Long id, @RequestBody @Valid EletrodomesticoDTO eletroDTO) {
+    public ResponseEntity<?> updateEletro(@PathVariable Long id, @RequestBody EletrodomesticoDTO eletroDTO) {
         Eletrodomestico eletro = service.update(id, eletroDTO);
         return ResponseEntity.ok().body(eletro);
     }
