@@ -1,111 +1,120 @@
-# User Validantion API 
+# Tech Challenge 
 
+Bem-vindo(a) a documentação oficial das APIs desenvolvidas para o Tech Challenge fase 1. Nesta documentação, você encontrará detalhes abrangentes sobre as APIs de Cadastro de Endereços, Gestão de Pessoas e Gestão de Eletromésticos, que foram desenvolvidas como parte deste projeto. Estas APIs serão responsáveis por gerenciar dados de consumo elétrico de eletrodomésticos, que através de cálculos disponibilizará informações e alertas aos usuários. Essa ponte entre API e usuário será intermediada por um portal que vai consumir esta API e apresentar as informações devidas. No entanto nesta etapa os entregáveis possuem apenas funcionalidades CRUD, aprendidas no decorrer da fase 1 do curso.
 
-This is my first developed REST API, created as an active study method for applying my recent Spring Boot concepts learned.
-
-The project contains functions for create, read, update and delete users, in addition of a stateless acess control with JWT Tokens.
-The application also has a role validation, roles as ADMIN can use all functions, but default users are more limited.
-
-## Technologies
-- Java
-- Spring Boot
-- JPA / Hibernate
+## Tecnologias e Ferramentas
+- Java 17
 - Maven
-- MySQL
+- H2 Database
+- Spring Data JPA
+- Validation (Bean Validation with Hibernate validator)
 - Lombok
-- Flyway
-- Jason Web Token
-
-## How to run
-
-
-### Requisite
-Java 17 / MySQL / Maven
-
-
-```bash
-# Clone repository
-git clone https://github.com/JJpedroGomes/User-Validation-API.git
-
-# Create MySQL database
-create database user_api
-
-# Build the project
-mvn package
-
-# execute the project
-cd api
-java "-Dspring.profiles.active=prod" "-DDATASOURCE_URL=DATABASE URL" "-DDATASOURCE_USERNAME=DATABASE USERNAME" "-DDATASOURCE_PASSWORD=DATABASE PASSWORD" -jar .\target\api-0.0.1-SNAPSHOT.jar
-```
-- The app will start running at http://localhost:8080
-- Automatically Flyway will genarate tables in your database and create an ADMIN user
-- Log in with the ADMIN user using the following [Post method](#login)
-- Get the JWT token after logging in. 
-- Using any Rest Client like Postman, put the JWT token in Bearer token field before any request
-- It is also possible to test it using the application swagger: /swagger-ui.html - put the JWT token in authorize field
-
+- Spring Boot DevTools
+- Spring Web
+- Postman
+- IntelliJ
+- Git
+- GitHub
 
 ## Explore
 
-The app defines following CRUD.
+### Api – Eletrodomésticos
 
-### Authentication
-
-| Method | Url | Decription | Sample Valid Request Body | 
-| ------ | --- | ---------- | --------------------------- |
-| POST   | /login | login | [JSON](#login) |
-
-### User
-
-| Method | Url | Description | Sample Valid Request Body |
+| Método | Url | Descrição | Modelo de Requisição válido |
 | ------ | --- | ----------- | ------------------------- |
-| POST    | /user/add | Creates a new user in the database | [JSON](#adduser)|
-| GET    | /user | Get a list of all users | |
-| GET    | /user/{userID} | Get details of a single user | |
-| PUT    | /user | Update user information | [JSON](#update)|
-| DELETE    | /user/{userID} | Set a user as inactive | |
+| POST    | /eletrodomestico | Cadastra um eletrodoméstico | [JSON](#createEletro)|
+| PUT   | /eletrodomestico/{id} | Atualiza um eletrodoméstico com Id específico | [JSON](#updateEletro) |
+| GET    | /eletrodomestico/{id} | Retorna um eletrodoméstico com Id específico | |
+| GET    | /eletrodomestico | Retorna todos os eletrodomésticos cadastrados | |
+| DELETE    | /eletrodomestico/{id} | Deleta um eletrodoméstico com Id específico | |
 
-## Sample Valid JSON Request Bodys
+### Exemplos de entrada
 
-##### <a id="login">/login</a>
+##### <a id="createEletro"> POST - /eletrodomestico</a>
 ```json
 {
-	"login": "admin",
-	"password": "admin"	
+ "nome": "Geladeira",
+ "potencia": "500w",
+ "modelo": "Eletrolux",
+ "fabricacao": "2019-12-09"
 }
 ```
 
-##### <a id="adduser">/user/add</a>
+##### <a id="updateEletro">PUT - /eletrodomestico/{id}</a>
 ```json
 {
-	"name": "Pedro Cruz",
-	"email": "pedro.cruz@email.com",
-	"login": "pedro.cruz",
-	"password": "Us123456"	
+ "nome": "Fogão",
+ "potencia": "3000w",
+ "modelo": "Brastemp",
+ "fabricacao": "2019-12-09"
 }
-
 ```
+### Api – Pessoas
 
-##### <a id="update">/user</a>
+| Método | Url | Descrição | Modelo de Requisição válido |
+| ------ | --- | ----------- | ------------------------- |
+| POST    | /pessoa | Cadastra uma pessoa | [JSON](#createPessoa)|
+| PUT   | /pessoa/{id} | Atualiza uma pessoa com Id específico | [JSON](#updatepessoa) |
+| GET    | /pessoa/{id} | Retorna uma pessoa com Id específico | |
+| GET    | /pessoa | Retorna todos as pessoas cadastrados | |
+| DELETE    | /pessoa/{id} | Deleta uma pessoa com Id específico | |
+
+### Exemplos de entrada
+
+##### <a id="createPessoa"> POST - /pessoa</a>
 ```json
 {
-	"id": "2", 
-	"name": "Pedro Cruz Junior",
-	"email": "pedro.cruz.junior@email.com",
-	"login": "pedro.cruz13",
-	"password": "Password2",
-	"role": "ADMIN"
+ "nome": "Marcos Leonardo",
+ "dataNascimento": "2003-05-02",
+ "sexo": "Masculino",
+ "parentesco": "Filho"
 }
-
-Only id is required
-Role changes can only be used by Admin users
-Admin users can update all users
-Default users can only update their own info
 ```
 
-# Author
+##### <a id="updatepessoa">PUT - /pessoa/{id}</a>
+```json
+{
+ "nome": "Rodrigo Fernandez",
+ "dataNascimento": "2003-05-02",
+ "sexo": "Masculino",
+ "parentesco": "Irmão"
+}
+```
+### Api – Endereços
 
-João Pedro Gomes
+| Método | Url | Descrição | Modelo de Requisição válido |
+| ------ | --- | ----------- | ------------------------- |
+| POST    | /enderecos | Cadastra um endereço | [JSON](#createEndereco)|
+| PUT   | /enderecos/{id} | Atualiza um endereço com Id específico | [JSON](#updateEndereco) |
+| GET    | /enderecos/{id} | Retorna um endereço com Id específico | |
+| GET    | /enderecos | Retorna todos os endereços cadastrados | |
+| DELETE    | /enderecos/{id} | Deleta um endereço com Id específico | |
 
-https://www.linkedin.com/in/jo%C3%A3o-pedro-gomes-082193177/
+### Exemplos de entrada
+
+##### <a id="createEndereco"> POST - /enderecos</a>
+```json
+{
+ "nomeInstalacao": "Casa de Campo",
+ "rua": "Rua Princesa Isabel",
+ "numero": "70",
+ "bairro": "Urbano Caldera",
+ "cidade": "Santos",
+ "estado": "São Paulo"
+}
+```
+
+##### <a id="updateEndereco">PUT - /enderecos/{id}</a>
+```json
+{
+ "nomeInstalacao": "Escritório",
+ "rua": "Rua Edson Arantes",
+ "numero": "100",
+ "bairro": "Urbano Caldera",
+ "cidade": "Santos",
+ "estado": "São Paulo"
+}
+```
+
+
 
