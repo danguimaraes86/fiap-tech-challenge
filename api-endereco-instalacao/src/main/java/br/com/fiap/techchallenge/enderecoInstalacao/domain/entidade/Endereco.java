@@ -19,16 +19,22 @@ public class Endereco {
     @Column(nullable = false)
     private String numero;
     @Column(nullable = false)
-    private String complemento;
+    private String bairro;
+    @Column(nullable = false)
+    private String cidade;
+    @Column(nullable = false)
+    private String estado;
 
     public Endereco(){
 
     }
-    public Endereco(String nomeInstalacao, String rua, String numero, String complemento){
+    public Endereco(String nomeInstalacao, String rua, String numero, String bairro, String cidade, String estado){
         this.nomeInstalacao = nomeInstalacao;
         this.rua = rua;
         this.numero = numero;
-        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
     }
 
 

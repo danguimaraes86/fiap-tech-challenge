@@ -13,17 +13,18 @@ import java.util.Optional;
 @Service
 @Transactional
 public class EnderecoService {
+
     private final EnderecoRepository enderecoRepository;
     @Autowired
     public EnderecoService(EnderecoRepository enderecoRepository){
         this.enderecoRepository = enderecoRepository;
     }
-    @Transactional
+
     public Endereco create(EnderecoDto enderecoDto){
         Endereco endereco = enderecoDto.toEndereco();
         return enderecoRepository.save(endereco);
     }
-    @Transactional
+
     public boolean delete(Long id){
         Optional<Endereco> endereco = enderecoRepository.findById(id);
         if (endereco.isPresent()){
@@ -33,25 +34,23 @@ public class EnderecoService {
         return false;
     }
 
-    @Transactional
     public List<Endereco> findAll(){
         return enderecoRepository.findAll();
     }
 
-    @Transactional
     public Endereco findById(Long id){
         Optional<Endereco> endereco = enderecoRepository.findById(id);
         return endereco.orElse(null);
     }
 
-    @Transactional
     public Endereco update(Long id, EnderecoDto enderecoDto){
-        Endereco enderecoId = findById(id);
-        enderecoId.setNomeInstalacao(enderecoDto.getNomeInstalacao());
-        enderecoId.setRua(enderecoDto.getRua());
-        enderecoId.setNumero(enderecoDto.getNumero());
-        enderecoId.setComplemento(enderecoDto.getComplemento());
-
-        return enderecoRepository.save(enderecoId);
+        Endereco endereco = findById(id);
+        endereco.setNomeInstalacao(enderecoDto.nomeInstalacao());
+        endereco.setRua(enderecoDto.rua());
+        endereco.setNumero(enderecoDto.numero());
+        endereco.setBairro(enderecoDto.bairro());
+        endereco.setCidade(enderecoDto.cidade());
+        endereco.setEstado(enderecoDto.estado());
+        return enderecoRepository.save(endereco);
     }
 }

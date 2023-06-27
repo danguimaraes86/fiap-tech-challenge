@@ -6,20 +6,24 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 public record EnderecoDto (
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String nomeInstalacao,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String rua,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String numero,
-        @Getter @NotBlank @JsonProperty
-        String complemento
-
+        @NotBlank @JsonProperty
+        String bairro,
+        @NotBlank @JsonProperty
+        String cidade,
+        @NotBlank @JsonProperty
+        String estado
 ){
     public EnderecoDto(Endereco endereco){
-        this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getComplemento());
+        this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
+                endereco.getCidade(), endereco.getEstado());
     }
     public Endereco toEndereco(){
-        return new Endereco(this.nomeInstalacao, this.rua, this.numero, this.complemento);
+        return new Endereco(this.nomeInstalacao, this.rua, this.numero, this.bairro, this.cidade, this.estado);
     }
 }
