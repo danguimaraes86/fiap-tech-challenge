@@ -20,39 +20,33 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<List<Endereco>> findAll() {
         List<Endereco> listEndereco = enderecoService.findAll();
-
         return ResponseEntity.ok().body(listEndereco);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id){
+    public ResponseEntity<Endereco> findById(@PathVariable Long id) {
         Endereco endereco = enderecoService.findById(id);
-
-        return endereco != null ? ResponseEntity.ok(endereco) :
-                ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(endereco);
     }
 
     @PostMapping
-    public ResponseEntity<?> createEndereço(@RequestBody @Valid EnderecoDto enderecoDto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<EnderecoDto> createEndereco(@RequestBody @Valid EnderecoDto enderecoDto, UriComponentsBuilder uriBuilder) {
         Endereco endereco = enderecoService.create(enderecoDto);
         URI uri = uriBuilder.path("endereco/{id}").buildAndExpand(endereco.getId()).toUri();
-
         return ResponseEntity.created(uri).body(new EnderecoDto(endereco));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDto enderecoDto) {
+    public ResponseEntity<Endereco> updateEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDto enderecoDto) {
         Endereco endereco = enderecoService.update(id, enderecoDto);
-
         return ResponseEntity.ok().body(endereco);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEndereco(@PathVariable Long id) {
-        return enderecoService.delete(id) ?
-                ResponseEntity.ok().build() :
-                ResponseEntity.badRequest().build();
+    public ResponseEntity<Void> deleteEndereco(@PathVariable Long id) {
+        enderecoService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

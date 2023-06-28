@@ -42,7 +42,7 @@ public class EnderecoService {
 
     public Endereco update(Long id, EnderecoDto enderecoDto) {
         Endereco endereco = findById(id);
-        
+
         endereco.setNomeInstalacao(enderecoDto.nomeInstalacao());
         endereco.setRua(enderecoDto.rua());
         endereco.setNumero(enderecoDto.numero());
