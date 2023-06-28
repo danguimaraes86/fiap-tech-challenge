@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.dto;
 
-import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.Eletrodomestico;
+import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.entity.Eletrodomestico;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
