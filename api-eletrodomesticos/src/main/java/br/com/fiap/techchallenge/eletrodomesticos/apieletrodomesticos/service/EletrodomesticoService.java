@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.service;
 
-import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.entity.Eletrodomestico;
 import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.dto.EletrodomesticoDTO;
+import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.entity.Eletrodomestico;
 import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.repository.EletrodomesticoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,41 +14,42 @@ import java.util.Optional;
 @Service
 public class EletrodomesticoService {
 
+    private final EletrodomesticoRepository eletrodomesticoRepository;
+
     @Autowired
-    private EletrodomesticoRepository repository;
+    public EletrodomesticoService(EletrodomesticoRepository eletrodomesticoRepository) {
+        this.eletrodomesticoRepository = eletrodomesticoRepository;
+    }
 
-    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO){
+    public List<Eletrodomestico> findAll() {
+        return eletrodomesticoRepository.findAll();
+    }
+
+    public Eletrodomestico findById(Long id) {
+        return eletrodomesticoRepository.findById(id).orElseThrow();
+    }
+
+    @Transactional
+    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO) {
         Eletrodomestico eletro = eletrodomesticoDTO.toEletrodomestico();
-        return repository.save(eletro);
+        return eletrodomesticoRepository.save(eletro);
     }
 
-    public List<Eletrodomestico> findAll(){
-        return repository.findAll();
-    }
-
-    public Eletrodomestico findById(Long id){
-        Optional<Eletrodomestico> eletroOPT =  repository.findById(id);
-        return eletroOPT.get();
+    @Transactional
+    public void delete(Long id) {
+        Optional<Eletrodomestico> eletro = eletrodomesticoRepository.findById(id);
+        eletrodomesticoRepository.delete(eletro.orElseThrow());
     }
 
     @Transactional
     public Eletrodomestico update(Long id, EletrodomesticoDTO eletroDTO) {
         Eletrodomestico eletro = findById(id);
+
         eletro.setNome(eletroDTO.getNome());
         eletro.setPotencia(eletroDTO.getPotencia());
         eletro.setModelo(eletroDTO.getModelo());
         eletro.setFabricacao(LocalDate.parse(eletroDTO.getFabricacao()));
 
-        return repository.save(eletro);
-    }
-
-    @Transactional
-    public Boolean delete(Long id) {
-        Optional<Eletrodomestico> eletro = repository.findById(id);
-        if (eletro.isPresent()) {
-            repository.delete(eletro.get());
-            return true;
-        }
-        return false;
+        return eletrodomesticoRepository.save(eletro);
     }
 }
