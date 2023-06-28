@@ -2,7 +2,7 @@ package br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.service;
 
 import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.dto.EletrodomesticoDTO;
 import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.entity.Eletrodomestico;
-import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.repository.EletrodomesticoRepository;
+import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.infra.repository.EletrodomesticoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
