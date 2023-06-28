@@ -5,25 +5,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
-public record EnderecoDto (
-        @NotBlank @JsonProperty
+public record EnderecoDto(
+        @Getter @NotBlank @JsonProperty
         String nomeInstalacao,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String rua,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String numero,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String bairro,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String cidade,
-        @NotBlank @JsonProperty
+        @Getter @NotBlank @JsonProperty
         String estado
-){
-    public EnderecoDto(Endereco endereco){
+) {
+    
+    public EnderecoDto(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
                 endereco.getCidade(), endereco.getEstado());
     }
-    public Endereco toEndereco(){
+
+    public Endereco toEndereco() {
         return new Endereco(this.nomeInstalacao, this.rua, this.numero, this.bairro, this.cidade, this.estado);
     }
 }
