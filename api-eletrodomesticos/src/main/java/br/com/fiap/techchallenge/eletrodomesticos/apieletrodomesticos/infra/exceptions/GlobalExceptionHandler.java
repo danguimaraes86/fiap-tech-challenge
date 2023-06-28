@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> handleEntityNotFoundException() {
         Map<String, String> errors = new HashMap<>();
-        errors.put("eletrodomestico", "nenhum usuário com o ID informado.");
+        errors.put("eletrodomestico", "nenhum eletrodoméstico com o ID informado.");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 }
