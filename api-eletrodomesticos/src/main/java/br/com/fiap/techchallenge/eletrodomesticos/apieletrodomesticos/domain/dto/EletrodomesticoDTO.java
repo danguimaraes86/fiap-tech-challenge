@@ -1,34 +1,29 @@
 package br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.dto;
 
 import br.com.fiap.techchallenge.eletrodomesticos.apieletrodomesticos.domain.entity.Eletrodomestico;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@NotBlank
-public class EletrodomesticoDTO {
-
-    private String nome;
-    private String potencia;
-    private String modelo;
-    private String fabricacao;
+public record EletrodomesticoDTO(
+        @Getter @NotBlank @JsonProperty
+        String nome,
+        @Getter @NotBlank @JsonProperty
+        String potencia,
+        @Getter @NotBlank @JsonProperty
+        String modelo,
+        @Getter @NotBlank @JsonProperty
+        String fabricacao
+) {
 
     public EletrodomesticoDTO(Eletrodomestico eletrodomesticos) {
         this(eletrodomesticos.getNome(), eletrodomesticos.getPotencia(), eletrodomesticos.getModelo(), eletrodomesticos.getFabricacao().toString());
     }
 
-    public Eletrodomestico toEletrodomestico() throws DateTimeParseException {
+    public Eletrodomestico toEletrodomestico() {
         LocalDate fabricacao = LocalDate.parse(this.fabricacao);
         return new Eletrodomestico(this.nome, this.potencia, this.modelo, fabricacao);
     }
-
 }
