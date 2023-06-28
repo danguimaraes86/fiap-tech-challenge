@@ -19,7 +19,7 @@ public record EnderecoDto(
         @Getter @NotBlank @JsonProperty
         String estado
 ) {
-    
+
     public EnderecoDto(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
                 endereco.getCidade(), endereco.getEstado());

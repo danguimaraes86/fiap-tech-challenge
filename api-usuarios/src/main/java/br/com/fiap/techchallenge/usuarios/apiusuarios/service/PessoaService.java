@@ -49,7 +49,6 @@ public class PessoaService {
         pessoaId.setNome(pessoaDto.getNome());
         pessoaId.setParentesco(pessoaDto.getParentesco());
         pessoaId.setDataNascimento(LocalDate.parse(pessoaDto.getDataNascimento()));
-
         return pessoaRepository.save(pessoaId);
     }
 }
