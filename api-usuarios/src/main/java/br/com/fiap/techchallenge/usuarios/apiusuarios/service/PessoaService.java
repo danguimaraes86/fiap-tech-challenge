@@ -21,6 +21,14 @@ public class PessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
+    public List<Pessoa> findAll() {
+        return pessoaRepository.findAll();
+    }
+
+    public Pessoa findById(Long id) {
+        return pessoaRepository.findById(id).orElseThrow();
+    }
+
     @Transactional
     public Pessoa create(PessoaDto pessoaDto) {
         Pessoa pessoa = pessoaDto.toPessoa();
@@ -31,14 +39,6 @@ public class PessoaService {
     public void delete(Long id) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
         pessoaRepository.delete(pessoa.orElseThrow());
-    }
-
-    public List<Pessoa> findAll() {
-        return pessoaRepository.findAll();
-    }
-
-    public Pessoa findById(Long id) {
-        return pessoaRepository.findById(id).orElseThrow();
     }
 
     @Transactional
