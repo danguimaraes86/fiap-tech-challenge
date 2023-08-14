@@ -1,8 +1,8 @@
-package br.com.fiap.techchallenge.usuarios.apiusuarios.controller;
+package br.com.fiap.techchallenge.controller;
 
-import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.dto.PessoaDto;
-import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade.Pessoa;
-import br.com.fiap.techchallenge.usuarios.apiusuarios.service.PessoaService;
+import br.com.fiap.techchallenge.domain.dto.PessoaDto;
+import br.com.fiap.techchallenge.domain.entidade.Pessoa;
+import br.com.fiap.techchallenge.service.PessoaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

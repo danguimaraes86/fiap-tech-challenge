@@ -1,6 +1,6 @@
-package br.com.fiap.techchallenge.usuarios.apiusuarios.domain.dto;
+package br.com.fiap.techchallenge.domain.dto;
 
-import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade.Pessoa;
+import br.com.fiap.techchallenge.domain.entidade.Pessoa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

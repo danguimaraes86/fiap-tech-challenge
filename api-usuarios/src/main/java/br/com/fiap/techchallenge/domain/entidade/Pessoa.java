@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade;
+package br.com.fiap.techchallenge.domain.entidade;
 
 import jakarta.persistence.*;
 import lombok.Getter;

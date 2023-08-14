@@ -1,13 +1,13 @@
-package br.com.fiap.techchallenge.usuarios.apiusuarios;
+package br.com.fiap.techchallenge;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiUsuariosApplication {
+public class TechChallengeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiUsuariosApplication.class, args);
+        SpringApplication.run(TechChallengeApplication.class, args);
     }
 
 }

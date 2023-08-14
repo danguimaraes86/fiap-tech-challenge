@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.usuarios.apiusuarios.infra.exceptions;
+package br.com.fiap.techchallenge.infra.exceptions;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

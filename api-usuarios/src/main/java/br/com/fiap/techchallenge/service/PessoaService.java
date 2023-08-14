@@ -1,8 +1,8 @@
-package br.com.fiap.techchallenge.usuarios.apiusuarios.service;
+package br.com.fiap.techchallenge.service;
 
-import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.dto.PessoaDto;
-import br.com.fiap.techchallenge.usuarios.apiusuarios.domain.entidade.Pessoa;
-import br.com.fiap.techchallenge.usuarios.apiusuarios.infra.repository.PessoaRepository;
+import br.com.fiap.techchallenge.domain.dto.PessoaDto;
+import br.com.fiap.techchallenge.domain.entidade.Pessoa;
+import br.com.fiap.techchallenge.infra.repository.PessoaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
