@@ -16,7 +16,7 @@ public record EletrodomesticoDTO(
         String modelo,
         @Getter @NotBlank @JsonProperty
         String fabricacao
-) {
+) implements DTO {
 
     public EletrodomesticoDTO(Eletrodomestico eletrodomesticos) {
         this(eletrodomesticos.getNome(), eletrodomesticos.getPotencia(), eletrodomesticos.getModelo(), eletrodomesticos.getFabricacao().toString());

@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.controller;
 
 import br.com.fiap.techchallenge.domain.dto.EletrodomesticoDTO;
+import br.com.fiap.techchallenge.domain.dto.PayloadDTO;
 import br.com.fiap.techchallenge.domain.dto.UsuarioDTO;
 import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.service.EletrodomesticoService;
@@ -32,8 +33,13 @@ public class EletrodomesticoController {
     }
 
     @PostMapping
-    public ResponseEntity<EletrodomesticoDTO> createEletro(@RequestBody EletrodomesticoDTO eletroDTO, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<EletrodomesticoDTO> createEletro(@RequestBody PayloadDTO<EletrodomesticoDTO> payload, UriComponentsBuilder uriBuilder) {
+        EletrodomesticoDTO eletroDTO = payload.getData();
+        UsuarioDTO usuarioDTO = payload.getUsuario();
         Eletrodomestico eletro = service.create(eletroDTO);
+
+        // [TODO] vincular eletrodomestico ao usuario
+
         URI uri = uriBuilder.path("/eletrodomestico/{id}").buildAndExpand(eletro.getId()).toUri();
         return ResponseEntity.created(uri).body(new EletrodomesticoDTO(eletro));
     }
