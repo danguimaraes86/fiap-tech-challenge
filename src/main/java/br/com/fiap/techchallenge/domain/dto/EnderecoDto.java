@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
-public record EnderecoDto(
+public record EnderecoDto (
         @Getter @NotBlank @JsonProperty
         String nomeInstalacao,
         @Getter @NotBlank @JsonProperty
@@ -18,7 +18,7 @@ public record EnderecoDto(
         String cidade,
         @Getter @NotBlank @JsonProperty
         String estado
-) {
+) implements DTO {
 
     public EnderecoDto(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
