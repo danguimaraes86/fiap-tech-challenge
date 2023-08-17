@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.controller;
 
 import br.com.fiap.techchallenge.domain.dto.EletrodomesticoDTO;
+import br.com.fiap.techchallenge.domain.dto.UsuarioDTO;
 import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.service.EletrodomesticoService;
 import org.springframework.beans.factory.annotation.Autowired;
