@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.domain.dto;
 
-import br.com.fiap.techchallenge.domain.entidade.Pessoa;
+import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -18,12 +18,12 @@ public record PessoaDto(
         String parentesco
 ) {
 
-    public PessoaDto(Pessoa pessoa) {
-        this(pessoa.getNome(), pessoa.getDataNascimento().toString(), pessoa.getSexo(), pessoa.getParentesco());
+    public PessoaDto(Consumidor consumidor) {
+        this(consumidor.getNome(), consumidor.getDataNascimento().toString(), consumidor.getSexo(), consumidor.getParentesco());
     }
 
-    public Pessoa toPessoa() {
+    public Consumidor toPessoa() {
         LocalDate dataNascimento = LocalDate.parse(this.dataNascimento);
-        return new Pessoa(this.nome, dataNascimento, this.sexo, this.parentesco);
+        return new Consumidor(this.nome, dataNascimento, this.sexo, this.parentesco);
     }
 }

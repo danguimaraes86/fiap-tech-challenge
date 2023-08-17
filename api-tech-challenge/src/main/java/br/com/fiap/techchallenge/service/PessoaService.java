@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.service;
 
 import br.com.fiap.techchallenge.domain.dto.PessoaDto;
-import br.com.fiap.techchallenge.domain.entidade.Pessoa;
+import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.infra.repository.PessoaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,34 +21,34 @@ public class PessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
-    public List<Pessoa> findAll() {
+    public List<Consumidor> findAll() {
         return pessoaRepository.findAll();
     }
 
-    public Pessoa findById(Long id) {
+    public Consumidor findById(Long id) {
         return pessoaRepository.findById(id).orElseThrow();
     }
 
     @Transactional
-    public Pessoa create(PessoaDto pessoaDto) {
-        Pessoa pessoa = pessoaDto.toPessoa();
-        return pessoaRepository.save(pessoa);
+    public Consumidor create(PessoaDto pessoaDto) {
+        Consumidor consumidor = pessoaDto.toPessoa();
+        return pessoaRepository.save(consumidor);
     }
 
     @Transactional
     public void delete(Long id) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+        Optional<Consumidor> pessoa = pessoaRepository.findById(id);
         pessoaRepository.delete(pessoa.orElseThrow());
     }
 
     @Transactional
-    public Pessoa update(Long id, PessoaDto pessoaDto) {
-        Pessoa pessoaId = findById(id);
+    public Consumidor update(Long id, PessoaDto pessoaDto) {
+        Consumidor consumidorId = findById(id);
 
-        pessoaId.setSexo(pessoaDto.getSexo());
-        pessoaId.setNome(pessoaDto.getNome());
-        pessoaId.setParentesco(pessoaDto.getParentesco());
-        pessoaId.setDataNascimento(LocalDate.parse(pessoaDto.getDataNascimento()));
-        return pessoaRepository.save(pessoaId);
+        consumidorId.setSexo(pessoaDto.getSexo());
+        consumidorId.setNome(pessoaDto.getNome());
+        consumidorId.setParentesco(pessoaDto.getParentesco());
+        consumidorId.setDataNascimento(LocalDate.parse(pessoaDto.getDataNascimento()));
+        return pessoaRepository.save(consumidorId);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "pessoa")
-public class Pessoa {
+public class Consumidor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Pessoa {
     @Column(nullable = false)
     private String parentesco;
 
-    public Pessoa(String nome, LocalDate dataNascimento, String sexo, String parentesco) {
+    public Consumidor(String nome, LocalDate dataNascimento, String sexo, String parentesco) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
@@ -43,8 +43,8 @@ public class Pessoa {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Pessoa pessoa = (Pessoa) o;
-        return Objects.equals(id, pessoa.id);
+        Consumidor consumidor = (Consumidor) o;
+        return Objects.equals(id, consumidor.id);
     }
 
     @Override

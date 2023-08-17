@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.controller;
 
 import br.com.fiap.techchallenge.domain.dto.PessoaDto;
-import br.com.fiap.techchallenge.domain.entidade.Pessoa;
+import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.service.PessoaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +20,28 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> findAll() {
-        List<Pessoa> listPessoas = pessoaService.findAll();
-        return ResponseEntity.ok().body(listPessoas);
+    public ResponseEntity<List<Consumidor>> findAll() {
+        List<Consumidor> listConsumidors = pessoaService.findAll();
+        return ResponseEntity.ok().body(listConsumidors);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
-        Pessoa pessoa = pessoaService.findById(id);
-        return ResponseEntity.ok().body(pessoa);
+    public ResponseEntity<Consumidor> findById(@PathVariable Long id) {
+        Consumidor consumidor = pessoaService.findById(id);
+        return ResponseEntity.ok().body(consumidor);
     }
 
     @PostMapping
     public ResponseEntity<PessoaDto> createPessoa(@RequestBody @Valid PessoaDto pessoaDto, UriComponentsBuilder uriBuilder) {
-        Pessoa pessoa = pessoaService.create(pessoaDto);
-        URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(pessoa.getId()).toUri();
-        return ResponseEntity.created(uri).body(new PessoaDto(pessoa));
+        Consumidor consumidor = pessoaService.create(pessoaDto);
+        URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(consumidor.getId()).toUri();
+        return ResponseEntity.created(uri).body(new PessoaDto(consumidor));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pessoa> updatePessoa(@PathVariable Long id, @RequestBody @Valid PessoaDto pessoaDto) {
-        Pessoa pessoa = pessoaService.update(id, pessoaDto);
-        return ResponseEntity.ok().body(pessoa);
+    public ResponseEntity<Consumidor> updatePessoa(@PathVariable Long id, @RequestBody @Valid PessoaDto pessoaDto) {
+        Consumidor consumidor = pessoaService.update(id, pessoaDto);
+        return ResponseEntity.ok().body(consumidor);
     }
 
     @DeleteMapping("/{id}")
