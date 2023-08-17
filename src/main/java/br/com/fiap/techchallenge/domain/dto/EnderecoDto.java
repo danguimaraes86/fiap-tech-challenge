@@ -3,22 +3,21 @@ package br.com.fiap.techchallenge.domain.dto;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
 
-public record EnderecoDto (
-        @Getter @NotBlank @JsonProperty
+public record EnderecoDto(
+        @NotBlank @JsonProperty
         String nomeInstalacao,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String rua,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String numero,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String bairro,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String cidade,
-        @Getter @NotBlank @JsonProperty
+        @NotBlank @JsonProperty
         String estado
-) implements DTO {
+) {
 
     public EnderecoDto(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),

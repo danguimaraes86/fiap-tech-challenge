@@ -2,8 +2,6 @@ package br.com.fiap.techchallenge.controller;
 
 
 import br.com.fiap.techchallenge.domain.dto.EnderecoDto;
-import br.com.fiap.techchallenge.domain.dto.PayloadDTO;
-import br.com.fiap.techchallenge.domain.dto.UsuarioDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.service.EnderecoService;
 import jakarta.validation.Valid;
@@ -36,12 +34,14 @@ public class EnderecoController {
 
     @PostMapping
     public ResponseEntity<EnderecoDto> createEndereco(
-            @RequestBody PayloadDTO<EnderecoDto> payloadDTO,
+            @RequestHeader("usuario") String usuario,
+            @RequestBody EnderecoDto enderecoDto,
             UriComponentsBuilder uriBuilder) {
-        EnderecoDto enderecoDto = payloadDTO.getData();
-        UsuarioDTO usuarioDTO = payloadDTO.getUsuario();
         Endereco endereco = enderecoService.create(enderecoDto);
+
+        System.out.println(usuario);
         // [TODO] vincular usuario
+
         URI uri = uriBuilder.path("endereco/{id}").buildAndExpand(endereco.getId()).toUri();
         return ResponseEntity.created(uri).body(new EnderecoDto(endereco));
     }
