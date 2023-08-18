@@ -26,7 +26,7 @@ public class UsuarioController {
                                                        UriComponentsBuilder uriBuilder){
         Usuario usuario = usuarioService.criarUsuario(usuarioDTO);
         URI uri = uriBuilder.path("/usuario/{id}").buildAndExpand(usuario.getId()).toUri();
-        return ResponseEntity.created(uri).body(new UsuarioDTO(usuario));
+        return ResponseEntity.created(uri).build();
     }
 
 }

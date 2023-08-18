@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.domain.entidade;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +19,12 @@ public class Usuario {
     @Column(name = "senha", nullable = false)
     private String senha;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Consumidor> consumidores;
+
+    //TODO: Mapeamento de Usuário com Endereço
+    // private Endereco endereco;
+
     @Transient
     private final String emailRegex = "^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
@@ -29,8 +36,8 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public long getId(){
-        return Long.valueOf(id);
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {
@@ -57,8 +64,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
+                "email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
                 '}';
     }

@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "pessoa")
+@Table(name = "consumidor")
 public class Consumidor {
 
     @Id
@@ -29,13 +29,18 @@ public class Consumidor {
     @Column(nullable = false)
     private String sexo;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     @Column(nullable = false)
     private String parentesco;
 
-    public Consumidor(String nome, LocalDate dataNascimento, String sexo, String parentesco) {
+    public Consumidor(String nome, LocalDate dataNascimento, String sexo, Usuario usuario, String parentesco) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
+        this.usuario = usuario;
         this.parentesco = parentesco;
     }
 
@@ -54,12 +59,9 @@ public class Consumidor {
 
     @Override
     public String toString() {
-        return "Pessoa{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
+        return "Consumidor{" +
+                "nome='" + nome + '\'' +
                 ", dataNascimento=" + dataNascimento +
-                ", sexo='" + sexo + '\'' +
-                ", parentesco='" + parentesco + '\'' +
-                '}';
+                ", sexo='" + sexo + "}";
     }
 }
