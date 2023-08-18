@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
@@ -20,7 +21,13 @@ public class Usuario {
     private String senha;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Consumidor> consumidores;
+    private Set<Consumidor> consumidores;
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Eletrodomestico> eletrodomesticos;
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Endereco> enderecos;
 
     //TODO: Mapeamento de Usuário com Endereço
     // private Endereco endereco;

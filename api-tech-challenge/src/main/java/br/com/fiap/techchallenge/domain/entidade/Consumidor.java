@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -32,6 +33,9 @@ public class Consumidor {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @ManyToMany
+    private Set<Eletrodomestico> eletrodomesticos;
 
     @Column(nullable = false)
     private String parentesco;

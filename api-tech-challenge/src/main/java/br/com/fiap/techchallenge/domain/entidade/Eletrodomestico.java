@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
@@ -30,6 +31,17 @@ public class Eletrodomestico {
 
     @Column(nullable = false)
     private LocalDate fabricacao;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
+    @ManyToMany
+    private Set<Consumidor> consumidores;
 
     public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao) {
         this.nome = nome;
