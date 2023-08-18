@@ -33,8 +33,15 @@ public class EnderecoController {
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoDto> createEndereco(@RequestBody @Valid EnderecoDto enderecoDto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<EnderecoDto> createEndereco(
+            @RequestHeader("usuario") String usuario,
+            @RequestBody EnderecoDto enderecoDto,
+            UriComponentsBuilder uriBuilder) {
         Endereco endereco = enderecoService.create(enderecoDto);
+
+        System.out.println(usuario);
+        // [TODO] vincular usuario
+
         URI uri = uriBuilder.path("endereco/{id}").buildAndExpand(endereco.getId()).toUri();
         return ResponseEntity.created(uri).body(new EnderecoDto(endereco));
     }
