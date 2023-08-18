@@ -13,8 +13,8 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "pessoa")
-public class Pessoa {
+@Table(name = "consumidor")
+public class Consumidor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +29,18 @@ public class Pessoa {
     @Column(nullable = false)
     private String sexo;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     @Column(nullable = false)
     private String parentesco;
 
-    public Pessoa(String nome, LocalDate dataNascimento, String sexo, String parentesco) {
+    public Consumidor(String nome, LocalDate dataNascimento, String sexo, Usuario usuario, String parentesco) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
+        this.usuario = usuario;
         this.parentesco = parentesco;
     }
 
@@ -43,8 +48,8 @@ public class Pessoa {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Pessoa pessoa = (Pessoa) o;
-        return Objects.equals(id, pessoa.id);
+        Consumidor consumidor = (Consumidor) o;
+        return Objects.equals(id, consumidor.id);
     }
 
     @Override
@@ -54,12 +59,9 @@ public class Pessoa {
 
     @Override
     public String toString() {
-        return "Pessoa{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
+        return "Consumidor{" +
+                "nome='" + nome + '\'' +
                 ", dataNascimento=" + dataNascimento +
-                ", sexo='" + sexo + '\'' +
-                ", parentesco='" + parentesco + '\'' +
-                '}';
+                ", sexo='" + sexo + "}";
     }
 }
