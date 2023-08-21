@@ -36,6 +36,10 @@ public class Endereco {
     @Column(nullable = false)
     private String estado;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario")
+    private Usuario usuario;
+
     public Endereco(String nomeInstalacao, String rua, String numero, String bairro, String cidade, String estado) {
         this.nomeInstalacao = nomeInstalacao;
         this.rua = rua;

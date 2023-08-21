@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -40,14 +41,18 @@ public class Eletrodomestico {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "eletrodomesticos")
     private Set<Consumidor> consumidores;
 
-    public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao) {
+    public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao, Usuario usuario, Endereco endereco, Set<Consumidor> consumidores) {
         this.nome = nome;
         this.potencia = potencia;
         this.modelo = modelo;
         this.fabricacao = fabricacao;
+        this.usuario = usuario;
+        this.endereco = endereco;
+
+        this.consumidores = consumidores;
     }
 
     @Override
@@ -55,14 +60,12 @@ public class Eletrodomestico {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Eletrodomestico that = (Eletrodomestico) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(potencia, that.potencia) && Objects.equals(modelo, that.modelo) && Objects.equals(fabricacao, that.fabricacao) && Objects.equals(usuario, that.usuario) && Objects.equals(endereco, that.endereco) && Objects.equals(consumidores, that.consumidores);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, nome, potencia, modelo, fabricacao, usuario, endereco, consumidores);
     }
-
     @Override
     public String toString() {
         return "Eletrodomestico{" +
@@ -71,6 +74,9 @@ public class Eletrodomestico {
                 ", potencia='" + potencia + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", fabricacao=" + fabricacao +
+                ", usuario=" + usuario +
+                ", endereco=" + endereco +
+                ", consumidores=" + consumidores +
                 '}';
     }
 }
