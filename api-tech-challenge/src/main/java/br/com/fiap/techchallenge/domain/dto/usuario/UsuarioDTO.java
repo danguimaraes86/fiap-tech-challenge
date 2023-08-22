@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.domain.dto;
+package br.com.fiap.techchallenge.domain.dto.usuario;
 
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import jakarta.validation.constraints.NotBlank;

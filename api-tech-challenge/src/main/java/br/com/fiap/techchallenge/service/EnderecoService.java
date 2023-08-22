@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.service;
 
 
-import br.com.fiap.techchallenge.domain.dto.EnderecoDto;
+import br.com.fiap.techchallenge.domain.dto.EnderecoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.infra.repository.EnderecoRepository;
 import jakarta.transaction.Transactional;
@@ -30,7 +30,7 @@ public class EnderecoService {
     }
 
     @Transactional
-    public Endereco create(EnderecoDto enderecoDto) {
+    public Endereco create(EnderecoDTO enderecoDto) {
         Endereco endereco = enderecoDto.toEndereco();
         return enderecoRepository.save(endereco);
     }
@@ -41,7 +41,7 @@ public class EnderecoService {
         enderecoRepository.delete(endereco.orElseThrow());
     }
 
-    public Endereco update(Long id, EnderecoDto enderecoDto) {
+    public Endereco update(Long id, EnderecoDTO enderecoDto) {
         Endereco endereco = findById(id);
 
         endereco.setNomeInstalacao(enderecoDto.nomeInstalacao());

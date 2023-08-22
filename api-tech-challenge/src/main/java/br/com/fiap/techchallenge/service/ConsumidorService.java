@@ -3,14 +3,17 @@ package br.com.fiap.techchallenge.service;
 import br.com.fiap.techchallenge.domain.dto.ConsumidorDTO;
 import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
+import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -34,12 +37,15 @@ public class ConsumidorService {
     }
 
     public Consumidor create(ConsumidorDTO consumidorDTO) {
-        Usuario usuario = usuarioRepository.findById(Long.valueOf(consumidorDTO.usuarioId())).orElseThrow
-                (() -> new RuntimeException("Usuário não encontrado"));
-
-        Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
-                consumidorDTO.sexo(), usuario, consumidorDTO.parentesco());
-        return consumidorRepository.save(consumidor);
+        Long id = Long.valueOf(consumidorDTO.usuarioId());
+        try {
+            Usuario usuario = usuarioRepository.findById(id).get();
+            Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
+                    consumidorDTO.sexo(), usuario, consumidorDTO.parentesco());
+            return consumidorRepository.save(consumidor);
+        }catch (NoSuchElementException e){
+            throw new ControllerNotFoundException("Usuário não encontrado com id: " + id);
+        }
     }
 
     @Transactional
@@ -50,11 +56,15 @@ public class ConsumidorService {
 
     @Transactional
     public Consumidor update(Long id, ConsumidorDTO consumidorDTO) {
-        Consumidor consumidorId = findById(id);
-
-        consumidorId.setSexo(consumidorDTO.sexo());
-        consumidorId.setNome(consumidorDTO.nome());
-        consumidorId.setDataNascimento(LocalDate.parse(consumidorDTO.dataNascimento()));
-        return consumidorRepository.save(consumidorId);
+        try {
+            Consumidor consumidor = consumidorRepository.getReferenceById(id);
+            consumidor.setSexo(consumidorDTO.sexo());
+            consumidor.setNome(consumidorDTO.nome());
+            consumidor.setDataNascimento(LocalDate.parse(consumidorDTO.dataNascimento()));
+            consumidor.setParentesco(consumidorDTO.parentesco());
+            return consumidorRepository.save(consumidor);
+        } catch (EntityNotFoundException e){
+            throw new ControllerNotFoundException("Consumidor não encontrado com id: " + id);
+        }
     }
 }

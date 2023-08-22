@@ -14,7 +14,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "senha", nullable = false)
@@ -53,6 +53,10 @@ public class Usuario {
 
     public String getSenha() {
         return senha;
+    }
+
+    public void alterarSenha(String senha) {
+        this.senha = senha;
     }
 
     @Override

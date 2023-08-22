@@ -40,9 +40,9 @@ public class ConsumidorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Consumidor> updateConsumidor(@PathVariable Long id, @RequestBody @Valid ConsumidorDTO consumidorDTO) {
+    public ResponseEntity<ConsumidorDTO> updateConsumidor(@PathVariable Long id, @RequestBody @Valid ConsumidorDTO consumidorDTO) {
         Consumidor consumidor = consumidorService.update(id, consumidorDTO);
-        return ResponseEntity.ok().body(consumidor);
+        return ResponseEntity.ok().body(new ConsumidorDTO(consumidor));
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.controller;
 
 
-import br.com.fiap.techchallenge.domain.dto.EnderecoDto;
+import br.com.fiap.techchallenge.domain.dto.EnderecoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.service.EnderecoService;
 import jakarta.validation.Valid;
@@ -33,9 +33,9 @@ public class EnderecoController {
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoDto> createEndereco(
+    public ResponseEntity<EnderecoDTO> createEndereco(
             @RequestHeader("usuario") String usuario,
-            @RequestBody EnderecoDto enderecoDto,
+            @RequestBody EnderecoDTO enderecoDto,
             UriComponentsBuilder uriBuilder) {
         Endereco endereco = enderecoService.create(enderecoDto);
 
@@ -43,11 +43,11 @@ public class EnderecoController {
         // [TODO] vincular usuario
 
         URI uri = uriBuilder.path("endereco/{id}").buildAndExpand(endereco.getId()).toUri();
-        return ResponseEntity.created(uri).body(new EnderecoDto(endereco));
+        return ResponseEntity.created(uri).body(new EnderecoDTO(endereco));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> updateEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDto enderecoDto) {
+    public ResponseEntity<Endereco> updateEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDTO enderecoDto) {
         Endereco endereco = enderecoService.update(id, enderecoDto);
         return ResponseEntity.ok().body(endereco);
     }

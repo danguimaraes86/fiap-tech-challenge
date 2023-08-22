@@ -4,7 +4,7 @@ import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
-public record EnderecoDto(
+public record EnderecoDTO(
         @NotBlank @JsonProperty
         String nomeInstalacao,
         @NotBlank @JsonProperty
@@ -19,7 +19,7 @@ public record EnderecoDto(
         String estado
 ) {
 
-    public EnderecoDto(Endereco endereco) {
+    public EnderecoDTO(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
                 endereco.getCidade(), endereco.getEstado());
     }
