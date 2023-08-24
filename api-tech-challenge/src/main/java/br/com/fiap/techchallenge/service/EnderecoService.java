@@ -4,6 +4,7 @@ package br.com.fiap.techchallenge.service;
 import br.com.fiap.techchallenge.domain.dto.EnderecoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
+import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.repository.EnderecoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,20 +38,30 @@ public class EnderecoService {
 
     @Transactional
     public Endereco create(EnderecoDTO enderecoDto) {
+        try{
         Endereco endereco = enderecoDto.toEndereco();
+
         return enderecoRepository.save(endereco);
+        }catch (NoSuchElementException e){
+            throw new ControllerNotFoundException("Endereço erro a tratar");
+        }
     }
 
     public Endereco update(Long id, EnderecoDTO enderecoDto) {
-        Endereco endereco = findById(id);
+        try {
+            Endereco endereco = findById(id);
 
-        endereco.setNomeInstalacao(enderecoDto.nomeInstalacao());
-        endereco.setRua(enderecoDto.rua());
-        endereco.setNumero(enderecoDto.numero());
-        endereco.setBairro(enderecoDto.bairro());
-        endereco.setCidade(enderecoDto.cidade());
-        endereco.setEstado(enderecoDto.estado());
-        return enderecoRepository.save(endereco);
+            endereco.setNomeInstalacao(enderecoDto.nomeInstalacao());
+            endereco.setRua(enderecoDto.rua());
+            endereco.setNumero(enderecoDto.numero());
+            endereco.setBairro(enderecoDto.bairro());
+            endereco.setCidade(enderecoDto.cidade());
+            endereco.setEstado(enderecoDto.estado());
+
+            return enderecoRepository.save(endereco);
+        } catch (EntityNotFoundException e){
+            throw new ControllerNotFoundException("Endereço não encontrado com id: " + id);
+        }
     }
     public void delete(Long id) {
         try {

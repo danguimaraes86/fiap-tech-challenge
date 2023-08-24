@@ -46,9 +46,9 @@ public class ConsumidorService {
     }
 
     public Consumidor create(ConsumidorDTO consumidorDTO) {
-        Long id = Long.valueOf(consumidorDTO.usuarioId());
         try {
-            Usuario usuario = usuarioRepository.findById(id).get();
+            Usuario usuario = usuarioRepository.findById(Long.valueOf(consumidorDTO.usuarioId())).orElseThrow(
+                    () -> new RuntimeException("Usuário não encontrado"));
             Set<Eletrodomestico> eletrodomesticos = null;
 
             if(consumidorDTO.eletrodomesticos() != null)
@@ -62,7 +62,7 @@ public class ConsumidorService {
 
             return consumidorRepository.save(consumidor);
         }catch (NoSuchElementException e){
-            throw new ControllerNotFoundException("Usuário não encontrado com id: " + id);
+            throw new ControllerNotFoundException("Usuário não encontrado com id: " + consumidorDTO.usuarioId());
         }
     }
 
@@ -74,6 +74,7 @@ public class ConsumidorService {
             consumidor.setNome(consumidorDTO.nome());
             consumidor.setDataNascimento(LocalDate.parse(consumidorDTO.dataNascimento()));
             consumidor.setParentesco(consumidorDTO.parentesco());
+
             return consumidorRepository.save(consumidor);
         } catch (EntityNotFoundException e){
             throw new ControllerNotFoundException("Consumidor não encontrado com id: " + id);

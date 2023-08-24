@@ -37,7 +37,7 @@ public class UsuarioService {
             Usuario usuario = usuarioRepository.getReferenceById(id);
             usuario.alterarSenha(senha);
         }catch (EntityNotFoundException e){
-            throw new ControllerNotFoundException("Forneça um id válido diferente do id: " + id);
+            throw new ControllerNotFoundException("Usuario id: " + id + "não encontrado");
         }
     }
 

@@ -17,10 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +43,7 @@ public class EletrodomesticoService {
 
     @Transactional
     public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO) {
-
+        try{
         Usuario usuario = usuarioRepository.findById(Long.valueOf(eletrodomesticoDTO.usuarioId())).orElseThrow
                 (() -> new RuntimeException("Usuário não encontrado"));
         LocalDate fabricacao = LocalDate.parse(eletrodomesticoDTO.fabricacao());
@@ -61,6 +58,9 @@ public class EletrodomesticoService {
         Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
                 fabricacao, usuario, eletrodomesticoDTO.endereco(), consumidores);
         return eletrodomesticoRepository.save(eletro);
+        }catch (NoSuchElementException e){
+            throw new ControllerNotFoundException("Usuário não encontrado com id: " + eletrodomesticoDTO.usuarioId());
+        }
     }
 
     @Transactional
@@ -75,7 +75,7 @@ public class EletrodomesticoService {
 
             return eletrodomesticoRepository.save(eletro);
         }catch (EntityNotFoundException e){
-            throw new ControllerNotFoundException("Consumidor não encontrado com id: " + id);
+            throw new ControllerNotFoundException("Eletrodomestico não encontrado com id: " + id);
         }
     }
 
