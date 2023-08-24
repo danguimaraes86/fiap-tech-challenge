@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.service;
 
 import br.com.fiap.techchallenge.domain.dto.ConsumidorDTO;
 import br.com.fiap.techchallenge.domain.entidade.Consumidor;
+import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
@@ -15,6 +16,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ConsumidorService {
@@ -40,13 +43,36 @@ public class ConsumidorService {
         Long id = Long.valueOf(consumidorDTO.usuarioId());
         try {
             Usuario usuario = usuarioRepository.findById(id).get();
+            Set<Eletrodomestico> eletrodomesticos = null;
+
+            if(consumidorDTO.eletrodomesticos() != null)
+                consumidorDTO.eletrodomesticos().stream()
+                        .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
+                                .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + eletrodomesticoId.getId())))
+                        .collect(Collectors.toSet());
+
             Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
-                    consumidorDTO.sexo(), usuario, consumidorDTO.parentesco());
+                    consumidorDTO.sexo(), usuario, eletrodomesticos, consumidorDTO.parentesco());
+
             return consumidorRepository.save(consumidor);
         }catch (NoSuchElementException e){
             throw new ControllerNotFoundException("Usuário não encontrado com id: " + id);
         }
     }
+    public Consumidor create(ConsumidorDTO consumidorDTO) {
+        Usuario usuario = usuarioRepository.findById(Long.valueOf(consumidorDTO.usuarioId())).orElseThrow
+                (() -> new RuntimeException("Usuário não encontrado"));
+        Set<Eletrodomestico> eletrodomesticos = null;
+
+        if(consumidorDTO.eletrodomesticos() != null)
+            consumidorDTO.eletrodomesticos().stream()
+                    .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
+                            .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + eletrodomesticoId.getId())))
+                    .collect(Collectors.toSet());
+
+        Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
+                consumidorDTO.sexo(), usuario, eletrodomesticos, consumidorDTO.parentesco());
+        return consumidorRepository.save(consumidor);
 
     @Transactional
     public void delete(Long id) {
