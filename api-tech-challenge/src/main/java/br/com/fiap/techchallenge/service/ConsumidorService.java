@@ -59,20 +59,6 @@ public class ConsumidorService {
             throw new ControllerNotFoundException("Usuário não encontrado com id: " + id);
         }
     }
-    public Consumidor create(ConsumidorDTO consumidorDTO) {
-        Usuario usuario = usuarioRepository.findById(Long.valueOf(consumidorDTO.usuarioId())).orElseThrow
-                (() -> new RuntimeException("Usuário não encontrado"));
-        Set<Eletrodomestico> eletrodomesticos = null;
-
-        if(consumidorDTO.eletrodomesticos() != null)
-            consumidorDTO.eletrodomesticos().stream()
-                    .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
-                            .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + eletrodomesticoId.getId())))
-                    .collect(Collectors.toSet());
-
-        Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
-                consumidorDTO.sexo(), usuario, eletrodomesticos, consumidorDTO.parentesco());
-        return consumidorRepository.save(consumidor);
 
     @Transactional
     public void delete(Long id) {
