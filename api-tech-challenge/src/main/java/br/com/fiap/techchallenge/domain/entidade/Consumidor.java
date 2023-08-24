@@ -34,11 +34,7 @@ public class Consumidor {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Consumidor_EletroDomestico",
-            joinColumns = {@JoinColumn(name = "consumidores_id")},
-            inverseJoinColumns = {@JoinColumn(name = "eletrodomesticos_id")})
+    @ManyToMany(mappedBy = "consumidores")
     private Set<Eletrodomestico> eletrodomesticos;
 
     @Column(nullable = false)

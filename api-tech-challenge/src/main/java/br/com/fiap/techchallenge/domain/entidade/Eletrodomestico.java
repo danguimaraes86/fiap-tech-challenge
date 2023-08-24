@@ -41,7 +41,11 @@ public class Eletrodomestico {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
-    @ManyToMany(mappedBy = "eletrodomesticos")
+    @ManyToMany
+    @JoinTable(
+            name = "Consumidor_EletroDomestico",
+            joinColumns = @JoinColumn(name = "eletrodomesticos_id"),
+            inverseJoinColumns = @JoinColumn(name = "consumidores_id"))
     private Set<Consumidor> consumidores;
 
     public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao, Usuario usuario, Endereco endereco, Set<Consumidor> consumidores) {
