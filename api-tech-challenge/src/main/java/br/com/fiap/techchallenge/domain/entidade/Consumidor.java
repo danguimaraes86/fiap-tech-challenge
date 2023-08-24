@@ -50,23 +50,27 @@ public class Consumidor {
     }
 
     @Override
+    public String toString() {
+        return "Consumidor{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", sexo='" + sexo + '\'' +
+                ", usuario=" + usuario +
+                ", eletrodomesticos=" + eletrodomesticos +
+                ", parentesco='" + parentesco + '\'' +
+                '}';
+    }
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Consumidor consumidor = (Consumidor) o;
-        return Objects.equals(id, consumidor.id);
+        Consumidor that = (Consumidor) o;
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(dataNascimento, that.dataNascimento) && Objects.equals(sexo, that.sexo) && Objects.equals(usuario, that.usuario) && Objects.equals(eletrodomesticos, that.eletrodomesticos) && Objects.equals(parentesco, that.parentesco);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, nome, dataNascimento, sexo, usuario, eletrodomesticos, parentesco);
     }
 
-    @Override
-    public String toString() {
-        return "Consumidor{" +
-                "nome='" + nome + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", sexo='" + sexo + "}";
-    }
 }

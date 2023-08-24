@@ -45,10 +45,13 @@ public class EletrodomesticoService {
         Usuario usuario = usuarioRepository.findById(Long.valueOf(eletrodomesticoDTO.usuarioId())).orElseThrow
                 (() -> new RuntimeException("Usuário não encontrado"));
         LocalDate fabricacao = LocalDate.parse(eletrodomesticoDTO.fabricacao());
-        Set<Consumidor> consumidores = eletrodomesticoDTO.consumidores().stream()
-                .map(consumidorId -> consumidorRepository.findById(consumidorId.getId())
-                        .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + consumidorId.getId())))
-                .collect(Collectors.toSet());
+        Set<Consumidor> consumidores = null;
+
+        if (eletrodomesticoDTO.consumidores() != null)
+            consumidores = eletrodomesticoDTO.consumidores().stream()
+                    .map(consumidorId -> consumidorRepository.findById(consumidorId.getId())
+                            .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + consumidorId.getId())))
+                    .collect(Collectors.toSet());
 
         Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
                 fabricacao, usuario, eletrodomesticoDTO.endereco(), consumidores);
