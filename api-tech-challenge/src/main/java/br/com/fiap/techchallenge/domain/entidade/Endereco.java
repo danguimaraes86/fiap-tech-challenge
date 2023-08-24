@@ -37,7 +37,7 @@ public class Endereco {
     private String estado;
 
     @ManyToOne
-    @JoinColumn(name = "usuario")
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     public Endereco(String nomeInstalacao, String rua, String numero, String bairro, String cidade, String estado) {
@@ -50,19 +50,6 @@ public class Endereco {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Endereco endereco = (Endereco) o;
-        return Objects.equals(id, endereco.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
     public String toString() {
         return "Endereco{" +
                 "id=" + id +
@@ -72,6 +59,18 @@ public class Endereco {
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
                 ", estado='" + estado + '\'' +
+                ", usuario=" + usuario +
                 '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Endereco endereco = (Endereco) o;
+        return Objects.equals(id, endereco.id) && Objects.equals(nomeInstalacao, endereco.nomeInstalacao) && Objects.equals(rua, endereco.rua) && Objects.equals(numero, endereco.numero) && Objects.equals(bairro, endereco.bairro) && Objects.equals(cidade, endereco.cidade) && Objects.equals(estado, endereco.estado) && Objects.equals(usuario, endereco.usuario);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nomeInstalacao, rua, numero, bairro, cidade, estado, usuario);
     }
 }

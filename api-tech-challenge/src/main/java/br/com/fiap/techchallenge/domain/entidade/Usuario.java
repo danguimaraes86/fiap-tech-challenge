@@ -60,26 +60,27 @@ public class Usuario {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Usuario usuario = (Usuario) object;
-        return Objects.equals(id, usuario.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
     public String toString() {
         return "Usuario{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
+                ", consumidores=" + consumidores +
+                ", eletrodomesticos=" + eletrodomesticos +
+                ", enderecos=" + enderecos +
                 '}';
     }
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(consumidores, usuario.consumidores) && Objects.equals(eletrodomesticos, usuario.eletrodomesticos) && Objects.equals(enderecos, usuario.enderecos) && Objects.equals(emailRegex, usuario.emailRegex);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, senha, consumidores, eletrodomesticos, enderecos, emailRegex);
+    }
     public Usuario(){
         //Necessário para o Hibernate
     }
