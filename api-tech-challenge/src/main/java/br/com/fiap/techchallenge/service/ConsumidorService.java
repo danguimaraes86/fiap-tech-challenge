@@ -73,6 +73,7 @@ public class ConsumidorService {
             consumidor.setSexo(consumidorDTO.sexo());
             consumidor.setNome(consumidorDTO.nome());
             consumidor.setDataNascimento(LocalDate.parse(consumidorDTO.dataNascimento()));
+            consumidor.setEletrodomesticos(consumidorDTO.eletrodomesticos());
             consumidor.setParentesco(consumidorDTO.parentesco());
 
             return consumidorRepository.save(consumidor);

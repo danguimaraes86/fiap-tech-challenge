@@ -72,6 +72,8 @@ public class EletrodomesticoService {
             eletro.setPotencia(eletroDTO.potencia());
             eletro.setModelo(eletroDTO.modelo());
             eletro.setFabricacao(LocalDate.parse(eletroDTO.fabricacao()));
+            eletro.setEndereco(eletroDTO.endereco());
+            eletro.setConsumidores(eletroDTO.consumidores());
 
             return eletrodomesticoRepository.save(eletro);
         }catch (EntityNotFoundException e){
