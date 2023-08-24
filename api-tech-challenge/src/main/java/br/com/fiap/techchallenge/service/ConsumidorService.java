@@ -6,6 +6,7 @@ import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
+import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -24,11 +25,13 @@ public class ConsumidorService {
 
     private final ConsumidorRepository consumidorRepository;
     private final UsuarioRepository usuarioRepository;
+    private final EletrodomesticoRepository eletrodomesticoRepository;
 
     @Autowired
-    public ConsumidorService(ConsumidorRepository consumidorRepository, UsuarioRepository usuarioRepository) {
+    public ConsumidorService(ConsumidorRepository consumidorRepository, UsuarioRepository usuarioRepository, EletrodomesticoRepository eletrodomesticoRepository) {
         this.consumidorRepository = consumidorRepository;
         this.usuarioRepository = usuarioRepository;
+        this.eletrodomesticoRepository = eletrodomesticoRepository;
     }
 
     public List<Consumidor> findAll() {
@@ -46,7 +49,7 @@ public class ConsumidorService {
             Set<Eletrodomestico> eletrodomesticos = null;
 
             if(consumidorDTO.eletrodomesticos() != null)
-                consumidorDTO.eletrodomesticos().stream()
+                eletrodomesticos = consumidorDTO.eletrodomesticos().stream()
                         .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
                                 .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + eletrodomesticoId.getId())))
                         .collect(Collectors.toSet());

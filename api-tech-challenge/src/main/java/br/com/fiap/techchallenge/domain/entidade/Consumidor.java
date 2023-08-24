@@ -44,11 +44,12 @@ public class Consumidor {
     @Column(nullable = false)
     private String parentesco;
 
-    public Consumidor(String nome, LocalDate dataNascimento, String sexo, Usuario usuario, String parentesco) {
+    public Consumidor(String nome, LocalDate dataNascimento, String sexo, Usuario usuario, Set<Eletrodomestico> eletrodomesticos, String parentesco) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
         this.usuario = usuario;
+        this.eletrodomesticos = eletrodomesticos;
         this.parentesco = parentesco;
     }
 
