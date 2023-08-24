@@ -1,13 +1,19 @@
 package br.com.fiap.techchallenge.service;
 
 import br.com.fiap.techchallenge.domain.dto.usuario.UsuarioDTO;
+import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
+import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -32,6 +38,19 @@ public class UsuarioService {
             usuario.alterarSenha(senha);
         }catch (EntityNotFoundException e){
             throw new ControllerNotFoundException("Forneça um id válido diferente do id: " + id);
+        }
+    }
+
+    public void delete(Long id) {
+        try{
+            Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+            usuarioRepository.delete(usuario.orElseThrow());
+
+        }catch (EmptyResultDataAccessException e){
+            throw new EntityNotFoundException("Violação de Integridade da Base - ID: " + id);
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Violação de Integridade da Base");
         }
     }
 }

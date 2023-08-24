@@ -34,7 +34,7 @@ public class Consumidor {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToMany(mappedBy = "consumidores")
+    @ManyToMany(mappedBy = "consumidores", cascade = CascadeType.ALL)
     private Set<Eletrodomestico> eletrodomesticos;
 
     @Column(nullable = false)

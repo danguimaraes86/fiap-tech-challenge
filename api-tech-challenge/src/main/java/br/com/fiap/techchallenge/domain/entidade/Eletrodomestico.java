@@ -37,15 +37,15 @@ public class Eletrodomestico {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     @ManyToMany
     @JoinTable(
             name = "Consumidor_EletroDomestico",
-            joinColumns = @JoinColumn(name = "eletrodomesticos_id"),
-            inverseJoinColumns = @JoinColumn(name = "consumidores_id"))
+            joinColumns = @JoinColumn(name = "eletrodomesticos_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "consumidores_id", referencedColumnName = "id"))
     private Set<Consumidor> consumidores;
 
     public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao, Usuario usuario, Endereco endereco, Set<Consumidor> consumidores) {

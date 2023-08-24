@@ -5,12 +5,15 @@ import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
+import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -64,12 +67,6 @@ public class ConsumidorService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        Optional<Consumidor> pessoa = consumidorRepository.findById(id);
-        consumidorRepository.delete(pessoa.orElseThrow());
-    }
-
-    @Transactional
     public Consumidor update(Long id, ConsumidorDTO consumidorDTO) {
         try {
             Consumidor consumidor = consumidorRepository.getReferenceById(id);
@@ -80,6 +77,20 @@ public class ConsumidorService {
             return consumidorRepository.save(consumidor);
         } catch (EntityNotFoundException e){
             throw new ControllerNotFoundException("Consumidor não encontrado com id: " + id);
+        }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            Optional<Consumidor> pessoa = consumidorRepository.findById(id);
+
+            consumidorRepository.delete(pessoa.orElseThrow());
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException("Violação de Integridade da Base - ID: " + id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Violação de Integridade da Base");
         }
     }
 }
