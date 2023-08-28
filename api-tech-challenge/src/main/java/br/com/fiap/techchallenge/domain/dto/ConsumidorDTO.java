@@ -3,22 +3,21 @@ package br.com.fiap.techchallenge.domain.dto;
 import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
 
 public record ConsumidorDTO(
 
-        @NotBlank @JsonProperty
+        @JsonProperty
         String usuarioId,
-        @NotBlank @JsonProperty
+        @JsonProperty
         String nome,
-        @NotBlank @JsonProperty
+        @JsonProperty
         String dataNascimento,
-        @NotBlank @JsonProperty
+        @JsonProperty
         String sexo,
         Set<Eletrodomestico> eletrodomesticos,
-        @NotBlank @JsonProperty
+        @JsonProperty
         String parentesco
 ) {
 
