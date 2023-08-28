@@ -61,6 +61,7 @@ public class Consumidor {
                 ", parentesco='" + parentesco + '\'' +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,6 +69,7 @@ public class Consumidor {
         Consumidor that = (Consumidor) o;
         return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(dataNascimento, that.dataNascimento) && Objects.equals(sexo, that.sexo) && Objects.equals(usuario, that.usuario) && Objects.equals(eletrodomesticos, that.eletrodomesticos) && Objects.equals(parentesco, that.parentesco);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, nome, dataNascimento, sexo, usuario, eletrodomesticos, parentesco);

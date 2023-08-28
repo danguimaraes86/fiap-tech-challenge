@@ -51,7 +51,7 @@ public class ConsumidorService {
                     () -> new RuntimeException("Usuário não encontrado"));
             Set<Eletrodomestico> eletrodomesticos = null;
 
-            if(consumidorDTO.eletrodomesticos() != null)
+            if (consumidorDTO.eletrodomesticos() != null)
                 eletrodomesticos = consumidorDTO.eletrodomesticos().stream()
                         .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
                                 .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + eletrodomesticoId.getId())))
@@ -61,7 +61,7 @@ public class ConsumidorService {
                     consumidorDTO.sexo(), usuario, eletrodomesticos, consumidorDTO.parentesco());
 
             return consumidorRepository.save(consumidor);
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Usuário não encontrado com id: " + consumidorDTO.usuarioId());
         }
     }
@@ -77,7 +77,7 @@ public class ConsumidorService {
             consumidor.setParentesco(consumidorDTO.parentesco());
 
             return consumidorRepository.save(consumidor);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Consumidor não encontrado com id: " + id);
         }
     }

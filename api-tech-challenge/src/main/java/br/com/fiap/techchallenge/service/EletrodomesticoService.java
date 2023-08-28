@@ -26,6 +26,7 @@ public class EletrodomesticoService {
     private final EletrodomesticoRepository eletrodomesticoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ConsumidorRepository consumidorRepository;
+
     @Autowired
     public EletrodomesticoService(EletrodomesticoRepository eletrodomesticoRepository, UsuarioRepository usuarioRepository, ConsumidorRepository consumidorRepository) {
         this.eletrodomesticoRepository = eletrodomesticoRepository;
@@ -43,22 +44,22 @@ public class EletrodomesticoService {
 
     @Transactional
     public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO) {
-        try{
-        Usuario usuario = usuarioRepository.findById(Long.valueOf(eletrodomesticoDTO.usuarioId())).orElseThrow
-                (() -> new RuntimeException("Usuário não encontrado"));
-        LocalDate fabricacao = LocalDate.parse(eletrodomesticoDTO.fabricacao());
-        Set<Consumidor> consumidores = null;
+        try {
+            Usuario usuario = usuarioRepository.findById(Long.valueOf(eletrodomesticoDTO.usuarioId())).orElseThrow
+                    (() -> new RuntimeException("Usuário não encontrado"));
+            LocalDate fabricacao = LocalDate.parse(eletrodomesticoDTO.fabricacao());
+            Set<Consumidor> consumidores = null;
 
-        if (eletrodomesticoDTO.consumidores() != null)
-            consumidores = eletrodomesticoDTO.consumidores().stream()
-                    .map(consumidorId -> consumidorRepository.findById(consumidorId.getId())
-                            .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + consumidorId.getId())))
-                    .collect(Collectors.toSet());
+            if (eletrodomesticoDTO.consumidores() != null)
+                consumidores = eletrodomesticoDTO.consumidores().stream()
+                        .map(consumidorId -> consumidorRepository.findById(consumidorId.getId())
+                                .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + consumidorId.getId())))
+                        .collect(Collectors.toSet());
 
-        Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
-                fabricacao, usuario, eletrodomesticoDTO.endereco(), consumidores);
-        return eletrodomesticoRepository.save(eletro);
-        }catch (NoSuchElementException e){
+            Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
+                    fabricacao, usuario, eletrodomesticoDTO.endereco(), consumidores);
+            return eletrodomesticoRepository.save(eletro);
+        } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Usuário não encontrado com id: " + eletrodomesticoDTO.usuarioId());
         }
     }
@@ -76,19 +77,19 @@ public class EletrodomesticoService {
             eletro.setConsumidores(eletroDTO.consumidores());
 
             return eletrodomesticoRepository.save(eletro);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Eletrodomestico não encontrado com id: " + id);
         }
     }
 
     @Transactional
     public void delete(Long id) {
-        try{
+        try {
             Optional<Eletrodomestico> eletro = eletrodomesticoRepository.findById(id);
             eletrodomesticoRepository.delete(eletro.orElseThrow());
-        }catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Violação de Integridade da Base - ID: " + id);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Violação de Integridade da Base");
         }
     }

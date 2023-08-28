@@ -33,23 +33,23 @@ public class UsuarioService {
 
     @Transactional
     public void alterarSenha(Long id, String senha) {
-        try{
+        try {
             Usuario usuario = usuarioRepository.getReferenceById(id);
             usuario.alterarSenha(senha);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Usuario id: " + id + "não encontrado");
         }
     }
 
     public void delete(Long id) {
-        try{
+        try {
             Optional<Usuario> usuario = usuarioRepository.findById(id);
 
             usuarioRepository.delete(usuario.orElseThrow());
 
-        }catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Violação de Integridade da Base - ID: " + id);
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Violação de Integridade da Base");
         }
     }

@@ -17,12 +17,14 @@ public class DefaultError {
         this.message = message;
         this.path = path;
     }
-    public DefaultError(){
+
+    public DefaultError() {
     }
 
     public Instant getTimestamp() {
         return timestamp;
     }
+
     public DefaultError setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
         return this;
@@ -31,6 +33,7 @@ public class DefaultError {
     public Integer getStatus() {
         return status;
     }
+
     public DefaultError setStatus(Integer status) {
         this.status = status;
         return this;
@@ -39,6 +42,7 @@ public class DefaultError {
     public String getError() {
         return error;
     }
+
     public DefaultError setError(String error) {
         this.error = error;
         return this;
@@ -47,6 +51,7 @@ public class DefaultError {
     public String getMessage() {
         return message;
     }
+
     public DefaultError setMessage(String message) {
         this.message = message;
         return this;
@@ -55,6 +60,7 @@ public class DefaultError {
     public String getPath() {
         return path;
     }
+
     public DefaultError setPath(String path) {
         this.path = path;
         return this;

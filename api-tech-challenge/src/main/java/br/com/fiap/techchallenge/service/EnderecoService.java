@@ -38,11 +38,11 @@ public class EnderecoService {
 
     @Transactional
     public Endereco create(EnderecoDTO enderecoDto) {
-        try{
-        Endereco endereco = enderecoDto.toEndereco();
+        try {
+            Endereco endereco = enderecoDto.toEndereco();
 
-        return enderecoRepository.save(endereco);
-        }catch (NoSuchElementException e){
+            return enderecoRepository.save(endereco);
+        } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Endereço erro a tratar");
         }
     }
@@ -59,10 +59,11 @@ public class EnderecoService {
             endereco.setEstado(enderecoDto.estado());
 
             return enderecoRepository.save(endereco);
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Endereço não encontrado com id: " + id);
         }
     }
+
     public void delete(Long id) {
         try {
             Optional<Endereco> endereco = enderecoRepository.findById(id);

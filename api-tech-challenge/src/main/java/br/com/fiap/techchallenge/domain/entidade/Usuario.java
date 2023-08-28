@@ -1,11 +1,17 @@
 package br.com.fiap.techchallenge.domain.entidade;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -36,23 +42,11 @@ public class Usuario {
     private final String emailRegex = "^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     public Usuario(String email, String senha) {
-        if (!email.matches(emailRegex)){
+        if (!email.matches(emailRegex)) {
             throw new RuntimeException("E-mail não segue padrão");
         }
         this.email = email;
         this.senha = senha;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getSenha() {
-        return senha;
     }
 
     public void alterarSenha(String senha) {
@@ -70,6 +64,7 @@ public class Usuario {
                 ", enderecos=" + enderecos +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,11 +72,10 @@ public class Usuario {
         Usuario usuario = (Usuario) o;
         return Objects.equals(id, usuario.id) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(consumidores, usuario.consumidores) && Objects.equals(eletrodomesticos, usuario.eletrodomesticos) && Objects.equals(enderecos, usuario.enderecos) && Objects.equals(emailRegex, usuario.emailRegex);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, email, senha, consumidores, eletrodomesticos, enderecos, emailRegex);
     }
-    public Usuario(){
-        //Necessário para o Hibernate
-    }
+
 }

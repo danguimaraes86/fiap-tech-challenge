@@ -23,7 +23,7 @@ public record ConsumidorDTO(
 ) {
 
     public ConsumidorDTO(Consumidor consumidor) {
-        this(String.valueOf(consumidor.getUsuario().getId()) ,consumidor.getNome(), consumidor.getDataNascimento().toString(),
-                consumidor.getSexo(),consumidor.getEletrodomesticos(), consumidor.getParentesco());
+        this(String.valueOf(consumidor.getUsuario().getId()), consumidor.getNome(), consumidor.getDataNascimento().toString(),
+                consumidor.getSexo(), consumidor.getEletrodomesticos(), consumidor.getParentesco());
     }
 }

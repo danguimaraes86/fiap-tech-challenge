@@ -62,6 +62,7 @@ public class Endereco {
                 ", usuario=" + usuario +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +70,7 @@ public class Endereco {
         Endereco endereco = (Endereco) o;
         return Objects.equals(id, endereco.id) && Objects.equals(nomeInstalacao, endereco.nomeInstalacao) && Objects.equals(rua, endereco.rua) && Objects.equals(numero, endereco.numero) && Objects.equals(bairro, endereco.bairro) && Objects.equals(cidade, endereco.cidade) && Objects.equals(estado, endereco.estado) && Objects.equals(usuario, endereco.usuario);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, nomeInstalacao, rua, numero, bairro, cidade, estado, usuario);

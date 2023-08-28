@@ -9,7 +9,7 @@ public record UsuarioDTO(
         @NotBlank
         String senha
 ) {
-        public UsuarioDTO(Usuario usuario) {
-                this(usuario.getEmail(), usuario.getSenha());
-        }
+    public UsuarioDTO(Usuario usuario) {
+        this(usuario.getEmail(), usuario.getSenha());
+    }
 }

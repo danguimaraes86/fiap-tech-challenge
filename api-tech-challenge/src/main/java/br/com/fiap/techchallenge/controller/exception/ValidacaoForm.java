@@ -9,11 +9,11 @@ public class ValidacaoForm extends DefaultError {
 
     private List<ValidacaoCampo> mensagens = new ArrayList<ValidacaoCampo>();
 
-    public List<ValidacaoCampo> getMensagens(){
+    public List<ValidacaoCampo> getMensagens() {
         return mensagens;
     }
 
-    public void addMensagens(String campo, String mensagem){
+    public void addMensagens(String campo, String mensagem) {
         mensagens.add(new ValidacaoCampo(campo, mensagem));
     }
 

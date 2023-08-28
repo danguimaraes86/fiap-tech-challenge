@@ -19,8 +19,9 @@ import java.time.Instant;
 public class ControllerExceptionHandler {
 
     private DefaultError error = new DefaultError();
+
     @ExceptionHandler(ControllerNotFoundException.class)
-    public ResponseEntity<DefaultError> entityNotFound(ControllerNotFoundException exeption, HttpServletRequest request){
+    public ResponseEntity<DefaultError> entityNotFound(ControllerNotFoundException exeption, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());
@@ -32,7 +33,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<DefaultError> entityNotFound(DatabaseException exeption, HttpServletRequest request){
+    public ResponseEntity<DefaultError> entityNotFound(DatabaseException exeption, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());
@@ -44,7 +45,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidacaoForm> validation(MethodArgumentNotValidException exeption, HttpServletRequest request){
+    public ResponseEntity<ValidacaoForm> validation(MethodArgumentNotValidException exeption, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ValidacaoForm validacaoForm = new ValidacaoForm();
         validacaoForm.setTimestamp(Instant.now());
@@ -53,7 +54,7 @@ public class ControllerExceptionHandler {
         validacaoForm.setMessage("Abaixo o Array de erros de validação");
         validacaoForm.setPath(request.getRequestURI());
 
-        for(FieldError fieldError : exeption.getBindingResult().getFieldErrors()){
+        for (FieldError fieldError : exeption.getBindingResult().getFieldErrors()) {
             validacaoForm.addMensagens(fieldError.getField(), fieldError.getDefaultMessage());
         }
 

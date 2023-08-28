@@ -72,6 +72,7 @@ public class Eletrodomestico {
                 ", consumidores=" + consumidores +
                 '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,6 +80,7 @@ public class Eletrodomestico {
         Eletrodomestico that = (Eletrodomestico) o;
         return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(potencia, that.potencia) && Objects.equals(modelo, that.modelo) && Objects.equals(fabricacao, that.fabricacao) && Objects.equals(usuario, that.usuario) && Objects.equals(endereco, that.endereco) && Objects.equals(consumidores, that.consumidores);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, nome, potencia, modelo, fabricacao, usuario, endereco, consumidores);

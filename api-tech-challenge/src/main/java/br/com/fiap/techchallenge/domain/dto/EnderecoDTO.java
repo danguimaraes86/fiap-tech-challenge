@@ -17,7 +17,7 @@ public record EnderecoDTO(
         String cidade,
         @NotBlank @JsonProperty
         String estado,
-        @NotBlank@JsonProperty
+        @NotBlank @JsonProperty
         String usuarioId
 ) {
 
