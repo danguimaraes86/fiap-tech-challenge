@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -20,9 +21,13 @@ public class ConsumidorController {
     private ConsumidorService consumidorService;
 
     @GetMapping
-    public ResponseEntity<List<Consumidor>> findAll() {
-        List<Consumidor> listConsumidors = consumidorService.findAll();
-        return ResponseEntity.ok().body(listConsumidors);
+    public ResponseEntity<List<Consumidor>> findAll(@RequestParam(required = false) HashMap<String, String> params) {
+
+        if (params.isEmpty()) return ResponseEntity.ok().body(consumidorService.findAll());
+
+        HashMap<String, String> busca = new HashMap<>(params);
+        List<Consumidor> listConsumidores = consumidorService.findByAtributo(busca);
+        return ResponseEntity.ok().body(listConsumidores);
     }
 
     @GetMapping("/{id}")
