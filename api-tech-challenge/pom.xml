@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.com.fiap.techchallenge</groupId>
-    <artifactId>tech-challenge</artifactId>
+    <artifactId>api-tech-challenge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tech-challenge</name>
     <description>Fiap Tech Challenge</description>
