@@ -38,6 +38,13 @@ public class EletrodomesticoService {
         return eletrodomesticoRepository.findAll();
     }
 
+
+    public List<Eletrodomestico> findByAtributo(HashMap<String, String> busca) {
+        LocalDate fabricacao = busca.containsKey("fabricacao") ? LocalDate.parse(busca.get("fabricacao")) : null;
+        return eletrodomesticoRepository.findByNomeIgnoreCaseOrModeloIgnoreCaseOrFabricacaoAfter(
+                busca.get("nome"), busca.get("modelo"), fabricacao);
+    }
+
     public Eletrodomestico findById(Long id) {
         return eletrodomesticoRepository.findById(id).orElseThrow();
     }
@@ -94,4 +101,5 @@ public class EletrodomesticoService {
             throw new DatabaseException("Violação de Integridade da Base");
         }
     }
+
 }

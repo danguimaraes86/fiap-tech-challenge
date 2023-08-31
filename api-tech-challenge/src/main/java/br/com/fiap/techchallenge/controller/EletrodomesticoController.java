@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -16,36 +17,41 @@ import java.util.List;
 public class EletrodomesticoController {
 
     @Autowired
-    private EletrodomesticoService service;
+    private EletrodomesticoService eletrodomesticoService;
 
     @GetMapping
-    public ResponseEntity<List<Eletrodomestico>> findAll() {
-        List<Eletrodomestico> listEletro = service.findAll();
+    public ResponseEntity<List<Eletrodomestico>> findAll(
+            @RequestParam(required = false) HashMap<String, String> params) {
+
+        if (params.isEmpty()) return ResponseEntity.ok().body(eletrodomesticoService.findAll());
+
+        HashMap<String, String> busca = new HashMap<>(params);
+        List<Eletrodomestico> listEletro = eletrodomesticoService.findByAtributo(busca);
         return ResponseEntity.ok().body(listEletro);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Eletrodomestico> findById(@PathVariable Long id) {
-        Eletrodomestico eletro = service.findById(id);
+        Eletrodomestico eletro = eletrodomesticoService.findById(id);
         return ResponseEntity.ok().body(eletro);
     }
 
     @PostMapping
     public ResponseEntity<EletrodomesticoDTO> createEletro(@RequestBody EletrodomesticoDTO eletroDTO, UriComponentsBuilder uriBuilder) {
-        Eletrodomestico eletro = service.create(eletroDTO);
+        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO);
         URI uri = uriBuilder.path("/eletrodomestico/{id}").buildAndExpand(eletro.getId()).toUri();
         return ResponseEntity.created(uri).body(new EletrodomesticoDTO(eletro));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Eletrodomestico> updateEletro(@PathVariable Long id, @RequestBody EletrodomesticoDTO eletroDTO) {
-        Eletrodomestico eletro = service.update(id, eletroDTO);
+        Eletrodomestico eletro = eletrodomesticoService.update(id, eletroDTO);
         return ResponseEntity.ok().body(eletro);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEletro(@PathVariable Long id) {
-        service.delete(id);
+        eletrodomesticoService.delete(id);
         return ResponseEntity.ok().build();
     }
 }
