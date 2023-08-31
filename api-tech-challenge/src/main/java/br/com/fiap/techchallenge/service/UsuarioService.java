@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.service;
 
 import br.com.fiap.techchallenge.domain.dto.usuario.UsuarioDTO;
-import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
@@ -21,8 +20,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    /*TODO: Fazer com que a senha seja criptografada quando salva no banco de dados
-            Criar um regex para que a senha siga um certo padrão e fazer estas validações
+    /*
+        TODO: Fazer com que a senha seja criptografada quando salva no banco de dados
+        Criar um regex para que a senha siga um certo padrão e fazer estas validações
      */
 
     @Transactional
