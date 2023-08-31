@@ -3,10 +3,10 @@ package br.com.fiap.techchallenge.service;
 
 import br.com.fiap.techchallenge.domain.dto.EnderecoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
-import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.repository.EnderecoRepository;
+import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,14 +23,22 @@ import java.util.Optional;
 public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Autowired
-    public EnderecoService(EnderecoRepository enderecoRepository) {
+    public EnderecoService(EnderecoRepository enderecoRepository, UsuarioRepository usuarioRepository) {
         this.enderecoRepository = enderecoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public List<Endereco> findAll() {
         return enderecoRepository.findAll();
+    }
+
+    public List<Endereco> findByAtributo(HashMap<String, String> busca) {
+        return enderecoRepository.findByNomeInstalacaoIgnoreCaseOrEstadoIgnoreCaseOrCidadeIgnoreCaseOrBairroIgnoreCase(
+                busca.get("nomeInstalacao"), busca.get("estado"), busca.get("cidade"), busca.get("bairro")
+        );
     }
 
     public Endereco findById(Long id) {
@@ -37,10 +46,10 @@ public class EnderecoService {
     }
 
     @Transactional
-    public Endereco create(EnderecoDTO enderecoDto) {
+    public Endereco create(EnderecoDTO enderecoDto, Long usuarioId) {
         try {
             Endereco endereco = enderecoDto.toEndereco();
-
+            endereco.setUsuario(usuarioRepository.findById(usuarioId).orElseThrow());
             return enderecoRepository.save(endereco);
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Endereço erro a tratar");

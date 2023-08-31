@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,13 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity<List<Endereco>> findAll() {
-        List<Endereco> listEndereco = enderecoService.findAll();
+    public ResponseEntity<List<Endereco>> findAll(
+            @RequestParam(required = false) HashMap<String, String> params) {
+
+        if(params.isEmpty()) return ResponseEntity.ok().body(enderecoService.findAll());
+
+        HashMap<String, String> busca = new HashMap<>(params);
+        List<Endereco> listEndereco = enderecoService.findByAtributo(busca);
         return ResponseEntity.ok().body(listEndereco);
     }
 
@@ -34,13 +40,10 @@ public class EnderecoController {
 
     @PostMapping
     public ResponseEntity<EnderecoDTO> createEndereco(
-            @RequestHeader("usuario") String usuario,
+            @RequestHeader("usuarioId") Long usuarioId,
             @RequestBody EnderecoDTO enderecoDto,
             UriComponentsBuilder uriBuilder) {
-        Endereco endereco = enderecoService.create(enderecoDto);
-
-        System.out.println(usuario);
-        // [TODO] vincular usuario
+        Endereco endereco = enderecoService.create(enderecoDto, usuarioId);
 
         URI uri = uriBuilder.path("endereco/{id}").buildAndExpand(endereco.getId()).toUri();
         return ResponseEntity.created(uri).body(new EnderecoDTO(endereco));
