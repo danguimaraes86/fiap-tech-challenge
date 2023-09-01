@@ -6,6 +6,7 @@ import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
+import br.com.fiap.techchallenge.infra.exceptions.FormatacaoDateTimeException;
 import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
@@ -17,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,9 +43,13 @@ public class EletrodomesticoService {
 
 
     public List<Eletrodomestico> findByAtributo(HashMap<String, String> busca) {
-        LocalDate fabricacao = busca.containsKey("fabricacao") ? LocalDate.parse(busca.get("fabricacao")) : null;
-        return eletrodomesticoRepository.findByNomeIgnoreCaseOrModeloIgnoreCaseOrFabricacaoAfter(
-                busca.get("nome"), busca.get("modelo"), fabricacao);
+        try {
+            LocalDate fabricacao = busca.containsKey("fabricacao") ? LocalDate.parse(busca.get("fabricacao")) : null;
+            return eletrodomesticoRepository.findByNomeIgnoreCaseOrModeloIgnoreCaseOrFabricacaoAfter(
+                    busca.get("nome"), busca.get("modelo"), fabricacao);
+        } catch (DateTimeException e) {
+            throw new FormatacaoDateTimeException("Utilize o formato AAAA-MM-DD");
+        }
     }
 
     public Eletrodomestico findById(Long id) {
@@ -69,6 +75,8 @@ public class EletrodomesticoService {
             return eletrodomesticoRepository.save(eletro);
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Não foi possivel completar a operação.");
+        } catch (DateTimeException e) {
+            throw new FormatacaoDateTimeException("Utilize o formato AAAA-MM-DD");
         }
     }
 

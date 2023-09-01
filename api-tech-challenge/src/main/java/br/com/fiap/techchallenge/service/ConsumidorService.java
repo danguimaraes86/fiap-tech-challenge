@@ -6,6 +6,7 @@ import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
+import br.com.fiap.techchallenge.infra.exceptions.FormatacaoDateTimeException;
 import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
@@ -17,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,16 +46,19 @@ public class ConsumidorService {
     }
 
     public List<Consumidor> findByAtributo(HashMap<String, String> busca) {
+        LocalDate dataNascimento = busca.containsKey("dataNascimento") ? LocalDate.parse(busca.get("dataNascimento")) : null;
         return consumidorRepository
-                .findConsumidorByNomeIgnoreCaseOrSexoIgnoreCaseOrParentescoIgnoreCase(
-                        busca.get("nome"), busca.get("sexo"), busca.get("parentesco")
+                .findConsumidorByNomeIgnoreCaseOrSexoIgnoreCaseOrParentescoIgnoreCaseOrDataNascimentoBefore(
+                        busca.get("nome"), busca.get("sexo"), busca.get("parentesco"), dataNascimento
                 );
+
     }
 
-    public Consumidor create(ConsumidorDTO consumidorDTO) {
+    public Consumidor create(ConsumidorDTO consumidorDTO, Long usuarioId) {
         try {
-            Usuario usuario = usuarioRepository.findById(Long.valueOf(consumidorDTO.usuarioId())).orElseThrow(
-                    () -> new RuntimeException("Usuário não encontrado com ID: " + consumidorDTO.usuarioId()));
+            Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(
+                    () -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
+
             Set<Eletrodomestico> eletrodomesticos = null;
 
             if (consumidorDTO.eletrodomesticos() != null)
@@ -62,12 +67,15 @@ public class ConsumidorService {
                                 .orElseThrow(() -> new RuntimeException("Eletrodomestico não encontrado com ID: " + eletrodomesticoId.getId())))
                         .collect(Collectors.toSet());
 
-            Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
+            LocalDate dataNascimento = LocalDate.parse(consumidorDTO.dataNascimento());
+            Consumidor consumidor = new Consumidor(consumidorDTO.nome(), dataNascimento,
                     consumidorDTO.sexo(), usuario, eletrodomesticos, consumidorDTO.parentesco());
 
             return consumidorRepository.save(consumidor);
         } catch (NoSuchElementException e) {
-            throw new ControllerNotFoundException("Usuário não encontrado com id: " + consumidorDTO.usuarioId());
+            throw new ControllerNotFoundException("Usuário não encontrado com id: " + usuarioId);
+        } catch (DateTimeException e) {
+            throw new FormatacaoDateTimeException("Utilize o formato AAAA-MM-DD");
         }
     }
 
