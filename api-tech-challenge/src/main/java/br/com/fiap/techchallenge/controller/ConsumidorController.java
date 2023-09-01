@@ -21,13 +21,15 @@ public class ConsumidorController {
     private ConsumidorService consumidorService;
 
     @GetMapping
-    public ResponseEntity<List<Consumidor>> findAll(@RequestParam(required = false) HashMap<String, String> params) {
+    public ResponseEntity<List<ConsumidorDTO>> findAll(
+            @RequestParam(required = false) HashMap<String, String> params) {
 
-        if (params.isEmpty()) return ResponseEntity.ok().body(consumidorService.findAll());
+        if (params.isEmpty()) return ResponseEntity.ok().body(
+                consumidorService.findAll().stream().map(ConsumidorDTO::new).toList());
 
         HashMap<String, String> busca = new HashMap<>(params);
-        List<Consumidor> listConsumidores = consumidorService.findByAtributo(busca);
-        return ResponseEntity.ok().body(listConsumidores);
+        return ResponseEntity.ok().body(
+                consumidorService.findByAtributo(busca).stream().map(ConsumidorDTO::new).toList());
     }
 
     @GetMapping("/{id}")
@@ -37,15 +39,19 @@ public class ConsumidorController {
     }
 
     @PostMapping()
-    public ResponseEntity<ConsumidorDTO> createConsumidor(@RequestBody @Valid ConsumidorDTO consumidorDTO,
-                                                          UriComponentsBuilder uriBuilder) {
-        Consumidor consumidor = consumidorService.create(consumidorDTO);
+    public ResponseEntity<ConsumidorDTO> createConsumidor(
+            @RequestHeader("usuarioId") Long usuarioId,
+            @RequestBody @Valid ConsumidorDTO consumidorDTO,
+            UriComponentsBuilder uriBuilder) {
+        Consumidor consumidor = consumidorService.create(consumidorDTO, usuarioId);
         URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(consumidor.getId()).toUri();
         return ResponseEntity.created(uri).body(new ConsumidorDTO(consumidor));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConsumidorDTO> updateConsumidor(@PathVariable Long id, @RequestBody @Valid ConsumidorDTO consumidorDTO) {
+    public ResponseEntity<ConsumidorDTO> updateConsumidor(
+            @PathVariable Long id,
+            @RequestBody @Valid ConsumidorDTO consumidorDTO) {
         Consumidor consumidor = consumidorService.update(id, consumidorDTO);
         return ResponseEntity.ok().body(new ConsumidorDTO(consumidor));
     }

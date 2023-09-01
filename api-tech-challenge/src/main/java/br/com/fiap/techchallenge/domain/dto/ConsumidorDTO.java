@@ -9,8 +9,6 @@ import java.util.Set;
 public record ConsumidorDTO(
 
         @JsonProperty
-        String usuarioId,
-        @JsonProperty
         String nome,
         @JsonProperty
         String dataNascimento,
@@ -18,11 +16,15 @@ public record ConsumidorDTO(
         String sexo,
         Set<Eletrodomestico> eletrodomesticos,
         @JsonProperty
-        String parentesco
+        String parentesco,
+        @JsonProperty
+        String usuarioId
+
 ) {
 
     public ConsumidorDTO(Consumidor consumidor) {
-        this(String.valueOf(consumidor.getUsuario().getId()), consumidor.getNome(), consumidor.getDataNascimento().toString(),
-                consumidor.getSexo(), consumidor.getEletrodomesticos(), consumidor.getParentesco());
+        this(consumidor.getNome(), consumidor.getDataNascimento().toString(),
+                consumidor.getSexo(), consumidor.getEletrodomesticos(),
+                consumidor.getParentesco(), consumidor.getUsuario().getId().toString());
     }
 }
