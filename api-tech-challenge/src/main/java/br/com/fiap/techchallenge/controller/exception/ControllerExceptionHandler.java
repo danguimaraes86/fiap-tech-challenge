@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.exceptions.DefaultError;
 
 
+import br.com.fiap.techchallenge.infra.exceptions.RunTimeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,17 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<DefaultError> entityNotFound(DatabaseException exeption, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Entidade não encontrada");
+        error.setMessage(exeption.getMessage());
+        error.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(this.error);
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<DefaultError> entityNotFound(RunTimeException exeption, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());

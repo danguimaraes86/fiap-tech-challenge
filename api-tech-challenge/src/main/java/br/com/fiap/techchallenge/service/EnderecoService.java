@@ -42,7 +42,7 @@ public class EnderecoService {
     }
 
     public Endereco findById(Long id) {
-        return enderecoRepository.findById(id).orElseThrow();
+        return enderecoRepository.findById(id).orElseThrow(() -> new RuntimeException("Endereço não encontrado com ID: " + id));
     }
 
     @Transactional
@@ -52,7 +52,7 @@ public class EnderecoService {
             endereco.setUsuario(usuarioRepository.findById(usuarioId).orElseThrow());
             return enderecoRepository.save(endereco);
         } catch (NoSuchElementException e) {
-            throw new ControllerNotFoundException("Endereço erro a tratar");
+            throw new ControllerNotFoundException("Não foi possivel completar a operação.");
         }
     }
 

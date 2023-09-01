@@ -39,7 +39,7 @@ public class ConsumidorService {
     }
 
     public Consumidor findById(Long id) {
-        return consumidorRepository.findById(id).orElseThrow();
+        return consumidorRepository.findById(id).orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + id));
     }
 
     public List<Consumidor> findByAtributo(HashMap<String, String> busca) {
@@ -52,13 +52,13 @@ public class ConsumidorService {
     public Consumidor create(ConsumidorDTO consumidorDTO) {
         try {
             Usuario usuario = usuarioRepository.findById(Long.valueOf(consumidorDTO.usuarioId())).orElseThrow(
-                    () -> new RuntimeException("Usuário não encontrado"));
+                    () -> new RuntimeException("Usuário não encontrado com ID: " + consumidorDTO.usuarioId()));
             Set<Eletrodomestico> eletrodomesticos = null;
 
             if (consumidorDTO.eletrodomesticos() != null)
                 eletrodomesticos = consumidorDTO.eletrodomesticos().stream()
                         .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
-                                .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + eletrodomesticoId.getId())))
+                                .orElseThrow(() -> new RuntimeException("Eletrodomestico não encontrado com ID: " + eletrodomesticoId.getId())))
                         .collect(Collectors.toSet());
 
             Consumidor consumidor = new Consumidor(consumidorDTO.nome(), LocalDate.parse(consumidorDTO.dataNascimento()),
