@@ -14,6 +14,7 @@ public record ConsumidorDTO(
         String dataNascimento,
         @JsonProperty
         String sexo,
+        @JsonProperty
         Set<Eletrodomestico> eletrodomesticos,
         @JsonProperty
         String parentesco,

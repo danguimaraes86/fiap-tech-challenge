@@ -18,7 +18,9 @@ public record EletrodomesticoDTO(
         String fabricacao,
         @JsonProperty
         String usuarioId,
+        @JsonProperty
         Endereco endereco,
+        @JsonProperty
         Set<Consumidor> consumidores
 ) {
 
