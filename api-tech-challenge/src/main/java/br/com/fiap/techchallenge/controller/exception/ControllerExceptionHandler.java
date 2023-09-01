@@ -1,9 +1,6 @@
 package br.com.fiap.techchallenge.controller.exception;
 
-import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
-import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
-import br.com.fiap.techchallenge.infra.exceptions.DefaultError;
-
+import br.com.fiap.techchallenge.infra.exceptions.*;
 import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -43,6 +40,7 @@ public class ControllerExceptionHandler {
 
         return ResponseEntity.status(status).body(this.error);
     }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<DefaultError> entityNotFound(RuntimeException exeption, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
@@ -70,5 +68,17 @@ public class ControllerExceptionHandler {
         }
 
         return ResponseEntity.status(status).body(validacaoForm);
+    }
+
+    @ExceptionHandler(FormatacaoDateTimeException.class)
+    public ResponseEntity<?> handleParseValidation(FormatacaoDateTimeException exception, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Erro de Formatação");
+        error.setMessage(exception.getMessage());
+        error.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(this.error);
     }
 }
