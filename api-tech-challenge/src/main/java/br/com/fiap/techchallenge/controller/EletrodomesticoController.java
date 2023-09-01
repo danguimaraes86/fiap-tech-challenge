@@ -20,14 +20,16 @@ public class EletrodomesticoController {
     private EletrodomesticoService eletrodomesticoService;
 
     @GetMapping
-    public ResponseEntity<List<Eletrodomestico>> findAll(
+    public ResponseEntity<List<EletrodomesticoDTO>> findAll(
             @RequestParam(required = false) HashMap<String, String> params) {
 
-        if (params.isEmpty()) return ResponseEntity.ok().body(eletrodomesticoService.findAll());
+        if (params.isEmpty())
+            return ResponseEntity.ok().body(
+                    eletrodomesticoService.findAll().stream().map(EletrodomesticoDTO::new).toList());
 
         HashMap<String, String> busca = new HashMap<>(params);
-        List<Eletrodomestico> listEletro = eletrodomesticoService.findByAtributo(busca);
-        return ResponseEntity.ok().body(listEletro);
+        return ResponseEntity.ok().body(
+                eletrodomesticoService.findByAtributo(busca).stream().map(EletrodomesticoDTO::new).toList());
     }
 
     @GetMapping("/{id}")
@@ -37,8 +39,11 @@ public class EletrodomesticoController {
     }
 
     @PostMapping
-    public ResponseEntity<EletrodomesticoDTO> createEletro(@RequestBody EletrodomesticoDTO eletroDTO, UriComponentsBuilder uriBuilder) {
-        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO);
+    public ResponseEntity<EletrodomesticoDTO> createEletro(
+            @RequestHeader("usuarioId") Long usuarioId,
+            @RequestBody EletrodomesticoDTO eletroDTO,
+            UriComponentsBuilder uriBuilder) {
+        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO, usuarioId);
         URI uri = uriBuilder.path("/eletrodomestico/{id}").buildAndExpand(eletro.getId()).toUri();
         return ResponseEntity.created(uri).body(new EletrodomesticoDTO(eletro));
     }

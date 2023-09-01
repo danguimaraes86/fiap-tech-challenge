@@ -22,7 +22,7 @@ public record EnderecoDTO(
 
     public EnderecoDTO(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
-                endereco.getCidade(), endereco.getEstado(), String.valueOf(endereco.getUsuario().getId()));
+                endereco.getCidade(), endereco.getEstado(), endereco.getUsuario().getId().toString());
     }
 
     public Endereco toEndereco() {

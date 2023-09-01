@@ -22,14 +22,17 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity<List<Endereco>> findAll(
+    public ResponseEntity<List<EnderecoDTO>> findAll(
             @RequestParam(required = false) HashMap<String, String> params) {
 
-        if(params.isEmpty()) return ResponseEntity.ok().body(enderecoService.findAll());
+        if (params.isEmpty())
+            return ResponseEntity.ok().body(
+                    enderecoService.findAll().stream().map(EnderecoDTO::new).toList());
 
         HashMap<String, String> busca = new HashMap<>(params);
-        List<Endereco> listEndereco = enderecoService.findByAtributo(busca);
-        return ResponseEntity.ok().body(listEndereco);
+        return ResponseEntity.ok().body(
+                enderecoService.findByAtributo(busca).stream().map(EnderecoDTO::new).toList()
+        );
     }
 
     @GetMapping("/{id}")
