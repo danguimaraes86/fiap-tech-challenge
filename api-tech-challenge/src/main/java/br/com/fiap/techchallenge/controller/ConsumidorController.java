@@ -24,8 +24,9 @@ public class ConsumidorController {
     public ResponseEntity<List<ConsumidorDTO>> findAll(
             @RequestParam(required = false) HashMap<String, String> params) {
 
-        if (params.isEmpty()) return ResponseEntity.ok().body(
-                consumidorService.findAll().stream().map(ConsumidorDTO::new).toList());
+        if (params.isEmpty())
+            return ResponseEntity.ok().body(
+                    consumidorService.findAll().stream().map(ConsumidorDTO::new).toList());
 
         HashMap<String, String> busca = new HashMap<>(params);
         return ResponseEntity.ok().body(

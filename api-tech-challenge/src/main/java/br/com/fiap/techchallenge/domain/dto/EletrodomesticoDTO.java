@@ -25,7 +25,10 @@ public record EletrodomesticoDTO(
 ) {
 
     public EletrodomesticoDTO(Eletrodomestico eletrodomesticos) {
-        this(eletrodomesticos.getNome(), eletrodomesticos.getPotencia(), eletrodomesticos.getModelo(), eletrodomesticos.getFabricacao().toString(),
-                String.valueOf(eletrodomesticos.getUsuario().getId()), eletrodomesticos.getEndereco(), eletrodomesticos.getConsumidores());
+        this(eletrodomesticos.getNome(),
+                eletrodomesticos.getPotencia(), eletrodomesticos.getModelo(),
+                eletrodomesticos.getFabricacao().toString(),
+                eletrodomesticos.getUsuario().getId().toString(),
+                eletrodomesticos.getEndereco(), eletrodomesticos.getConsumidores());
     }
 }
