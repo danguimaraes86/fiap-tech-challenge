@@ -57,13 +57,12 @@ public class EletrodomesticoService {
     }
 
     @Transactional
-    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO) {
+    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO, Long usuarioId) {
         try {
-            Usuario usuario = usuarioRepository.findById(Long.valueOf(eletrodomesticoDTO.usuarioId())).orElseThrow
-                    (() -> new RuntimeException("Usuário não encontrado com ID: " + eletrodomesticoDTO.usuarioId()));
-            LocalDate fabricacao = LocalDate.parse(eletrodomesticoDTO.fabricacao());
-            Set<Consumidor> consumidores = null;
+            Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow
+                    (() -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
 
+            Set<Consumidor> consumidores = null;
             if (eletrodomesticoDTO.consumidores() != null)
                 consumidores = eletrodomesticoDTO.consumidores().stream()
                         .map(consumidorId -> consumidorRepository.findById(consumidorId.getId())
@@ -71,7 +70,7 @@ public class EletrodomesticoService {
                         .collect(Collectors.toSet());
 
             Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
-                    fabricacao, usuario, eletrodomesticoDTO.endereco(), consumidores);
+                    LocalDate.parse(eletrodomesticoDTO.fabricacao()), usuario, eletrodomesticoDTO.endereco(), consumidores);
             return eletrodomesticoRepository.save(eletro);
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Não foi possivel completar a operação.");
