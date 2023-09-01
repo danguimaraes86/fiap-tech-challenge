@@ -4,8 +4,7 @@ import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.exceptions.DefaultError;
 
-
-import br.com.fiap.techchallenge.infra.exceptions.RunTimeException;
+import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +44,7 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(this.error);
     }
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<DefaultError> entityNotFound(RunTimeException exeption, HttpServletRequest request) {
+    public ResponseEntity<DefaultError> entityNotFound(RuntimeException exeption, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());

@@ -6,6 +6,7 @@ import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
+import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;

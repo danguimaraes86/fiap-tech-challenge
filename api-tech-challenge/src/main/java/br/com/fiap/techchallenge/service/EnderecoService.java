@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.dto.EnderecoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
+import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import br.com.fiap.techchallenge.infra.repository.EnderecoRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
