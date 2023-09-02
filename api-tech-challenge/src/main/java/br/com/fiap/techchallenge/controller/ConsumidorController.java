@@ -34,18 +34,16 @@ public class ConsumidorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Consumidor> findById(@PathVariable Long id) {
+    public ResponseEntity<ConsumidorDTO> findById(@PathVariable Long id) {
         Consumidor consumidor = consumidorService.findById(id);
-        return ResponseEntity.ok().body(consumidor);
+        return ResponseEntity.ok().body(new ConsumidorDTO(consumidor));
     }
 
     @PostMapping()
-    public ResponseEntity<ConsumidorDTO> createConsumidor(
-            @RequestHeader("usuarioId") Long usuarioId,
-            @RequestBody @Valid ConsumidorDTO consumidorDTO,
+    public ResponseEntity<ConsumidorDTO> createConsumidor(@RequestBody @Valid ConsumidorDTO consumidorDTO,
             UriComponentsBuilder uriBuilder) {
-        Consumidor consumidor = consumidorService.create(consumidorDTO, usuarioId);
-        URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(consumidor.getId()).toUri();
+        Consumidor consumidor = consumidorService.create(consumidorDTO);
+        URI uri = uriBuilder.path("/consumidor/{id}").buildAndExpand(consumidor.getId()).toUri();
         return ResponseEntity.created(uri).body(new ConsumidorDTO(consumidor));
     }
 

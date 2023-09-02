@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -48,7 +47,8 @@ public class Eletrodomestico {
             inverseJoinColumns = @JoinColumn(name = "consumidores_id", referencedColumnName = "id"))
     private Set<Consumidor> consumidores;
 
-    public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao, Usuario usuario, Endereco endereco, Set<Consumidor> consumidores) {
+    public Eletrodomestico(String nome, String potencia, String modelo, LocalDate fabricacao,
+                           Usuario usuario, Endereco endereco, Set<Consumidor> consumidores) {
         this.nome = nome;
         this.potencia = potencia;
         this.modelo = modelo;
@@ -59,6 +59,10 @@ public class Eletrodomestico {
         this.consumidores = consumidores;
     }
 
+    public void removeConsumidor(Consumidor consumidor) {
+        consumidores.remove(consumidor);
+    }
+
     @Override
     public String toString() {
         return "Eletrodomestico{" +
@@ -67,23 +71,24 @@ public class Eletrodomestico {
                 ", potencia='" + potencia + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", fabricacao=" + fabricacao +
-                ", usuario=" + usuario +
-                ", endereco=" + endereco +
-                ", consumidores=" + consumidores +
+                ", usuario=" + (usuario != null ? usuario.getId() : null) +
+                ", endereco=" + (endereco != null ? endereco.getId() : null) +
+                ", consumidores=" + (consumidores != null ? consumidores.size() : 0) +
                 '}';
     }
 
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Eletrodomestico that = (Eletrodomestico) o;
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(potencia, that.potencia) && Objects.equals(modelo, that.modelo) && Objects.equals(fabricacao, that.fabricacao) && Objects.equals(usuario, that.usuario) && Objects.equals(endereco, that.endereco) && Objects.equals(consumidores, that.consumidores);
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Eletrodomestico that = (Eletrodomestico) object;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, potencia, modelo, fabricacao, usuario, endereco, consumidores);
+        return Objects.hash(id);
     }
 
 }
