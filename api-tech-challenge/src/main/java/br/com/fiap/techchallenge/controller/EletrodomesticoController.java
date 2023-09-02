@@ -43,7 +43,7 @@ public class EletrodomesticoController {
             @RequestHeader("usuarioId") Long usuarioId,
             @RequestBody EletrodomesticoDTO eletroDTO,
             UriComponentsBuilder uriBuilder) {
-        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO, usuarioId);
+        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO, usuarioId, eletroDTO.enderecoId());
         URI uri = uriBuilder.path("/eletrodomestico/{id}").buildAndExpand(eletro.getId()).toUri();
         return ResponseEntity.created(uri).body(new EletrodomesticoDTO(eletro));
     }

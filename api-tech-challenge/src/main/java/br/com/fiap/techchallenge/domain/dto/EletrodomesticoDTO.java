@@ -19,7 +19,7 @@ public record EletrodomesticoDTO(
         @JsonProperty
         String usuarioId,
         @JsonProperty
-        Endereco endereco,
+        String enderecoId,
         @JsonProperty
         Set<Consumidor> consumidores
 ) {
@@ -29,6 +29,7 @@ public record EletrodomesticoDTO(
                 eletrodomesticos.getPotencia(), eletrodomesticos.getModelo(),
                 eletrodomesticos.getFabricacao().toString(),
                 eletrodomesticos.getUsuario().getId().toString(),
-                eletrodomesticos.getEndereco(), eletrodomesticos.getConsumidores());
+                eletrodomesticos.getEndereco().getId().toString(),
+                eletrodomesticos.getConsumidores());
     }
 }

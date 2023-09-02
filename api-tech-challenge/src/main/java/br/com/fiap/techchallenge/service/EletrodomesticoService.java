@@ -3,6 +3,7 @@ package br.com.fiap.techchallenge.service;
 import br.com.fiap.techchallenge.domain.dto.EletrodomesticoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
+import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
@@ -10,6 +11,7 @@ import br.com.fiap.techchallenge.infra.exceptions.FormatacaoDateTimeException;
 import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
+import br.com.fiap.techchallenge.infra.repository.EnderecoRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -29,12 +31,14 @@ public class EletrodomesticoService {
     private final EletrodomesticoRepository eletrodomesticoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ConsumidorRepository consumidorRepository;
+    private final EnderecoRepository enderecoRepository;
 
     @Autowired
-    public EletrodomesticoService(EletrodomesticoRepository eletrodomesticoRepository, UsuarioRepository usuarioRepository, ConsumidorRepository consumidorRepository) {
+    public EletrodomesticoService(EletrodomesticoRepository eletrodomesticoRepository, UsuarioRepository usuarioRepository, ConsumidorRepository consumidorRepository, EnderecoRepository enderecoRepository) {
         this.eletrodomesticoRepository = eletrodomesticoRepository;
         this.usuarioRepository = usuarioRepository;
         this.consumidorRepository = consumidorRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     public List<Eletrodomestico> findAll() {
@@ -57,10 +61,15 @@ public class EletrodomesticoService {
     }
 
     @Transactional
-    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO, Long usuarioId) {
+    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO, Long usuarioId, String enderecoId) {
         try {
+            Long idEndereco = Long.parseLong(enderecoId);
+
             Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow
                     (() -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
+
+            Endereco endereco = enderecoRepository.findById(idEndereco).orElseThrow
+                    (() -> new RuntimeException("Endereço não encontrado com ID: " + idEndereco));
 
             Set<Consumidor> consumidores = null;
             if (eletrodomesticoDTO.consumidores() != null)
@@ -70,7 +79,7 @@ public class EletrodomesticoService {
                         .collect(Collectors.toSet());
 
             Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
-                    LocalDate.parse(eletrodomesticoDTO.fabricacao()), usuario, eletrodomesticoDTO.endereco(), consumidores);
+                    LocalDate.parse(eletrodomesticoDTO.fabricacao()), usuario, endereco, consumidores);
             return eletrodomesticoRepository.save(eletro);
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Não foi possivel completar a operação.");
@@ -88,7 +97,7 @@ public class EletrodomesticoService {
             eletro.setPotencia(eletroDTO.potencia());
             eletro.setModelo(eletroDTO.modelo());
             eletro.setFabricacao(LocalDate.parse(eletroDTO.fabricacao()));
-            eletro.setEndereco(eletroDTO.endereco());
+            eletro.setEndereco(enderecoRepository.findById(Long.parseLong(eletroDTO.enderecoId())).get());
             eletro.setConsumidores(eletroDTO.consumidores());
             eletro.setUsuario(usuarioRepository.findById(Long.parseLong(eletroDTO.usuarioId())).get());
 
