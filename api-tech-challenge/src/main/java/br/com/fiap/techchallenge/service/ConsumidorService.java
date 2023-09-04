@@ -7,15 +7,12 @@ import br.com.fiap.techchallenge.domain.entidade.Usuario;
 import br.com.fiap.techchallenge.infra.exceptions.ControllerNotFoundException;
 import br.com.fiap.techchallenge.infra.exceptions.DatabaseException;
 import br.com.fiap.techchallenge.infra.exceptions.FormatacaoDateTimeException;
-import br.com.fiap.techchallenge.infra.exceptions.RuntimeException;
 import br.com.fiap.techchallenge.infra.repository.ConsumidorRepository;
 import br.com.fiap.techchallenge.infra.repository.EletrodomesticoRepository;
 import br.com.fiap.techchallenge.infra.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.DateTimeException;
@@ -42,7 +39,10 @@ public class ConsumidorService {
     }
 
     public Consumidor findById(Long id) {
-        return consumidorRepository.findById(id).orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + id));
+        Consumidor consumidor = consumidorRepository
+                .findById(id).orElseThrow(() -> new ControllerNotFoundException("Consumidor não encontrado com ID: " + id));
+        System.out.println(consumidor);
+        return consumidor;
     }
 
     public List<Consumidor> findByAtributo(HashMap<String, String> busca) {
@@ -54,24 +54,33 @@ public class ConsumidorService {
 
     }
 
-    public Consumidor create(ConsumidorDTO consumidorDTO, Long usuarioId) {
+    @Transactional
+    public Consumidor create(ConsumidorDTO consumidorDTO) {
+        Long usuarioId = consumidorDTO.usuarioId();
         try {
             Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(
-                    () -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
+                    () -> new ControllerNotFoundException("Usuário não encontrado com ID: " + usuarioId));
 
             Set<Eletrodomestico> eletrodomesticos = null;
 
-            if (consumidorDTO.eletrodomesticos() != null)
-                eletrodomesticos = consumidorDTO.eletrodomesticos().stream()
-                        .map(eletrodomesticoId -> eletrodomesticoRepository.findById(eletrodomesticoId.getId())
-                                .orElseThrow(() -> new RuntimeException("Eletrodomestico não encontrado com ID: " + eletrodomesticoId.getId())))
+            if (consumidorDTO.eletrodomesticosIds() != null){
+                eletrodomesticos = consumidorDTO.eletrodomesticosIds().stream()
+                        .map(id -> eletrodomesticoRepository.findById(id)
+                                .orElseThrow(() -> new ControllerNotFoundException("Eletrodomestico não encontrado com ID: " + id)))
                         .collect(Collectors.toSet());
+            }
 
             LocalDate dataNascimento = LocalDate.parse(consumidorDTO.dataNascimento());
             Consumidor consumidor = new Consumidor(consumidorDTO.nome(), dataNascimento,
-                    consumidorDTO.sexo(), usuario, eletrodomesticos, consumidorDTO.parentesco());
+                    consumidorDTO.sexo(), usuario, consumidorDTO.parentesco());
+
+            for (Eletrodomestico eletrodomestico : eletrodomesticos){
+                eletrodomestico.getConsumidores().add(consumidor);
+            }
+            consumidor.setEletrodomesticos(eletrodomesticos);
 
             return consumidorRepository.save(consumidor);
+
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Usuário não encontrado com id: " + usuarioId);
         } catch (DateTimeException e) {
@@ -86,7 +95,6 @@ public class ConsumidorService {
             consumidor.setSexo(consumidorDTO.sexo());
             consumidor.setNome(consumidorDTO.nome());
             consumidor.setDataNascimento(LocalDate.parse(consumidorDTO.dataNascimento()));
-            consumidor.setEletrodomesticos(consumidorDTO.eletrodomesticos());
             consumidor.setParentesco(consumidorDTO.parentesco());
 
             return consumidorRepository.save(consumidor);
@@ -98,14 +106,23 @@ public class ConsumidorService {
     @Transactional
     public void delete(Long id) {
         try {
-            Optional<Consumidor> pessoa = consumidorRepository.findById(id);
+            Optional<Consumidor> optionalConsumidor = consumidorRepository.findById(id);
 
-            consumidorRepository.delete(pessoa.orElseThrow());
+            if (optionalConsumidor.isPresent()) {
+                Consumidor consumidor = optionalConsumidor.get();
 
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("Violação de Integridade da Base - ID: " + id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Violação de Integridade da Base");
+                consumidor.getEletrodomesticos().forEach(eletrodomestico -> eletrodomestico.removeConsumidor(consumidor));
+
+                consumidorRepository.saveAndFlush(consumidor);
+
+                consumidorRepository.deleteById(id);
+            } else {
+                throw new EntityNotFoundException("Consumidor não encontrado com ID: " + id);
+            }
+        } catch (EntityNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DatabaseException("Erro ao excluir consumidor: " + e.getMessage());
         }
     }
 }

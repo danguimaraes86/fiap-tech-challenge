@@ -1,11 +1,11 @@
 package br.com.fiap.techchallenge.domain.dto;
 
-import br.com.fiap.techchallenge.domain.entidade.Consumidor;
 import br.com.fiap.techchallenge.domain.entidade.Eletrodomestico;
-import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public record EletrodomesticoDTO(
         @JsonProperty
@@ -17,19 +17,23 @@ public record EletrodomesticoDTO(
         @JsonProperty
         String fabricacao,
         @JsonProperty
-        String usuarioId,
+        Long usuarioId,
         @JsonProperty
-        String enderecoId,
+        Long enderecoId,
         @JsonProperty
-        Set<Consumidor> consumidores
+        Set<Long> consumidoresIds
 ) {
 
     public EletrodomesticoDTO(Eletrodomestico eletrodomesticos) {
         this(eletrodomesticos.getNome(),
-                eletrodomesticos.getPotencia(), eletrodomesticos.getModelo(),
+                eletrodomesticos.getPotencia(),
+                eletrodomesticos.getModelo(),
                 eletrodomesticos.getFabricacao().toString(),
-                eletrodomesticos.getUsuario().getId().toString(),
-                eletrodomesticos.getEndereco().getId().toString(),
-                eletrodomesticos.getConsumidores());
+                eletrodomesticos.getUsuario().getId(),
+                eletrodomesticos.getEndereco().getId(),
+                (eletrodomesticos.getConsumidores() != null)
+                        ? eletrodomesticos.getConsumidores().stream()
+                        .map(consumidor -> consumidor.getId())
+                        .collect(Collectors.toSet()) : new HashSet<>());
     }
 }

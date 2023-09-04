@@ -61,25 +61,35 @@ public class EletrodomesticoService {
     }
 
     @Transactional
-    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO, Long usuarioId, String enderecoId) {
+    public Eletrodomestico create(EletrodomesticoDTO eletrodomesticoDTO) {
         try {
-            Long idEndereco = Long.parseLong(enderecoId);
+            Long usuarioId = eletrodomesticoDTO.usuarioId();
+            Long enderecoId = eletrodomesticoDTO.enderecoId();
 
-            Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow
-                    (() -> new RuntimeException("Usuário não encontrado com ID: " + usuarioId));
+            Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(
+                    () -> new ControllerNotFoundException("Usuário não encontrado com ID: " + usuarioId));
 
-            Endereco endereco = enderecoRepository.findById(idEndereco).orElseThrow
-                    (() -> new RuntimeException("Endereço não encontrado com ID: " + idEndereco));
+            Endereco endereco = enderecoRepository.findById(enderecoId).orElseThrow
+                    (() -> new ControllerNotFoundException("Endereço não encontrado com ID: " + enderecoId));
 
             Set<Consumidor> consumidores = null;
-            if (eletrodomesticoDTO.consumidores() != null)
-                consumidores = eletrodomesticoDTO.consumidores().stream()
-                        .map(consumidorId -> consumidorRepository.findById(consumidorId.getId())
-                                .orElseThrow(() -> new RuntimeException("Consumidor não encontrado com ID: " + consumidorId.getId())))
-                        .collect(Collectors.toSet());
 
-            Eletrodomestico eletro = new Eletrodomestico(eletrodomesticoDTO.nome(), eletrodomesticoDTO.potencia(), eletrodomesticoDTO.modelo(),
-                    LocalDate.parse(eletrodomesticoDTO.fabricacao()), usuario, endereco, consumidores);
+            if (eletrodomesticoDTO.consumidoresIds() != null) {
+                consumidores = eletrodomesticoDTO.consumidoresIds().stream()
+                        .map(id -> consumidorRepository.findById(id)
+                                .orElseThrow(() -> new ControllerNotFoundException("Consumidor não encontrado com ID: " + id)))
+                        .collect(Collectors.toSet());
+            }
+
+            Eletrodomestico eletro = new Eletrodomestico(
+                    eletrodomesticoDTO.nome(),
+                    eletrodomesticoDTO.potencia(),
+                    eletrodomesticoDTO.modelo(),
+                    LocalDate.parse(eletrodomesticoDTO.fabricacao()),
+                    usuario,
+                    endereco,
+                    consumidores);
+
             return eletrodomesticoRepository.save(eletro);
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Não foi possivel completar a operação.");
@@ -97,11 +107,10 @@ public class EletrodomesticoService {
             eletro.setPotencia(eletroDTO.potencia());
             eletro.setModelo(eletroDTO.modelo());
             eletro.setFabricacao(LocalDate.parse(eletroDTO.fabricacao()));
-            eletro.setEndereco(enderecoRepository.findById(Long.parseLong(eletroDTO.enderecoId())).get());
-            eletro.setConsumidores(eletroDTO.consumidores());
-            eletro.setUsuario(usuarioRepository.findById(Long.parseLong(eletroDTO.usuarioId())).get());
+            eletro.setEndereco(enderecoRepository.findById(eletroDTO.enderecoId()).get());
 
             return eletrodomesticoRepository.save(eletro);
+
         } catch (EntityNotFoundException e) {
             throw new ControllerNotFoundException("Eletrodomestico não encontrado com id: " + id);
         }
@@ -110,13 +119,22 @@ public class EletrodomesticoService {
     @Transactional
     public void delete(Long id) {
         try {
-            Optional<Eletrodomestico> eletro = eletrodomesticoRepository.findById(id);
-            eletrodomesticoRepository.delete(eletro.orElseThrow());
+            Optional<Eletrodomestico> optionalEletro = eletrodomesticoRepository.findById(id);
+
+            if (optionalEletro.isPresent()){
+
+                Eletrodomestico eletro = optionalEletro.get();
+
+                eletro.getConsumidores().clear();
+
+                eletrodomesticoRepository.saveAndFlush(eletro);
+                eletrodomesticoRepository.deleteById(id);
+            }
+
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Violação de Integridade da Base - ID: " + id);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Violação de Integridade da Base");
         }
     }
-
 }

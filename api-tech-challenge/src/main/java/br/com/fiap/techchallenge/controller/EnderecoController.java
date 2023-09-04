@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.controller;
 
 
+import br.com.fiap.techchallenge.domain.dto.EletrodomesticoDTO;
 import br.com.fiap.techchallenge.domain.dto.EnderecoDTO;
 import br.com.fiap.techchallenge.domain.entidade.Endereco;
 import br.com.fiap.techchallenge.service.EnderecoService;
@@ -36,26 +37,24 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Endereco> findById(@PathVariable Long id) {
+    public ResponseEntity<EnderecoDTO> findById(@PathVariable Long id) {
         Endereco endereco = enderecoService.findById(id);
-        return ResponseEntity.ok(endereco);
+        return ResponseEntity.ok(new EnderecoDTO(endereco));
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoDTO> createEndereco(
-            @RequestHeader("usuarioId") Long usuarioId,
-            @RequestBody EnderecoDTO enderecoDto,
-            UriComponentsBuilder uriBuilder) {
-        Endereco endereco = enderecoService.create(enderecoDto, usuarioId);
+    public ResponseEntity<EnderecoDTO> createEndereco(@RequestBody EnderecoDTO enderecoDto,
+                                                        UriComponentsBuilder uriBuilder) {
+        Endereco endereco = enderecoService.create(enderecoDto);
 
         URI uri = uriBuilder.path("endereco/{id}").buildAndExpand(endereco.getId()).toUri();
         return ResponseEntity.created(uri).body(new EnderecoDTO(endereco));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> updateEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDTO enderecoDto) {
+    public ResponseEntity<EnderecoDTO> updateEndereco(@PathVariable Long id, @RequestBody @Valid EnderecoDTO enderecoDto) {
         Endereco endereco = enderecoService.update(id, enderecoDto);
-        return ResponseEntity.ok().body(endereco);
+        return ResponseEntity.ok().body(new EnderecoDTO(endereco));
     }
 
     @DeleteMapping("/{id}")
