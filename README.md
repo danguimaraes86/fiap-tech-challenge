@@ -68,8 +68,8 @@ elétrico de eletrodomésticos, que através de cálculos disponibilizará infor
 
 | Método | Url | Descrição | Modelo de Requisição válido |
 | ------ | --- | ----------- | ------------------------- |
-| POST    | /pessoa | Cadastra um usuário | [JSON](#createPessoa)|
-| PUT   | /pessoa/{id} | Altera a senha do usuário com id específico | [JSON](#updatepessoa) |
+| POST    | /usuario | Cadastra um usuário | [JSON](#createPessoa)|
+| PUT   | /usuario/{id} | Altera a senha do usuário com id específico | [JSON](#updatepessoa) |
 
 ### Exemplos de entrada
 
@@ -91,11 +91,11 @@ elétrico de eletrodomésticos, que através de cálculos disponibilizará infor
 
 | Método | Url | Descrição | Modelo de Requisição válido |
 | ------ | --- | ----------- | ------------------------- |
-| POST    | /pessoa | Cadastra uma consumidor | [JSON](#createConsumidor)|
-| PUT   | /pessoa/{id} | Atualiza um consumidor com Id específico | [JSON](#updateConsumidor) |
-| GET    | /pessoa/{id} | Retorna um consumidor com Id específico | |
-| GET    | /pessoa | Retorna todos os cosumidores cadastrados com filtros definidos | |
-| DELETE    | /pessoa/{id} | Deleta um consumidor com Id específico | |
+| POST    | /consumidor | Cadastra uma consumidor | [JSON](#createConsumidor)|
+| PUT   | /consumidor/{id} | Atualiza um consumidor com Id específico | [JSON](#updateConsumidor) |
+| GET    | /consumidor/{id} | Retorna um consumidor com Id específico | |
+| GET    | /consumidor | Retorna todos os cosumidores cadastrados com filtros definidos | |
+| DELETE    | /consumidor/{id} | Deleta um consumidor com Id específico | |
 
 ### Exemplos de entrada
 
