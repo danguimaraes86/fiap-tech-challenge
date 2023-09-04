@@ -20,15 +20,16 @@ public record ConsumidorDTO(
         String parentesco,
         @JsonProperty
         Set<Long> eletrodomesticosIds,
-        @NotNull
         @JsonProperty
         Long usuarioId
 
 ) {
 
     public ConsumidorDTO(Consumidor consumidor) {
-        this(consumidor.getNome(), consumidor.getDataNascimento().toString(),
-                consumidor.getSexo(),consumidor.getParentesco(),
+        this(consumidor.getNome(),
+                consumidor.getDataNascimento().toString(),
+                consumidor.getSexo(),
+                consumidor.getParentesco(),
 
                 (consumidor.getEletrodomesticos() != null)
                     ? consumidor.getEletrodomesticos().stream()

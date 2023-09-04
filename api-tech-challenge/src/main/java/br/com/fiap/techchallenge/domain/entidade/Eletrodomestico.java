@@ -36,7 +36,7 @@ public class Eletrodomestico {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 

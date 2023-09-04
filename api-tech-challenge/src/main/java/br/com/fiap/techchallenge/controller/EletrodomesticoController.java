@@ -33,25 +33,23 @@ public class EletrodomesticoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Eletrodomestico> findById(@PathVariable Long id) {
+    public ResponseEntity<EletrodomesticoDTO> findById(@PathVariable Long id) {
         Eletrodomestico eletro = eletrodomesticoService.findById(id);
-        return ResponseEntity.ok().body(eletro);
+        return ResponseEntity.ok().body(new EletrodomesticoDTO(eletro));
     }
 
     @PostMapping
-    public ResponseEntity<EletrodomesticoDTO> createEletro(
-            @RequestHeader("usuarioId") Long usuarioId,
-            @RequestBody EletrodomesticoDTO eletroDTO,
-            UriComponentsBuilder uriBuilder) {
-        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO, usuarioId, eletroDTO.enderecoId());
+    public ResponseEntity<EletrodomesticoDTO> createEletro(@RequestBody EletrodomesticoDTO eletroDTO,
+                                                           UriComponentsBuilder uriBuilder) {
+        Eletrodomestico eletro = eletrodomesticoService.create(eletroDTO);
         URI uri = uriBuilder.path("/eletrodomestico/{id}").buildAndExpand(eletro.getId()).toUri();
         return ResponseEntity.created(uri).body(new EletrodomesticoDTO(eletro));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Eletrodomestico> updateEletro(@PathVariable Long id, @RequestBody EletrodomesticoDTO eletroDTO) {
+    public ResponseEntity<EletrodomesticoDTO> updateEletro(@PathVariable Long id, @RequestBody EletrodomesticoDTO eletroDTO) {
         Eletrodomestico eletro = eletrodomesticoService.update(id, eletroDTO);
-        return ResponseEntity.ok().body(eletro);
+        return ResponseEntity.ok().body(new EletrodomesticoDTO(eletro));
     }
 
     @DeleteMapping("/{id}")
