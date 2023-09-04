@@ -1,6 +1,7 @@
 # Tech Challenge 
 
-Bem-vindo(a) a documentação oficial das APIs desenvolvidas para o Tech Challenge fase 1. Nesta documentação, você encontrará detalhes abrangentes sobre as APIs de Cadastro de Endereços, Gestão de Pessoas e Gestão de Eletromésticos, que foram desenvolvidas como parte deste projeto. Estas APIs serão responsáveis por gerenciar dados de consumo elétrico de eletrodomésticos, que através de cálculos disponibilizará informações e alertas aos usuários. Essa ponte entre API e usuário será intermediada por um portal que vai consumir esta API e apresentar as informações devidas. No entanto nesta etapa os entregáveis possuem apenas funcionalidades CRUD, aprendidas no decorrer da fase 1 do curso.
+Bem-vindo(a) a documentação oficial da API desenvolvidas para o Tech Challenge fase 2. Nesta documentação, você encontrará detalhes abrangentes sobre a API, que foi desenvolvida como parte deste projeto. Esta API será responsável por gerenciar dados de consumo
+elétrico de eletrodomésticos, que através de cálculos disponibilizará informações e alertas aos usuários. Essa ponte entre API e usuário será intermediada por um portal que vai consumir esta API e apresentar as informações devidas. No entanto nesta etapa os entregáveis possuem apenas funcionalidades CRUD, e relacionamentos entre entidades aprendidas no decorrer da fase 2 do curso.
 
 ## Tecnologias e Ferramentas
 - Java 17
@@ -18,14 +19,14 @@ Bem-vindo(a) a documentação oficial das APIs desenvolvidas para o Tech Challen
 
 ## Explore
 
-### Api – Eletrodomésticos
+### Endpoints – Eletrodomésticos
 
 | Método | Url | Descrição | Modelo de Requisição válido |
 | ------ | --- | ----------- | ------------------------- |
 | POST    | /eletrodomestico | Cadastra um eletrodoméstico | [JSON](#createEletro)|
 | PUT   | /eletrodomestico/{id} | Atualiza um eletrodoméstico com Id específico | [JSON](#updateEletro) |
 | GET    | /eletrodomestico/{id} | Retorna um eletrodoméstico com Id específico | |
-| GET    | /eletrodomestico | Retorna todos os eletrodomésticos cadastrados | |
+| GET    | /eletrodomestico | Retorna todos os eletrodomésticoscadastrados com filtros específicos | |
 | DELETE    | /eletrodomestico/{id} | Deleta um eletrodoméstico com Id específico | |
 
 ### Exemplos de entrada
@@ -34,53 +35,102 @@ Bem-vindo(a) a documentação oficial das APIs desenvolvidas para o Tech Challen
 ```json
 {
  "nome": "Geladeira",
- "potencia": "500w",
- "modelo": "Eletrolux",
- "fabricacao": "2019-12-09"
+ "potencia": "150W",
+ "modelo": "XYZ",
+ "fabricacao": "2022-01-15",
+ "usuarioId": 1,
+ "enderecoId": "1",
+ "consumidoresIds": [1, 2]
+}
+
+{
+ "nome": "Geladeira",
+ "potencia": "150W",
+ "modelo": "XYZ",
+ "fabricacao": "2022-01-15",
+ "usuarioId": 1,
+ "enderecoId": "1",
+ "consumidoresIds": []
 }
 ```
 
 ##### <a id="updateEletro">PUT - /eletrodomestico/{id}</a>
 ```json
 {
- "nome": "Fogão",
- "potencia": "3000w",
- "modelo": "Brastemp",
- "fabricacao": "2019-12-09"
+ "nome": "Geladeira",
+ "potencia": "300W",
+ "modelo": "XYZ",
+ "fabricacao": "2022-01-15",
+ "enderecoId": "2"
 }
 ```
-### Api – Pessoas
+### Endpoints – Usuário
 
 | Método | Url | Descrição | Modelo de Requisição válido |
 | ------ | --- | ----------- | ------------------------- |
-| POST    | /pessoa | Cadastra uma pessoa | [JSON](#createPessoa)|
-| PUT   | /pessoa/{id} | Atualiza uma pessoa com Id específico | [JSON](#updatepessoa) |
-| GET    | /pessoa/{id} | Retorna uma pessoa com Id específico | |
-| GET    | /pessoa | Retorna todos as pessoas cadastrados | |
-| DELETE    | /pessoa/{id} | Deleta uma pessoa com Id específico | |
+| POST    | /pessoa | Cadastra um usuário | [JSON](#createPessoa)|
+| PUT   | /pessoa/{id} | Altera a senha do usuário com id específico | [JSON](#updatepessoa) |
 
 ### Exemplos de entrada
 
 ##### <a id="createPessoa"> POST - /pessoa</a>
 ```json
 {
- "nome": "Marcos Leonardo",
- "dataNascimento": "2003-05-02",
- "sexo": "Masculino",
- "parentesco": "Filho"
+ "email": "email@email.com",
+ "senha": "123456"
 }
 ```
 
 ##### <a id="updatepessoa">PUT - /pessoa/{id}</a>
 ```json
 {
+ "senha": "novaSenha"
+}
+```
+### Endpoints – Consumidor
+
+| Método | Url | Descrição | Modelo de Requisição válido |
+| ------ | --- | ----------- | ------------------------- |
+| POST    | /pessoa | Cadastra uma consumidor | [JSON](#createConsumidor)|
+| PUT   | /pessoa/{id} | Atualiza um consumidor com Id específico | [JSON](#updateConsumidor) |
+| GET    | /pessoa/{id} | Retorna um consumidor com Id específico | |
+| GET    | /pessoa | Retorna todos os cosumidores cadastrados com filtros definidos | |
+| DELETE    | /pessoa/{id} | Deleta um consumidor com Id específico | |
+
+### Exemplos de entrada
+
+##### <a id="createConsumidor"> POST - /pessoa</a>
+```json
+{
+ "nome": "Julio Furch",
+ "dataNascimento": "2003-05-02",
+ "sexo": "Masculino",
+ "parentesco": "Filho",
+ "eletrodomesticosIds": [1,2],
+ "usuarioId": "1"
+}
+{
+ "nome": "Julio Furch",
+ "dataNascimento": "2003-05-02",
+ "sexo": "Masculino",
+ "parentesco": "Filho",
+ "usuarioId": "1"
+}
+
+```
+
+##### <a id="updateConsumidor">PUT - /pessoa/{id}</a>
+```json
+{
  "nome": "Rodrigo Fernandez",
  "dataNascimento": "2003-05-02",
  "sexo": "Masculino",
- "parentesco": "Irmão"
+ "parentesco": "Sobrinho"
 }
 ```
-### Api – Endereços
+
+
+### Endpoints – Endereços
 
 | Método | Url | Descrição | Modelo de Requisição válido |
 | ------ | --- | ----------- | ------------------------- |
