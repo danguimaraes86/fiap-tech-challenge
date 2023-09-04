@@ -21,6 +21,28 @@
 							],
 							"path": [
 								"consumidor"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "juliane",
+									"disabled": true
+								},
+								{
+									"key": "sexo",
+									"value": "feminino",
+									"disabled": true
+								},
+								{
+									"key": "parentesco",
+									"value": "teste",
+									"disabled": true
+								},
+								{
+									"key": "dataNascimento",
+									"value": "2000",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -48,10 +70,16 @@
 					"name": "create Consumidor",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "usuarioId",
+								"value": "1",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-11-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"teste\"\n}",
+							"raw": "{\n    \"nome\": \"juliane\",\n    \"dataNascimento\": \"2020-11-12\",\n    \"sexo\": \"feminino\",\n    \"parentesco\": \"esposa\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,13 +192,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/usuario/2",
+							"raw": "{{base_url}}/usuario/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"usuario",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -183,7 +211,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-11-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"teste\"\n}",
+							"raw": "{\n    \"email\": \"email@email.com\",\n    \"senha\": \"1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -273,6 +301,28 @@
 							],
 							"path": [
 								"enderecos"
+							],
+							"query": [
+								{
+									"key": "nomeInstalacao",
+									"value": "escritorio",
+									"disabled": true
+								},
+								{
+									"key": "estado",
+									"value": "sp",
+									"disabled": true
+								},
+								{
+									"key": "cidade",
+									"value": "anapolis",
+									"disabled": true
+								},
+								{
+									"key": "bairro",
+									"value": "plano piloto",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -302,14 +352,14 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "usuario",
-								"value": "teste@teste.com",
+								"key": "usuarioId",
+								"value": "1",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nomeInstalacao\": \"casa\",\n    \"rua\": \"rua 18\",\n    \"numero\": \"numero 1\",\n    \"bairro\": \"aguas claras\",\n    \"cidade\": \"bsb\",\n    \"estado\": \"df\"\n}",
+							"raw": "{\n    \"nomeInstalacao\": \"casa2\",\n    \"rua\": \"rua 18\",\n    \"numero\": \"numero 1\",\n    \"bairro\": \"plano piloto\",\n    \"cidade\": \"brasilia\",\n    \"estado\": \"df\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -399,6 +449,23 @@
 							],
 							"path": [
 								"eletrodomestico"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "geladeira",
+									"disabled": true
+								},
+								{
+									"key": "modelo",
+									"value": "brastemp",
+									"disabled": true
+								},
+								{
+									"key": "fabricacao",
+									"value": "2022-01-",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -426,10 +493,16 @@
 					"name": "create Eletrodoméstico",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "usuarioId",
+								"value": "1",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Geladeira\",\n    \"potencia\": \"500w\",\n    \"modelo\": \"Eletrolux\",\n    \"fabricacao\": \"2019-12-09\"\n}",
+							"raw": "{\n    \"nome\": \"aspirador\",\n    \"potencia\": \"500w\",\n    \"modelo\": \"xiaomi\",\n    \"fabricacao\": \"2020-12-11\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
