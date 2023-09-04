@@ -47,10 +47,10 @@ public class EnderecoService {
     }
 
     @Transactional
-    public Endereco create(EnderecoDTO enderecoDto, Long usuarioId) {
+    public Endereco create(EnderecoDTO enderecoDto) {
         try {
             Endereco endereco = enderecoDto.toEndereco();
-            endereco.setUsuario(usuarioRepository.findById(usuarioId).orElseThrow());
+            endereco.setUsuario(usuarioRepository.findById(enderecoDto.usuarioId()).orElseThrow());
             return enderecoRepository.save(endereco);
         } catch (NoSuchElementException e) {
             throw new ControllerNotFoundException("Não foi possivel completar a operação.");

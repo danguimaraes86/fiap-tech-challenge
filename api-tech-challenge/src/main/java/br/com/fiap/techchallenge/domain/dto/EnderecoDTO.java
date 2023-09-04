@@ -17,12 +17,12 @@ public record EnderecoDTO(
         @JsonProperty
         String estado,
         @JsonProperty
-        String usuarioId
+        Long usuarioId
 ) {
 
     public EnderecoDTO(Endereco endereco) {
         this(endereco.getNomeInstalacao(), endereco.getRua(), endereco.getNumero(), endereco.getBairro(),
-                endereco.getCidade(), endereco.getEstado(), endereco.getUsuario().getId().toString());
+                endereco.getCidade(), endereco.getEstado(), endereco.getUsuario().getId());
     }
 
     public Endereco toEndereco() {
