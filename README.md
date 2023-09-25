@@ -1,10 +1,10 @@
 # Tech Challenge 
 
-Bem-vindo(a) a documentação oficial das APIs desenvolvidas para o Tech Challenge fase 1. Nesta documentação, você encontrará detalhes abrangentes sobre as APIs de Cadastro de Endereços, Gestão de Pessoas e Gestão de Eletromésticos, que foram desenvolvidas como parte deste projeto. Estas APIs serão responsáveis por gerenciar dados de consumo elétrico de eletrodomésticos, que através de cálculos disponibilizará informações e alertas aos usuários. Essa ponte entre API e usuário será intermediada por um portal que vai consumir esta API e apresentar as informações devidas. No entanto nesta etapa os entregáveis possuem apenas funcionalidades CRUD, aprendidas no decorrer da fase 1 do curso.
+Bem-vindo(a) a documentação oficial da API desenvolvidas para o Tech Challenge fase 3.
 
 ## Tecnologias e Ferramentas
 - Java 17
-- Maven
+- Gradle
 - H2 Database
 - Spring Data JPA
 - Validation (Bean Validation with Hibernate validator)
