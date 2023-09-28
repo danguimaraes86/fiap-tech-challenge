@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.entities;
+package br.com.fiap.techchallenge.infra.enums;
 
 public enum FormaPagamento {
 

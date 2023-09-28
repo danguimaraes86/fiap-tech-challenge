@@ -1,10 +1,14 @@
 package br.com.fiap.techchallenge.entities;
 
+import br.com.fiap.techchallenge.entities.dtos.TicketDTO;
+import br.com.fiap.techchallenge.infra.enums.TipoCobranca;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 @Entity
 public class Ticket {
@@ -12,73 +16,59 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     UUID uuid;
-    String nome;
-    String cpf;
-    String email;
-    String celular;
-    FormaPagamento formaPagamento;
+    LocalDateTime horarioEntrada;
+    LocalDateTime horarioSaida;
+    TipoCobranca tipoCobranca;
+    Double valorTotal;
 
-    public Ticket(UUID uuid, String nome, String cpf, String email, String celular, FormaPagamento formaPagamento) {
+    public Ticket(UUID uuid, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, TipoCobranca tipoCobranca, Double valorTotal) {
         this.uuid = uuid;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
-        this.celular = celular;
-        this.formaPagamento = formaPagamento;
+        this.horarioEntrada = LocalDateTime.now();
+        this.horarioSaida = horarioSaida;
+        this.tipoCobranca = tipoCobranca;;
+        this.valorTotal = valorTotal;
     }
     public Ticket(){}
+    public Ticket (TicketDTO ticketDTO){
+        this.horarioEntrada = ticketDTO.horarioEntrada();
+        this.horarioSaida = ticketDTO.horarioSaida();
+        this.tipoCobranca = ticketDTO.tipoCobranca();
+        this.valorTotal = ticketDTO.valorTotal();
+    }
 
     public UUID getUuid() {
         return uuid;
     }
 
-    public Ticket setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public LocalDateTime getHorarioEntrada() {
+        return horarioEntrada;
+    }
+    public Ticket setHorarioEntrada(LocalDateTime horarioEntrada) {
+        this.horarioEntrada = horarioEntrada;
         return this;
     }
 
-    public String getNome() {
-        return nome;
+    public LocalDateTime getHorarioSaida() {
+        return horarioSaida;
     }
-
-    public Ticket setNome(String nome) {
-        this.nome = nome;
+    public Ticket setHorarioSaida(LocalDateTime horarioSaida) {
+        this.horarioSaida = horarioSaida;
         return this;
     }
 
-    public String getCpf() {
-        return cpf;
+    public TipoCobranca getTipoCobranca() {
+        return tipoCobranca;
     }
-
-    public Ticket setCpf(String cpf) {
-        this.cpf = cpf;
+    public Ticket setTipoCobranca(TipoCobranca tipoCobranca) {
+        this.tipoCobranca = tipoCobranca;
         return this;
     }
 
-    public String getEmail() {
-        return email;
+    public Double getValorTotal() {
+        return valorTotal;
     }
-
-    public Ticket setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public Ticket setCelular(String celular) {
-        this.celular = celular;
-        return this;
-    }
-
-    public FormaPagamento getFormaPagamento() {
-        return formaPagamento;
-    }
-
-    public Ticket setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
+    public Ticket setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
         return this;
     }
 }
