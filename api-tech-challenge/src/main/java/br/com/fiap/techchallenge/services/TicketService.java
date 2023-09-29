@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -30,19 +30,26 @@ public class TicketService {
     }
 
     public TicketDTO findById(UUID uuid){
-        var ticket = ticketRepository.findById(uuid).orElseThrow(x -> throw new EntityNotFoundException("Ticket não encontrado"));
+        var ticket = ticketRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Ticket não encontrado"));
 
         return new TicketDTO(ticket);
     }
 
     public TicketDTO createTicket(TicketDTO ticketDTO){
-        var ticktCreated = ticketRepository.save(new Ticket(ticketDTO));
+        Ticket tiket = new Ticket(LocalDateTime.now(), ticketDTO.tipoCobranca());
+
+        var ticktCreated = ticketRepository.save(tiket);
 
         return new TicketDTO(ticktCreated);
     }
 
-    public TicketDTO updateTicket(TicketDTO ticketDTO){
+    public TicketDTO emitirRecibo(UUID uuid){
+        var ticket = ticketRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Ticket não encontrado"));
 
+        var valor = ticket.getTipoCobranca().executar(ticket.getHorarioEntrada());
+        ticket.setValorTotal(valor);
+
+        return new TicketDTO(ticket);
     }
 
 }

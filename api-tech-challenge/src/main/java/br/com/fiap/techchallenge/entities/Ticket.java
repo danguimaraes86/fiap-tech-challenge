@@ -28,6 +28,10 @@ public class Ticket {
         this.tipoCobranca = tipoCobranca;;
         this.valorTotal = valorTotal;
     }
+    public Ticket(LocalDateTime horarioEntrada, TipoCobranca tipoCobranca) {
+        this.horarioEntrada = LocalDateTime.now();
+        this.tipoCobranca = tipoCobranca;
+    }
     public Ticket(){}
     public Ticket (TicketDTO ticketDTO){
         this.horarioEntrada = ticketDTO.horarioEntrada();
