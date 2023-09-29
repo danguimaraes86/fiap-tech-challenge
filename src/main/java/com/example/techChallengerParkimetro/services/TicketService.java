@@ -47,7 +47,8 @@ public class TicketService {
     public TicketDTO emitirRecibo(UUID uuid){
         var ticket = ticketRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Ticket não encontrado"));
 
-        var valor = ticket.getTipoCobranca().executar(ticket.getHorarioEntrada());
+        ticket.setHorarioSaida(LocalDateTime.now());
+        var valor = ticket.getTipoCobranca().executar(ticket.getHorarioEntrada(), ticket.getHorarioSaida());
         ticket.setValorTotal(valor);
 
         return new TicketDTO(ticket);

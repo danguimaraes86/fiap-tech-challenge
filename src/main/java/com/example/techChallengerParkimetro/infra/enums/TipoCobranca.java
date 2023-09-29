@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 public enum TipoCobranca {
     FIXO{
         @Override
-        public double executar(LocalDateTime horarioEntrada) {
+        public double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
             double diferencaEntradaSaida = horarioEntrada.until(LocalDateTime.now(), ChronoUnit.MINUTES);
 
             return diferencaEntradaSaida;
@@ -14,12 +14,12 @@ public enum TipoCobranca {
     },
     PORHORA{
         @Override
-        public double executar(LocalDateTime horarioEntrada) {
-            double diferencaEntradaSaida = horarioEntrada.until(LocalDateTime.now(), ChronoUnit.MINUTES);
+        public double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
+            double diferencaEntradaSaida = horarioEntrada.until(horarioSaida, ChronoUnit.MINUTES);
 
             return diferencaEntradaSaida;
         }
     };
 
-    public abstract double executar(LocalDateTime horarioEntrada);
+    public abstract double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida);
 }
