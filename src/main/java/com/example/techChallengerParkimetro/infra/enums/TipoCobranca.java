@@ -4,22 +4,49 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public enum TipoCobranca {
-    FIXO{
+    DIARIA("Dias"){
         @Override
-        public double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
-            double diferencaEntradaSaida = horarioEntrada.until(LocalDateTime.now(), ChronoUnit.MINUTES);
+        public double executar(LocalDateTime horarioEntrada) {
+            double valorInicialPrimeiroDia = 70;
+            double precoDiaAdicional = 60;
+            int contador = 0;
+            double DiasPermanecido = horarioEntrada.until(LocalDateTime.now(), ChronoUnit.HOURS);
 
-            return diferencaEntradaSaida;
+            if (DiasPermanecido / 24 > 1) {
+                int horasPermanecidoDescontoDaPrimeiraHora = ((int) DiasPermanecido / 24)-1;
+
+                contador = contador + 1 + horasPermanecidoDescontoDaPrimeiraHora;
+            }
+
+            return (valorInicialPrimeiroDia + (precoDiaAdicional * contador));
         }
     },
-    PORHORA{
+    PORHORA("Horas"){
         @Override
-        public double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
-            double diferencaEntradaSaida = horarioEntrada.until(horarioSaida, ChronoUnit.MINUTES);
+        public double executar(LocalDateTime horarioEntrada) {
+            double valorInicialPrimeiraHora = 15;
+            double precoHoraAdicional = 10;
+            int contador = 0;
+            double horasPermanecido = horarioEntrada.until(LocalDateTime.now(), ChronoUnit.SECONDS);
 
-            return diferencaEntradaSaida;
+            if (horasPermanecido / 60 > 1) {
+                int horasPermanecidoDescontoDaPrimeiraHora = ((int) horasPermanecido / 60)-1;
+
+                contador = contador + 1 + horasPermanecidoDescontoDaPrimeiraHora;
+            }
+
+            return (valorInicialPrimeiraHora + (precoHoraAdicional * contador));
         }
     };
+    String periodo;
 
-    public abstract double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida);
+    TipoCobranca(String periodo) {
+        this.periodo = periodo;
+    }
+
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public abstract double executar(LocalDateTime horarioEntrada);
 }

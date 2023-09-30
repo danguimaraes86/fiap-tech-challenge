@@ -44,10 +44,7 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<TicketDTO> create(@RequestBody TicketDTO ticketDTO){
 
-        System.out.println("ola");
         var ticketCreated = ticketService.createTicket(ticketDTO);
-
-        System.out.println("Ola final");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketCreated);
     }

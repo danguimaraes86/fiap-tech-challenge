@@ -18,6 +18,7 @@ public class Ticket {
     LocalDateTime horarioEntrada;
     LocalDateTime horarioSaida;
     TipoCobranca tipoCobranca;
+    String permanencia;
     Double valorTotal;
 
     public Ticket(UUID uuid, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, TipoCobranca tipoCobranca, Double valorTotal) {
@@ -64,6 +65,14 @@ public class Ticket {
     }
     public Ticket setTipoCobranca(TipoCobranca tipoCobranca) {
         this.tipoCobranca = tipoCobranca;
+        return this;
+    }
+
+    public String getPermanencia() {
+        return permanencia;
+    }
+    public Ticket setPermanencia(String permanencia) {
+        this.permanencia = permanencia;
         return this;
     }
 

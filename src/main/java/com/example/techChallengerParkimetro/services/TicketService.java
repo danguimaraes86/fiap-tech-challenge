@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Service
@@ -35,11 +36,11 @@ public class TicketService {
         return new TicketDTO(ticket);
     }
 
-    public TicketDTO createTicket(TicketDTO ticketDTO){
+    public TicketDTO createTicket(TicketDTO ticketDTO) {
         Ticket tiket = new Ticket(LocalDateTime.now(), ticketDTO.tipoCobranca());
 
-        System.out.println("Ola 2");
         var ticktCreated = ticketRepository.save(tiket);
+        System.out.println(tiket.getTipoCobranca().getPeriodo());
 
         return new TicketDTO(ticktCreated);
     }
@@ -47,11 +48,14 @@ public class TicketService {
     public TicketDTO emitirRecibo(UUID uuid){
         var ticket = ticketRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Ticket não encontrado"));
 
-        ticket.setHorarioSaida(LocalDateTime.now());
-        var valor = ticket.getTipoCobranca().executar(ticket.getHorarioEntrada(), ticket.getHorarioSaida());
+        var valor = ticket.getTipoCobranca().executar(ticket.getHorarioEntrada());
         ticket.setValorTotal(valor);
+        ticket.setHorarioSaida(LocalDateTime.now());
+
+        ticket.setPermanencia(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.HOURS) + " " + ticket.getTipoCobranca().getPeriodo());
+
+        System.out.println(ticket.getPermanencia());
 
         return new TicketDTO(ticket);
     }
-
 }
