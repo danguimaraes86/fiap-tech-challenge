@@ -2,6 +2,7 @@ package com.example.techChallengerParkimetro.services;
 
 import com.example.techChallengerParkimetro.entities.Ticket;
 import com.example.techChallengerParkimetro.entities.dtos.TicketDTO;
+import com.example.techChallengerParkimetro.infra.enums.TipoCobranca;
 import com.example.techChallengerParkimetro.infra.repositories.TicketRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
@@ -40,7 +42,7 @@ public class TicketService {
         Ticket tiket = new Ticket(LocalDateTime.now(), ticketDTO.tipoCobranca());
 
         var ticktCreated = ticketRepository.save(tiket);
-        System.out.println(tiket.getTipoCobranca().getPeriodo());
+        System.out.println(tiket.getTipoCobranca());
 
         return new TicketDTO(ticktCreated);
     }
@@ -52,9 +54,13 @@ public class TicketService {
         ticket.setValorTotal(valor);
         ticket.setHorarioSaida(LocalDateTime.now());
 
-        ticket.setPermanencia(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.HOURS) + " " + ticket.getTipoCobranca().getPeriodo());
+        if(ticket.getTipoCobranca() == TipoCobranca.PORHORA) {
+            ticket.setPermanencia((LocalTime.ofSecondOfDay(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.SECONDS))) + " - Hrs : Min : Seg");
+        }else if (ticket.getTipoCobranca() == TipoCobranca.DIARIA){
+            ticket.setPermanencia(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.DAYS) + " Diarias");
+        }
 
-        System.out.println(ticket.getPermanencia());
+        ticket = ticketRepository.save(ticket);
 
         return new TicketDTO(ticket);
     }

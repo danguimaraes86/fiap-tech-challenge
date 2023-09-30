@@ -21,11 +21,12 @@ public class Ticket {
     String permanencia;
     Double valorTotal;
 
-    public Ticket(UUID uuid, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, TipoCobranca tipoCobranca, Double valorTotal) {
+    public Ticket(UUID uuid, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, TipoCobranca tipoCobranca, String permanencia, Double valorTotal) {
         this.uuid = uuid;
         this.horarioEntrada = LocalDateTime.now();
         this.horarioSaida = horarioSaida;
-        this.tipoCobranca = tipoCobranca;;
+        this.tipoCobranca = tipoCobranca;
+        this.permanencia = permanencia;
         this.valorTotal = valorTotal;
     }
     public Ticket(LocalDateTime horarioEntrada, TipoCobranca tipoCobranca) {

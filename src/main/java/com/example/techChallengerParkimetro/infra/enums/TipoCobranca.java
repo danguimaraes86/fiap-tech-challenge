@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public enum TipoCobranca {
-    DIARIA("Dias"){
+    DIARIA{
         @Override
         public double executar(LocalDateTime horarioEntrada) {
             double valorInicialPrimeiroDia = 70;
@@ -21,7 +21,7 @@ public enum TipoCobranca {
             return (valorInicialPrimeiroDia + (precoDiaAdicional * contador));
         }
     },
-    PORHORA("Horas"){
+    PORHORA{
         @Override
         public double executar(LocalDateTime horarioEntrada) {
             double valorInicialPrimeiraHora = 15;
@@ -38,15 +38,6 @@ public enum TipoCobranca {
             return (valorInicialPrimeiraHora + (precoHoraAdicional * contador));
         }
     };
-    String periodo;
-
-    TipoCobranca(String periodo) {
-        this.periodo = periodo;
-    }
-
-    public String getPeriodo() {
-        return periodo;
-    }
 
     public abstract double executar(LocalDateTime horarioEntrada);
 }

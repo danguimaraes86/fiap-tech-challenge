@@ -11,10 +11,11 @@ public record TicketDTO(
         LocalDateTime horarioEntrada,
         LocalDateTime horarioSaida,
         TipoCobranca tipoCobranca,
+        String permanencia,
         Double valorTotal
 ) {
 
     public TicketDTO(Ticket ticket){
-        this(ticket.getUuid(), ticket.getHorarioEntrada(), ticket.getHorarioSaida(), ticket.getTipoCobranca(), ticket.getValorTotal());
+        this(ticket.getUuid(), ticket.getHorarioEntrada(), ticket.getHorarioSaida(), ticket.getTipoCobranca(), ticket.getPermanencia(), ticket.getValorTotal());
     }
 }
