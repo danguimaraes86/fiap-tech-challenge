@@ -6,9 +6,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+@NoArgsConstructor
 @Entity
 public class Ticket {
 
@@ -29,12 +32,13 @@ public class Ticket {
         this.permanencia = permanencia;
         this.valorTotal = valorTotal;
     }
+
     public Ticket(LocalDateTime horarioEntrada, TipoCobranca tipoCobranca) {
         this.horarioEntrada = LocalDateTime.now();
         this.tipoCobranca = tipoCobranca;
     }
-    public Ticket(){}
-    public Ticket (TicketDTO ticketDTO){
+
+    public Ticket(TicketDTO ticketDTO) {
         this.horarioEntrada = ticketDTO.horarioEntrada();
         this.horarioSaida = ticketDTO.horarioSaida();
         this.tipoCobranca = ticketDTO.tipoCobranca();
@@ -48,6 +52,7 @@ public class Ticket {
     public LocalDateTime getHorarioEntrada() {
         return horarioEntrada;
     }
+
     public Ticket setHorarioEntrada(LocalDateTime horarioEntrada) {
         this.horarioEntrada = horarioEntrada;
         return this;
@@ -56,6 +61,7 @@ public class Ticket {
     public LocalDateTime getHorarioSaida() {
         return horarioSaida;
     }
+
     public Ticket setHorarioSaida(LocalDateTime horarioSaida) {
         this.horarioSaida = horarioSaida;
         return this;
@@ -64,6 +70,7 @@ public class Ticket {
     public TipoCobranca getTipoCobranca() {
         return tipoCobranca;
     }
+
     public Ticket setTipoCobranca(TipoCobranca tipoCobranca) {
         this.tipoCobranca = tipoCobranca;
         return this;
@@ -72,6 +79,7 @@ public class Ticket {
     public String getPermanencia() {
         return permanencia;
     }
+
     public Ticket setPermanencia(String permanencia) {
         this.permanencia = permanencia;
         return this;
@@ -80,6 +88,7 @@ public class Ticket {
     public Double getValorTotal() {
         return valorTotal;
     }
+
     public Ticket setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
         return this;

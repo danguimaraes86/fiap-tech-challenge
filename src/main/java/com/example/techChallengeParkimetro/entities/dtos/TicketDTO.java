@@ -15,7 +15,7 @@ public record TicketDTO(
         Double valorTotal
 ) {
 
-    public TicketDTO(Ticket ticket){
+    public TicketDTO(Ticket ticket) {
         this(ticket.getUuid(), ticket.getHorarioEntrada(), ticket.getHorarioSaida(), ticket.getTipoCobranca(), ticket.getPermanencia(), ticket.getValorTotal());
     }
 }
