@@ -57,7 +57,7 @@ public class TicketService {
         if(ticket.getTipoCobranca() == TipoCobranca.PORHORA) {
             ticket.setPermanencia((LocalTime.ofSecondOfDay(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.SECONDS))) + " - Hrs : Min : Seg");
         }else if (ticket.getTipoCobranca() == TipoCobranca.DIARIA){
-            ticket.setPermanencia(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.DAYS) + " Diarias");
+            ticket.setPermanencia(ticket.getHorarioEntrada().until(ticket.getHorarioSaida(), ChronoUnit.DAYS) +1  + " Diarias");
         }
 
         ticket = ticketRepository.save(ticket);
