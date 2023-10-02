@@ -1,6 +1,6 @@
-package com.example.techChallengerParkimetro.infra.repositories;
+package com.example.techChallengeParkimetro.infra.repositories;
 
-import com.example.techChallengerParkimetro.entities.Ticket;
+import com.example.techChallengeParkimetro.entities.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.example.techChallengerParkimetro.infra.exceptions;
+package com.example.techChallengeParkimetro.infra.exceptions;
 
 import java.time.Instant;
 

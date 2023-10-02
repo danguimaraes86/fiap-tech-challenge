@@ -1,6 +1,6 @@
-package com.example.techChallengerParkimetro.infra.exceptions;
+package com.example.techChallengeParkimetro.infra.exceptions;
 
-import com.example.techChallengerParkimetro.infra.exceptions.errors.ControllerNotFoundException;
+import com.example.techChallengeParkimetro.infra.exceptions.errors.ControllerNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

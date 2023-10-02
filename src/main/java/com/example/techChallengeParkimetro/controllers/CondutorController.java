@@ -1,4 +1,4 @@
-package com.example.techChallengerParkimetro.controllers;
+package com.example.techChallengeParkimetro.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 

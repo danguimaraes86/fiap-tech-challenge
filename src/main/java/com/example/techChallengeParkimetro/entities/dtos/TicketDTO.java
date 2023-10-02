@@ -1,7 +1,7 @@
-package com.example.techChallengerParkimetro.entities.dtos;
+package com.example.techChallengeParkimetro.entities.dtos;
 
-import com.example.techChallengerParkimetro.entities.Ticket;
-import com.example.techChallengerParkimetro.infra.enums.TipoCobranca;
+import com.example.techChallengeParkimetro.entities.Ticket;
+import com.example.techChallengeParkimetro.infra.enums.TipoCobranca;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

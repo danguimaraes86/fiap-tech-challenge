@@ -1,8 +1,8 @@
-package com.example.techChallengerParkimetro.controllers;
+package com.example.techChallengeParkimetro.controllers;
 
 
-import com.example.techChallengerParkimetro.entities.dtos.TicketDTO;
-import com.example.techChallengerParkimetro.services.TicketService;
+import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
+import com.example.techChallengeParkimetro.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;

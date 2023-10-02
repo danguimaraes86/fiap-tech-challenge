@@ -1,13 +1,13 @@
-package com.example.techChallengerParkimetro;
+package com.example.techChallengeParkimetro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TechChallengerParkimetroApplication {
+public class TechChallengeParkimetroApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TechChallengerParkimetroApplication.class, args);
+		SpringApplication.run(TechChallengeParkimetroApplication.class, args);
 	}
 
 }

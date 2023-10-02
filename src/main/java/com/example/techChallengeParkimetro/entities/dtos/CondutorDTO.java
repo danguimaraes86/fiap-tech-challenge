@@ -1,5 +1,5 @@
-package com.example.techChallengerParkimetro.entities.dtos;
-import com.example.techChallengerParkimetro.infra.enums.FormaPagamento;
+package com.example.techChallengeParkimetro.entities.dtos;
+import com.example.techChallengeParkimetro.infra.enums.FormaPagamento;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package com.example.techChallengerParkimetro.infra.exceptions.errors;
+package com.example.techChallengeParkimetro.infra.exceptions.errors;
 
 public class ControllerNotFoundException extends RuntimeException {
 

@@ -1,9 +1,9 @@
-package com.example.techChallengerParkimetro.services;
+package com.example.techChallengeParkimetro.services;
 
-import com.example.techChallengerParkimetro.entities.Ticket;
-import com.example.techChallengerParkimetro.entities.dtos.TicketDTO;
-import com.example.techChallengerParkimetro.infra.enums.TipoCobranca;
-import com.example.techChallengerParkimetro.infra.repositories.TicketRepository;
+import com.example.techChallengeParkimetro.entities.Ticket;
+import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
+import com.example.techChallengeParkimetro.infra.enums.TipoCobranca;
+import com.example.techChallengeParkimetro.infra.repositories.TicketRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

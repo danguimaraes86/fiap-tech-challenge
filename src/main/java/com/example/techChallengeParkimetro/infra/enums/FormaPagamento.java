@@ -1,4 +1,4 @@
-package com.example.techChallengerParkimetro.infra.enums;
+package com.example.techChallengeParkimetro.infra.enums;
 
 public enum FormaPagamento {
 

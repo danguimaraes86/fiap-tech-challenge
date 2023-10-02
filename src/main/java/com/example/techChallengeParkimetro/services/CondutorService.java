@@ -1,4 +1,4 @@
-package com.example.techChallengerParkimetro.services;
+package com.example.techChallengeParkimetro.services;
 
 import org.springframework.stereotype.Service;
 

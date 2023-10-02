@@ -1,7 +1,7 @@
-package com.example.techChallengerParkimetro.entities;
+package com.example.techChallengeParkimetro.entities;
 
-import com.example.techChallengerParkimetro.entities.dtos.TicketDTO;
-import com.example.techChallengerParkimetro.infra.enums.TipoCobranca;
+import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
+import com.example.techChallengeParkimetro.infra.enums.TipoCobranca;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
