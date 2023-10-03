@@ -1,12 +1,13 @@
 package com.example.techChallengeParkimetro.entities;
 
+import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
 import com.example.techChallengeParkimetro.infra.enums.FormaPagamento;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.UUID;
 
@@ -16,12 +17,19 @@ import java.util.UUID;
 public class Condutor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    @NotNull
     private String nome;
+    @NotNull
+    @CPF(message = "CPF inválido")
     private String cpf;
+    @NotNull
+    @Email
     private String email;
     private String celular;
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
 
     public Condutor(String nome, String cpf, String email, String celular, FormaPagamento formaPagamento) {
@@ -50,5 +58,9 @@ public class Condutor {
 
     public void setFormaPagamento(FormaPagamento formaPagamento) {
         this.formaPagamento = formaPagamento;
+    }
+
+    public CondutorDTO toDTO() {
+        return new CondutorDTO(this.nome, this.cpf, this.email, this.celular, this.formaPagamento.toString());
     }
 }
