@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record CondutorDTO(
+        // [TODO] Retirar id do retorno ao final do projeto. Apenas para facilitar consultas
+        String id,
         @NotBlank
         String nome,
         @NotBlank

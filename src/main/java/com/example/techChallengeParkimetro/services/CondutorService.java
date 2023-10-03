@@ -5,6 +5,7 @@ import com.example.techChallengeParkimetro.infra.repositories.CondutorRepository
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CondutorService {
@@ -17,6 +18,10 @@ public class CondutorService {
 
     public List<Condutor> findAll() {
         return condutorRepository.findAll();
+    }
+
+    public Condutor findCondutorById(UUID id) {
+        return condutorRepository.findById(id).orElseThrow();
     }
 
     public Condutor createCondutor(Condutor condutor) {

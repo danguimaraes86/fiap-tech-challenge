@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/condutor")
 @RestController
@@ -23,6 +24,12 @@ public class CondutorController {
     public ResponseEntity<List<CondutorDTO>> findAll() {
         List<Condutor> condutorList = condutorService.findAll();
         return ResponseEntity.ok(condutorList.stream().map(Condutor::toDTO).toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CondutorDTO> findById(@PathVariable UUID id) {
+        Condutor condutor = condutorService.findCondutorById(id);
+        return ResponseEntity.ok(condutor.toDTO());
     }
 
     @PostMapping

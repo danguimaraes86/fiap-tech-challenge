@@ -61,6 +61,6 @@ public class Condutor {
     }
 
     public CondutorDTO toDTO() {
-        return new CondutorDTO(this.nome, this.cpf, this.email, this.celular, this.formaPagamento.toString());
+        return new CondutorDTO(this.id.toString(), this.nome, this.cpf, this.email, this.celular, this.formaPagamento.toString());
     }
 }
