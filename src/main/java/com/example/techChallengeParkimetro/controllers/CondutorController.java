@@ -37,4 +37,10 @@ public class CondutorController {
         Condutor condutor = condutorService.createCondutor(condutorDTO.toEntity());
         return ResponseEntity.ok(condutor.toDTO());
     }
+
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<Void> deleteCondutor(@PathVariable String cpf) {
+        condutorService.deleteCondutor(cpf);
+        return ResponseEntity.noContent().build();
+    }
 }

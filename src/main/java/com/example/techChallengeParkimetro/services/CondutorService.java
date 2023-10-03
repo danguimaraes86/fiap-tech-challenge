@@ -24,7 +24,15 @@ public class CondutorService {
         return condutorRepository.findById(id).orElseThrow();
     }
 
+    public Condutor findCondutorByCpf(String cpf) {
+        return condutorRepository.findCondutorByCpf(cpf).orElseThrow();
+    }
+
     public Condutor createCondutor(Condutor condutor) {
         return condutorRepository.save(condutor);
+    }
+
+    public void deleteCondutor(String cpf) {
+        condutorRepository.delete(findCondutorByCpf(cpf));
     }
 }
