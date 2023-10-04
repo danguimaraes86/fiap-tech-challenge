@@ -36,4 +36,10 @@ public class VeiculoController {
         Veiculo veiculo = veiculoService.updateVeiculo(placa, veiculoDTO);
         return ResponseEntity.ok(veiculo.toDTO());
     }
+
+    @DeleteMapping("/{placa}")
+    public ResponseEntity<Void> deleteVeiculo(@PathVariable String placa){
+        veiculoService.delete(placa);
+        return ResponseEntity.noContent().build();
+    }
 }

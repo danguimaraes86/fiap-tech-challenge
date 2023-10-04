@@ -33,4 +33,8 @@ public class VeiculoService {
         veiculo.update(veiculoDTO);
         return veiculoRepository.save(veiculo);
     }
+
+    public void delete(String placa) {
+        veiculoRepository.delete(findByPlaca(placa));
+    }
 }
