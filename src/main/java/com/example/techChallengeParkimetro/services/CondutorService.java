@@ -30,6 +30,7 @@ public class CondutorService {
     }
 
     public Condutor createCondutor(Condutor condutor) {
+        condutor.limparCpfCelular();
         return condutorRepository.save(condutor);
     }
 

@@ -2,7 +2,9 @@ package com.example.techChallengeParkimetro.entities;
 
 import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
 import com.example.techChallengeParkimetro.infra.enums.FormaPagamento;
+import com.example.techChallengeParkimetro.utils.StringSanitizer;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -55,5 +57,10 @@ public class Condutor {
             this.celular = condutorDTO.celular();
         if (condutorDTO.formaPagamento() != null)
             this.formaPagamento = FormaPagamento.valueOf(condutorDTO.formaPagamento().toUpperCase());
+    }
+
+    public void limparCpfCelular() {
+        this.cpf = StringSanitizer.somenteNumeros(cpf);
+        this.celular = StringSanitizer.somenteNumeros(celular);
     }
 }
