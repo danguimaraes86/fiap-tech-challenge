@@ -29,16 +29,16 @@ public class CondutorService {
         return condutorRepository.findCondutorByCpf(cpf).orElseThrow();
     }
 
-    public Condutor createCondutor(Condutor condutor) {
+    public Condutor create(Condutor condutor) {
         condutor.limparCpfCelular();
         return condutorRepository.save(condutor);
     }
 
-    public void deleteCondutor(String cpf) {
+    public void delete(String cpf) {
         condutorRepository.delete(findCondutorByCpf(cpf));
     }
 
-    public Condutor updateCondutor(String cpf, CondutorDTO condutorDTO) {
+    public Condutor update(String cpf, CondutorDTO condutorDTO) {
         Condutor condutorByCpf = findCondutorByCpf(cpf);
         condutorByCpf.update(condutorDTO);
         return condutorRepository.save(condutorByCpf);

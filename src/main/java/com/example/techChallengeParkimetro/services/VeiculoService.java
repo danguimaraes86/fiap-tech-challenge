@@ -24,11 +24,11 @@ public class VeiculoService {
         return veiculoRepository.findVeiculoByPlaca(placa).orElseThrow();
     }
 
-    public Veiculo createVeiculo(Veiculo veiculo) {
+    public Veiculo create(Veiculo veiculo) {
         return veiculoRepository.save(veiculo);
     }
 
-    public Veiculo updateVeiculo(String placa, VeiculoDTO veiculoDTO) {
+    public Veiculo update(String placa, VeiculoDTO veiculoDTO) {
         Veiculo veiculo = findByPlaca(placa);
         veiculo.update(veiculoDTO);
         return veiculoRepository.save(veiculo);

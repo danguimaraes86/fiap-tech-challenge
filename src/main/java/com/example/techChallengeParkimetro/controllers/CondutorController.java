@@ -34,19 +34,19 @@ public class CondutorController {
 
     @PostMapping
     public ResponseEntity<CondutorDTO> createCondutor(@RequestBody @Valid CondutorDTO condutorDTO) {
-        Condutor condutor = condutorService.createCondutor(condutorDTO.toEntity());
+        Condutor condutor = condutorService.create(condutorDTO.toEntity());
         return ResponseEntity.ok(condutor.toDTO());
     }
 
     @PutMapping("/{cpf}")
     public ResponseEntity<CondutorDTO> updateCondutor(@PathVariable String cpf, @RequestBody CondutorDTO condutorDTO) {
-        Condutor condutor = condutorService.updateCondutor(cpf, condutorDTO);
+        Condutor condutor = condutorService.update(cpf, condutorDTO);
         return ResponseEntity.ok(condutor.toDTO());
     }
 
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Void> deleteCondutor(@PathVariable String cpf) {
-        condutorService.deleteCondutor(cpf);
+        condutorService.delete(cpf);
         return ResponseEntity.noContent().build();
     }
 }

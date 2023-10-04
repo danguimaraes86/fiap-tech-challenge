@@ -27,13 +27,13 @@ public class VeiculoController {
 
     @PostMapping
     public ResponseEntity<VeiculoDTO> createCondutor(@RequestBody @Valid VeiculoDTO veiculoDTO) {
-        Veiculo veiculo = veiculoService.createVeiculo(veiculoDTO.toEntity());
+        Veiculo veiculo = veiculoService.create(veiculoDTO.toEntity());
         return ResponseEntity.ok(veiculo.toDTO());
     }
 
     @PutMapping("/{placa}")
     public ResponseEntity<VeiculoDTO> updateVeiculo(@PathVariable String placa, @RequestBody VeiculoDTO veiculoDTO) {
-        Veiculo veiculo = veiculoService.updateVeiculo(placa, veiculoDTO);
+        Veiculo veiculo = veiculoService.update(placa, veiculoDTO);
         return ResponseEntity.ok(veiculo.toDTO());
     }
 
