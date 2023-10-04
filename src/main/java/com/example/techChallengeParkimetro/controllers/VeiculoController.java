@@ -8,8 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
-@RequestMapping("/condutor")
+@RequestMapping("/veiculo")
 @RestController
 public class VeiculoController {
 
@@ -26,7 +27,7 @@ public class VeiculoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VeiculoDTO> findById(@PathVariable String id) {
+    public ResponseEntity<VeiculoDTO> findById(@PathVariable UUID id) {
         Veiculo veiculo = veiculoService.findById(id);
         return ResponseEntity.ok(veiculo.toDTO());
     }

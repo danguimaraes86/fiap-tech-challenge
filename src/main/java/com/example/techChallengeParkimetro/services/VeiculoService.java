@@ -21,8 +21,8 @@ public class VeiculoService {
         return veiculoRepository.findAll();
     }
 
-    public Veiculo findById(String id) {
-        return veiculoRepository.findById(UUID.fromString(id)).orElseThrow();
+    public Veiculo findById(UUID id) {
+        return veiculoRepository.findById(id).orElseThrow();
     }
 
     public Veiculo findByPlaca(String placa) {
