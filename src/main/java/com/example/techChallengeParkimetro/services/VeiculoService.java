@@ -1,6 +1,7 @@
 package com.example.techChallengeParkimetro.services;
 
 import com.example.techChallengeParkimetro.entities.Veiculo;
+import com.example.techChallengeParkimetro.entities.dtos.VeiculoDTO;
 import com.example.techChallengeParkimetro.infra.repositories.VeiculoRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,17 @@ public class VeiculoService {
         return veiculoRepository.findAll();
     }
 
+    public Veiculo findByPlaca(String placa) {
+        return veiculoRepository.findVeiculoByPlaca(placa).orElseThrow();
+    }
+
     public Veiculo createVeiculo(Veiculo veiculo) {
+        return veiculoRepository.save(veiculo);
+    }
+
+    public Veiculo updateVeiculo(String placa, VeiculoDTO veiculoDTO) {
+        Veiculo veiculo = findByPlaca(placa);
+        veiculo.update(veiculoDTO);
         return veiculoRepository.save(veiculo);
     }
 }

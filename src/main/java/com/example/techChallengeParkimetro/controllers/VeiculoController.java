@@ -30,4 +30,10 @@ public class VeiculoController {
         Veiculo veiculo = veiculoService.createVeiculo(veiculoDTO.toEntity());
         return ResponseEntity.ok(veiculo.toDTO());
     }
+
+    @PutMapping("/{placa}")
+    public ResponseEntity<VeiculoDTO> updateVeiculo(@PathVariable String placa, @RequestBody VeiculoDTO veiculoDTO) {
+        Veiculo veiculo = veiculoService.updateVeiculo(placa, veiculoDTO);
+        return ResponseEntity.ok(veiculo.toDTO());
+    }
 }
