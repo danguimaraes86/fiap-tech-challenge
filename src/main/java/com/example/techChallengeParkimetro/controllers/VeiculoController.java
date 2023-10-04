@@ -25,6 +25,12 @@ public class VeiculoController {
         return ResponseEntity.ok(veiculoList.stream().map(Veiculo::toDTO).toList());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<VeiculoDTO> findById(@PathVariable String id) {
+        Veiculo veiculo = veiculoService.findById(id);
+        return ResponseEntity.ok(veiculo.toDTO());
+    }
+
     @PostMapping
     public ResponseEntity<VeiculoDTO> createCondutor(@RequestBody @Valid VeiculoDTO veiculoDTO) {
         Veiculo veiculo = veiculoService.create(veiculoDTO.toEntity());
@@ -38,7 +44,7 @@ public class VeiculoController {
     }
 
     @DeleteMapping("/{placa}")
-    public ResponseEntity<Void> deleteVeiculo(@PathVariable String placa){
+    public ResponseEntity<Void> deleteVeiculo(@PathVariable String placa) {
         veiculoService.delete(placa);
         return ResponseEntity.noContent().build();
     }

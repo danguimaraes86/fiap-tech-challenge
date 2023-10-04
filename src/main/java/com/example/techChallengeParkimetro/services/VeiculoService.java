@@ -6,6 +6,7 @@ import com.example.techChallengeParkimetro.infra.repositories.VeiculoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class VeiculoService {
@@ -18,6 +19,10 @@ public class VeiculoService {
 
     public List<Veiculo> findAll() {
         return veiculoRepository.findAll();
+    }
+
+    public Veiculo findById(String id) {
+        return veiculoRepository.findById(UUID.fromString(id)).orElseThrow();
     }
 
     public Veiculo findByPlaca(String placa) {

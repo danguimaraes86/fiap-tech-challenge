@@ -21,7 +21,7 @@ public class CondutorService {
         return condutorRepository.findAll();
     }
 
-    public Condutor findCondutorById(UUID id) {
+    public Condutor findById(UUID id) {
         return condutorRepository.findById(id).orElseThrow();
     }
 

@@ -28,7 +28,7 @@ public class CondutorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CondutorDTO> findById(@PathVariable UUID id) {
-        Condutor condutor = condutorService.findCondutorById(id);
+        Condutor condutor = condutorService.findById(id);
         return ResponseEntity.ok(condutor.toDTO());
     }
 
