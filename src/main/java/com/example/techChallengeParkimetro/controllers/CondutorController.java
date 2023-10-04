@@ -38,6 +38,12 @@ public class CondutorController {
         return ResponseEntity.ok(condutor.toDTO());
     }
 
+    @PutMapping("/{cpf}")
+    public ResponseEntity<CondutorDTO> updateCondutor(@PathVariable String cpf, @RequestBody CondutorDTO condutorDTO) {
+        Condutor condutor = condutorService.updateCondutor(cpf, condutorDTO);
+        return ResponseEntity.ok(condutor.toDTO());
+    }
+
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Void> deleteCondutor(@PathVariable String cpf) {
         condutorService.deleteCondutor(cpf);

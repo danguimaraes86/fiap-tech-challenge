@@ -40,27 +40,20 @@ public class Condutor {
         this.formaPagamento = formaPagamento;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
-        this.formaPagamento = formaPagamento;
-    }
-
     public CondutorDTO toDTO() {
-        return new CondutorDTO(this.id.toString(), this.nome, this.cpf, this.email, this.celular, this.formaPagamento.toString());
+        return new CondutorDTO(this.id.toString(), this.nome, this.cpf, this.email, this.celular, this.formaPagamento.toString().toLowerCase());
+    }
+
+    public void update(CondutorDTO condutorDTO) {
+        if (condutorDTO.nome() != null)
+            this.nome = condutorDTO.nome();
+        if (condutorDTO.cpf() != null)
+            this.cpf = condutorDTO.cpf();
+        if (condutorDTO.email() != null)
+            this.email = condutorDTO.email();
+        if (condutorDTO.celular() != null)
+            this.celular = condutorDTO.celular();
+        if (condutorDTO.formaPagamento() != null)
+            this.formaPagamento = FormaPagamento.valueOf(condutorDTO.formaPagamento().toUpperCase());
     }
 }
