@@ -33,8 +33,10 @@ public class VeiculoController {
     }
 
     @PostMapping
-    public ResponseEntity<VeiculoDTO> createCondutor(@RequestBody @Valid VeiculoDTO veiculoDTO) {
-        Veiculo veiculo = veiculoService.create(veiculoDTO.toEntity());
+    public ResponseEntity<VeiculoDTO> createVeiculo(
+            @RequestHeader String condutorCpf,
+            @RequestBody @Valid VeiculoDTO veiculoDTO) {
+        Veiculo veiculo = veiculoService.create(veiculoDTO, condutorCpf);
         return ResponseEntity.ok(veiculo.toDTO());
     }
 

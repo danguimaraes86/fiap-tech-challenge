@@ -1,6 +1,7 @@
 package com.example.techChallengeParkimetro.services;
 
 import com.example.techChallengeParkimetro.entities.Condutor;
+import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
 import com.example.techChallengeParkimetro.infra.repositories.CondutorRepository;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,11 @@ public class CondutorService {
         Condutor condutorByCpf = findCondutorByCpf(cpf);
         condutorByCpf.update(condutorDTO);
         return condutorRepository.save(condutorByCpf);
+    }
+
+    public void vincularVeiculo(String condutorCpf, Veiculo veiculo) {
+        Condutor condutor = findCondutorByCpf(condutorCpf);
+        condutor.vincularVeiculo(veiculo);
+        condutorRepository.save(condutor);
     }
 }

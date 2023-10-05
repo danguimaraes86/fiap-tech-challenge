@@ -3,6 +3,7 @@ package com.example.techChallengeParkimetro.services;
 import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.VeiculoDTO;
 import com.example.techChallengeParkimetro.infra.repositories.VeiculoRepository;
+import com.example.techChallengeParkimetro.utils.StringSanitizer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,11 @@ import java.util.UUID;
 public class VeiculoService {
 
     private final VeiculoRepository veiculoRepository;
+    private final CondutorService condutorService;
 
-    public VeiculoService(VeiculoRepository veiculoRepository) {
+    public VeiculoService(VeiculoRepository veiculoRepository, CondutorService condutorService) {
         this.veiculoRepository = veiculoRepository;
+        this.condutorService = condutorService;
     }
 
     public List<Veiculo> findAll() {
@@ -29,8 +32,11 @@ public class VeiculoService {
         return veiculoRepository.findVeiculoByPlaca(placa).orElseThrow();
     }
 
-    public Veiculo create(Veiculo veiculo) {
-        return veiculoRepository.save(veiculo);
+    public Veiculo create(VeiculoDTO veiculoDTO, String condutorCpf) {
+        Veiculo veiculo = veiculoRepository.save(
+                veiculoDTO.toEntity(StringSanitizer.somenteNumeros(condutorCpf)));
+        condutorService.vincularVeiculo(condutorCpf, veiculo);
+        return veiculo;
     }
 
     public Veiculo update(String placa, VeiculoDTO veiculoDTO) {
