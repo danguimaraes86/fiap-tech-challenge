@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -32,6 +34,8 @@ public class Condutor {
     @NotNull
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
+    @OneToMany
+    private final List<Veiculo> veiculoList = new ArrayList<>();
 
     public Condutor(String nome, String cpf, String email, String celular, FormaPagamento formaPagamento) {
         this.nome = nome;
@@ -42,7 +46,10 @@ public class Condutor {
     }
 
     public CondutorDTO toDTO() {
-        return new CondutorDTO(this.id.toString(), this.nome, this.cpf, this.email, this.celular, this.formaPagamento.toString().toLowerCase());
+        return new CondutorDTO(
+                this.id.toString(), this.nome, this.cpf, this.email, this.celular,
+                this.formaPagamento.toString().toLowerCase(),
+                this.veiculoList.stream().map(Veiculo::toDTO).toList());
     }
 
     public void update(CondutorDTO condutorDTO) {
@@ -56,6 +63,10 @@ public class Condutor {
             this.celular = condutorDTO.celular();
         if (condutorDTO.formaPagamento() != null)
             this.formaPagamento = FormaPagamento.valueOf(condutorDTO.formaPagamento().toUpperCase());
+    }
+
+    public void vincularVeiculo(Veiculo veiculo) {
+        this.veiculoList.add(veiculo);
     }
 
     public void limparCpfCelular() {

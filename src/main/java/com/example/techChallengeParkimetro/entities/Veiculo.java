@@ -1,10 +1,7 @@
 package com.example.techChallengeParkimetro.entities;
 
 import com.example.techChallengeParkimetro.entities.dtos.VeiculoDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,16 +21,20 @@ public class Veiculo {
     @NotNull
     private String modelo;
     @NotNull
+    @Column(unique = true)
     private String placa;
+    @NotNull
+    private String condutorCPF;
 
-    public Veiculo(String marca, String modelo, String placa) {
+    public Veiculo(String marca, String modelo, String placa, String condutorCPF) {
         this.marca = marca;
         this.modelo = modelo;
         this.placa = placa;
+        this.condutorCPF = condutorCPF;
     }
 
     public VeiculoDTO toDTO() {
-        return new VeiculoDTO(this.id.toString(), this.marca, this.modelo, this.placa);
+        return new VeiculoDTO(this.id.toString(), this.marca, this.modelo, this.placa, this.condutorCPF);
     }
 
     public void update(VeiculoDTO veiculoDTO) {
