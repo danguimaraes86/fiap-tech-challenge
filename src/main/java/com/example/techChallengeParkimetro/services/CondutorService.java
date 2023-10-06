@@ -6,6 +6,7 @@ import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
 import com.example.techChallengeParkimetro.infra.repositories.CondutorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,5 +50,11 @@ public class CondutorService {
         Condutor condutor = findCondutorByCpf(condutorCpf);
         condutor.vincularVeiculo(veiculo);
         condutorRepository.save(condutor);
+    }
+
+    public List<Condutor> findByAtributo(HashMap<String, String> params) {
+        return condutorRepository.findCondutorByCpfOrNomeIgnoreCaseOrEmail(
+                params.get("cpf"), params.get("nome"), params.get("email")
+        ).orElseThrow();
     }
 }
