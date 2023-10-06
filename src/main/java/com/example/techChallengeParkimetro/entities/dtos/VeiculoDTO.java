@@ -15,6 +15,6 @@ public record VeiculoDTO(
         String condutorCpf
 ) {
     public Veiculo toEntity(String condutorCpf) {
-        return new Veiculo(marca, modelo, placa, condutorCpf);
+        return new Veiculo(marca, modelo, placa.toUpperCase(), condutorCpf);
     }
 }

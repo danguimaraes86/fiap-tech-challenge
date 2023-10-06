@@ -71,6 +71,7 @@ public class Condutor {
 
     public void limparCpfCelular() {
         this.cpf = StringSanitizer.somenteNumeros(cpf);
-        this.celular = StringSanitizer.somenteNumeros(celular);
+        if (this.celular != null)
+            this.celular = StringSanitizer.somenteNumeros(celular);
     }
 }
