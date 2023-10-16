@@ -4,6 +4,7 @@ import com.example.techChallengeParkimetro.entities.Condutor;
 import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
 import com.example.techChallengeParkimetro.infra.repositories.CondutorRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -33,7 +34,11 @@ public class CondutorService {
 
     public Condutor create(Condutor condutor) {
         condutor.limparCpfCelular();
-        return condutorRepository.save(condutor);
+        try {
+            return condutorRepository.save(condutor);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DataIntegrityViolationException("cpf já cadastrado");
+        }
     }
 
     public void delete(String cpf) {

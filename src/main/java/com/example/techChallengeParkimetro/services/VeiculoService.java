@@ -4,6 +4,7 @@ import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.VeiculoDTO;
 import com.example.techChallengeParkimetro.infra.repositories.VeiculoRepository;
 import com.example.techChallengeParkimetro.utils.StringSanitizer;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,10 +34,14 @@ public class VeiculoService {
     }
 
     public Veiculo create(VeiculoDTO veiculoDTO, String condutorCpf) {
-        Veiculo veiculo = veiculoRepository.save(
-                veiculoDTO.toEntity(StringSanitizer.somenteNumeros(condutorCpf)));
-        condutorService.vincularVeiculo(condutorCpf, veiculo);
-        return veiculo;
+        try {
+            Veiculo veiculo = veiculoRepository.save(
+                    veiculoDTO.toEntity(StringSanitizer.somenteNumeros(condutorCpf)));
+            condutorService.vincularVeiculo(condutorCpf, veiculo);
+            return veiculo;
+        } catch (DataIntegrityViolationException ex) {
+            throw new DataIntegrityViolationException("placa já cadastrada");
+        }
     }
 
     public Veiculo update(String placa, VeiculoDTO veiculoDTO) {

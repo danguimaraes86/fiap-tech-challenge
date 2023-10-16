@@ -26,6 +26,7 @@ public class Condutor {
     private String nome;
     @NotNull
     @CPF(message = "CPF inválido")
+    @Column(unique = true)
     private String cpf;
     @NotNull
     @Email
