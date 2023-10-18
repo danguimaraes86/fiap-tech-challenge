@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Service
 public class CondutorService {
@@ -20,21 +22,25 @@ public class CondutorService {
         this.condutorRepository = condutorRepository;
     }
 
+    private static Supplier<NoSuchElementException> getCondutorNaoEncontrado() {
+        return () -> new NoSuchElementException("condutor não encontrado");
+    }
+
     public List<Condutor> findAll() {
         return condutorRepository.findAll();
     }
 
     public Condutor findById(UUID id) {
-        return condutorRepository.findById(id).orElseThrow();
+        return condutorRepository.findById(id).orElseThrow(getCondutorNaoEncontrado());
     }
 
     public Condutor findCondutorByCpf(String cpf) {
-        return condutorRepository.findCondutorByCpf(cpf).orElseThrow();
+        return condutorRepository.findCondutorByCpf(cpf).orElseThrow(getCondutorNaoEncontrado());
     }
 
     public Condutor create(Condutor condutor) {
-        condutor.limparCpfCelular();
         try {
+            condutor.limparCpfCelular();
             return condutorRepository.save(condutor);
         } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("cpf já cadastrado");

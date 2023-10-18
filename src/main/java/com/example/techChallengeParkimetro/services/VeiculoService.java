@@ -8,7 +8,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Service
 public class VeiculoService {
@@ -21,16 +23,20 @@ public class VeiculoService {
         this.condutorService = condutorService;
     }
 
+    private static Supplier<NoSuchElementException> getVeiculoNaoEncontrado() {
+        return () -> new NoSuchElementException("veículo não encontrado");
+    }
+
     public List<Veiculo> findAll() {
         return veiculoRepository.findAll();
     }
 
     public Veiculo findById(UUID id) {
-        return veiculoRepository.findById(id).orElseThrow();
+        return veiculoRepository.findById(id).orElseThrow(getVeiculoNaoEncontrado());
     }
 
     public Veiculo findByPlaca(String placa) {
-        return veiculoRepository.findVeiculoByPlaca(placa).orElseThrow();
+        return veiculoRepository.findVeiculoByPlaca(placa).orElseThrow(getVeiculoNaoEncontrado());
     }
 
     public Veiculo create(VeiculoDTO veiculoDTO, String condutorCpf) {
