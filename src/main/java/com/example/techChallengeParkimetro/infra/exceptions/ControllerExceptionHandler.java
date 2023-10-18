@@ -87,7 +87,7 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());
-        error.setError("database validation");
+        error.setError("entity validation");
         error.setMessage(messageList);
         error.setPath(request.getRequestURI());
 
