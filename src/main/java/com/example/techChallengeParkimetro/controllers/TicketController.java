@@ -3,8 +3,7 @@ package com.example.techChallengeParkimetro.controllers;
 
 import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
 import com.example.techChallengeParkimetro.services.TicketService;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,16 +39,20 @@ public class TicketController {
         return ResponseEntity.ok(ticket);
     }
 
-    @PostMapping
-    public ResponseEntity<TicketDTO> create(@RequestBody TicketDTO ticketDTO){
-
-        var ticketCreated = ticketService.createTicket(ticketDTO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(ticketCreated);
+    @PostMapping("/registrarEntrada")
+    public ResponseEntity<TicketDTO> registrarEntrada(@RequestBody @Valid TicketDTO ticketDTO) {
+        TicketDTO ticket = ticketService.registarEntrada(ticketDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticket);
     }
 
-    @PutMapping("/{uuid}")
-    public ResponseEntity<TicketDTO> emitirRecibo(@PathVariable UUID uuid){
+    @PostMapping("/registrarSaida")
+    public ResponseEntity<TicketDTO> registrarSaida(@RequestBody @Valid TicketDTO ticketDTO) {
+        TicketDTO ticket = ticketService.registrarSaida(ticketDTO);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticket);
+    }
+
+    @GetMapping("/emitirRecibo/{uuid}")
+    public ResponseEntity<TicketDTO> emitirRecibo(@PathVariable UUID uuid) {
         var recibo = ticketService.emitirRecibo(uuid);
         return ResponseEntity.ok(recibo);
     }
