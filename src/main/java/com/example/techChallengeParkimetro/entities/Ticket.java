@@ -6,92 +6,69 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+@Getter
 @NoArgsConstructor
 @Entity
 public class Ticket {
 
+    private static final String VAZIO = "em aberto";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID uuid;
-    LocalDateTime horarioEntrada;
-    LocalDateTime horarioSaida;
-    TipoCobranca tipoCobranca;
-    String permanencia;
-    Double valorTotal;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    @NotNull
+    private LocalDateTime horarioEntrada;
+    private LocalDateTime horarioSaida;
+    @NotNull
+    private TipoCobranca tipoCobranca;
+    private Double valorTotal;
+    @NotNull
+    private String veiculo;
+    @NotNull
+    private String condutor;
 
-    public Ticket(UUID uuid, LocalDateTime horarioEntrada, LocalDateTime horarioSaida, TipoCobranca tipoCobranca, String permanencia, Double valorTotal) {
-        this.uuid = uuid;
-        this.horarioEntrada = LocalDateTime.now();
-        this.horarioSaida = horarioSaida;
-        this.tipoCobranca = tipoCobranca;
-        this.permanencia = permanencia;
-        this.valorTotal = valorTotal;
-    }
-
-    public Ticket(LocalDateTime horarioEntrada, TipoCobranca tipoCobranca) {
-        this.horarioEntrada = LocalDateTime.now();
-        this.tipoCobranca = tipoCobranca;
-    }
-
-    public Ticket(TicketDTO ticketDTO) {
-        this.horarioEntrada = ticketDTO.horarioEntrada();
-        this.horarioSaida = ticketDTO.horarioSaida();
-        this.tipoCobranca = ticketDTO.tipoCobranca();
-        this.valorTotal = ticketDTO.valorTotal();
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public LocalDateTime getHorarioEntrada() {
-        return horarioEntrada;
-    }
-
-    public Ticket setHorarioEntrada(LocalDateTime horarioEntrada) {
+    public Ticket(
+            String condutor,
+            String veiculo,
+            LocalDateTime horarioEntrada,
+            TipoCobranca tipoCobranca
+    ) {
+        this.condutor = condutor;
+        this.veiculo = veiculo;
         this.horarioEntrada = horarioEntrada;
-        return this;
-    }
-
-    public LocalDateTime getHorarioSaida() {
-        return horarioSaida;
-    }
-
-    public Ticket setHorarioSaida(LocalDateTime horarioSaida) {
-        this.horarioSaida = horarioSaida;
-        return this;
-    }
-
-    public TipoCobranca getTipoCobranca() {
-        return tipoCobranca;
-    }
-
-    public Ticket setTipoCobranca(TipoCobranca tipoCobranca) {
         this.tipoCobranca = tipoCobranca;
-        return this;
     }
 
-    public String getPermanencia() {
-        return permanencia;
+    public void registarHorarioSaida() {
+        this.horarioSaida = LocalDateTime.now();
+        calcularValorTotal();
     }
 
-    public Ticket setPermanencia(String permanencia) {
-        this.permanencia = permanencia;
-        return this;
+    public void calcularValorTotal() {
+        this.valorTotal = this.tipoCobranca.executar(this.horarioEntrada, this.horarioSaida);
     }
 
-    public Double getValorTotal() {
-        return valorTotal;
+    public String calcularPermanencia(TipoCobranca tipoCobranca) {
+        if (tipoCobranca == TipoCobranca.PORHORA)
+            return LocalTime.ofSecondOfDay(this.horarioEntrada.until(this.horarioSaida, ChronoUnit.SECONDS)) + " - Hrs : Min : Seg";
+
+        return (this.horarioEntrada.until(this.horarioSaida, ChronoUnit.DAYS) + 1) + " Diarias";
     }
 
-    public Ticket setValorTotal(Double valorTotal) {
-        this.valorTotal = valorTotal;
-        return this;
+    public TicketDTO toDTO() {
+        String permanencia = this.horarioSaida == null ? Ticket.VAZIO : this.calcularPermanencia(this.tipoCobranca);
+
+        return new TicketDTO(this.id, this.horarioEntrada, this.horarioSaida, this.tipoCobranca.name(),
+                permanencia, this.valorTotal, this.condutor, this.veiculo
+        );
     }
 }
-
