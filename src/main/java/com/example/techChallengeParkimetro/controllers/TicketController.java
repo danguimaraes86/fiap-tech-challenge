@@ -15,29 +15,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("ticket")
+@RequestMapping("/ticket")
 public class TicketController {
+
     private final TicketService ticketService;
-    @Autowired
+
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<TicketDTO>> findAll(@RequestParam (value = "pagina", defaultValue = "0") int pagina,
-                                                   @RequestParam (value = "qtdItens", defaultValue = "3") int qtdItens){
-
+    public ResponseEntity<Page<TicketDTO>> findAll(
+            @RequestParam(value = "pagina", defaultValue = "0") int pagina,
+            @RequestParam(value = "qtdItens", defaultValue = "3") int qtdItens
+    ) {
         Pageable pageable = PageRequest.of(pagina, qtdItens);
-
         var tickets = ticketService.findAllTicket(pageable);
-
         return ResponseEntity.ok(tickets);
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<TicketDTO> findById(@PathVariable UUID uuid){
+    public ResponseEntity<TicketDTO> findById(@PathVariable UUID uuid) {
         var ticket = ticketService.findById(uuid);
-
         return ResponseEntity.ok(ticket);
     }
 
@@ -52,12 +51,11 @@ public class TicketController {
     @PutMapping("/{uuid}")
     public ResponseEntity<TicketDTO> emitirRecibo(@PathVariable UUID uuid){
         var recibo = ticketService.emitirRecibo(uuid);
-
         return ResponseEntity.ok(recibo);
     }
 
     @DeleteMapping("/{uuid}")
-    public void delete(@PathVariable UUID uuid){
+    public void delete(@PathVariable UUID uuid) {
 
     }
 }
