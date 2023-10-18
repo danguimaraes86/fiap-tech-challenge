@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface VeiculoRepository extends JpaRepository<Veiculo, UUID> {
-    Optional<Veiculo> findVeiculoByPlaca(@Param("placa") String placa);
+    Optional<Veiculo> findVeiculoByPlacaIgnoreCase(@Param("placa") String placa);
 }

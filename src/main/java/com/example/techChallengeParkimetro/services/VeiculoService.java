@@ -36,7 +36,7 @@ public class VeiculoService {
     }
 
     public Veiculo findByPlaca(String placa) {
-        return veiculoRepository.findVeiculoByPlaca(placa).orElseThrow(getVeiculoNaoEncontrado());
+        return veiculoRepository.findVeiculoByPlacaIgnoreCase(placa).orElseThrow(getVeiculoNaoEncontrado());
     }
 
     public Veiculo create(VeiculoDTO veiculoDTO, String condutorCpf) {
