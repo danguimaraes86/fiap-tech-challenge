@@ -71,4 +71,8 @@ public class Ticket {
                 permanencia, this.valorTotal, this.condutor, this.veiculo
         );
     }
+
+    public Boolean isEmAberto() {
+        return horarioSaida == null;
+    }
 }

@@ -1,31 +1,28 @@
 package com.example.techChallengeParkimetro.infra.scheduleTasks;
 
-import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
-import com.example.techChallengeParkimetro.services.TicketService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.example.techChallengeParkimetro.entities.Ticket;
+import com.example.techChallengeParkimetro.infra.repositories.TicketRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
 @EnableScheduling
 public class BuscarTicketsAbertos {
-
-    private final TicketService ticketService;
-
-    public BuscarTicketsAbertos(TicketService ticketService) {
-        this.ticketService = ticketService;
+    private final TicketRepository ticketRepository;
+    @Autowired
+    public BuscarTicketsAbertos(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
     }
 
-    @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 1)
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 1)
     public void buscarTicketsAbertos() {
+<<<<<<< Updated upstream
         Pageable pageable = PageRequest.of(0, 5);
         Page<TicketDTO> ticketsPage = ticketService.findAllTicket(pageable);
         List<TicketDTO> listOpenTicket = ticketsPage.stream().filter(tck -> tck.isEmAberto()).toList();
@@ -34,6 +31,12 @@ public class BuscarTicketsAbertos {
                 System.out.println(ticket);
             }
         }
+=======
+        List<Ticket> tickets = ticketRepository.findAll();
+        List<Ticket> listOpenTicket = tickets.stream().filter(tck -> tck.isEmAberto()).toList();
+        listOpenTicket.forEach(x -> x.getTipoCobranca().notificar(x.getHorarioEntrada()));
+
+>>>>>>> Stashed changes
     }
 }
 
