@@ -22,21 +22,9 @@ public class BuscarTicketsAbertos {
 
     @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 1)
     public void buscarTicketsAbertos() {
-<<<<<<< Updated upstream
-        Pageable pageable = PageRequest.of(0, 5);
-        Page<TicketDTO> ticketsPage = ticketService.findAllTicket(pageable);
-        List<TicketDTO> listOpenTicket = ticketsPage.stream().filter(tck -> tck.isEmAberto()).toList();
-        for (TicketDTO ticket : listOpenTicket) {
-            if (ticket != null) {
-                System.out.println(ticket);
-            }
-        }
-=======
         List<Ticket> tickets = ticketRepository.findAll();
         List<Ticket> listOpenTicket = tickets.stream().filter(tck -> tck.isEmAberto()).toList();
         listOpenTicket.forEach(x -> x.getTipoCobranca().notificar(x.getHorarioEntrada()));
-
->>>>>>> Stashed changes
     }
 }
 
