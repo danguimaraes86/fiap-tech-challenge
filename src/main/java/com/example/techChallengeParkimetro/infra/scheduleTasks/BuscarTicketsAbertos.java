@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Component @EnableScheduling
+@Component
+@EnableScheduling
 public class BuscarTicketsAbertos {
 
     private final TicketService ticketService;
@@ -28,7 +29,11 @@ public class BuscarTicketsAbertos {
         Pageable pageable = PageRequest.of(0, 5);
         Page<TicketDTO> ticketsPage = ticketService.findAllTicket(pageable);
         List<TicketDTO> listOpenTicket = ticketsPage.stream().filter(tck -> tck.isEmAberto()).toList();
-        System.out.println(listOpenTicket);
+        for (TicketDTO ticket : listOpenTicket) {
+            if (ticket != null) {
+                System.out.println(ticket);
+            }
+        }
     }
 }
 
