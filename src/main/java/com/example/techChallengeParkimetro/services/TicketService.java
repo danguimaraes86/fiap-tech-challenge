@@ -62,6 +62,8 @@ public class TicketService {
 
         Ticket ticktCreated = ticketRepository.save(
                 ticketDTO.toEntity(condutor.getCpf(), veiculo.getPlaca(), LocalDateTime.now(), tipoCobranca));
+
+        condutorService.vincularTicket(condutor, ticktCreated);
         return ticktCreated.toDTO();
 
     }
@@ -69,6 +71,11 @@ public class TicketService {
     public TicketDTO registrarSaida(TicketDTO ticketDTO) {
         Condutor condutor = condutorService.findCondutorByCpf(ticketDTO.condutorCpf());
         Veiculo veiculo = veiculoService.findByPlaca(ticketDTO.placaVeiculo());
+
+        if(!condutor.getFormaPagamento().executarPagamento()) {
+            throw new RuntimeException("Pagamento negado");
+        }
+
         if (!condutor.getVeiculoList().contains(veiculo)) {
             throw new NoSuchElementException("veículo não vinculado ao condutor");
         }
@@ -77,9 +84,13 @@ public class TicketService {
                 condutor.getCpf(), veiculo.getPlaca()).orElseThrow(
                 () -> new NoSuchElementException("ticket não encontrado")
         );
+
+        System.out.println(condutor.getFormaPagamento().getModoPagamento());
+
         ticket.registarHorarioSaida();
         return ticketRepository.save(ticket).toDTO();
     }
+
 
     public TicketDTO emitirRecibo(UUID uuid) {
         TicketDTO ticket = findById(uuid);

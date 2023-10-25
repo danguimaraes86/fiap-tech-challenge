@@ -56,9 +56,4 @@ public class TicketController {
         var recibo = ticketService.emitirRecibo(uuid);
         return ResponseEntity.ok(recibo);
     }
-
-    @DeleteMapping("/{uuid}")
-    public void delete(@PathVariable UUID uuid) {
-
-    }
 }

@@ -37,6 +37,8 @@ public class Condutor {
     private FormaPagamento formaPagamento;
     @OneToMany
     private final List<Veiculo> veiculoList = new ArrayList<>();
+    @OneToMany
+    private List<Ticket> tickets= new ArrayList<>();
 
     public Condutor(String nome, String cpf, String email, String celular, FormaPagamento formaPagamento) {
         this.nome = nome;
@@ -74,5 +76,9 @@ public class Condutor {
         this.cpf = StringSanitizer.somenteNumeros(cpf);
         if (this.celular != null)
             this.celular = StringSanitizer.somenteNumeros(celular);
+    }
+
+    public void vincularTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }
