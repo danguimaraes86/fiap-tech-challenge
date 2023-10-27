@@ -6,7 +6,6 @@ import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
 import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
 import com.example.techChallengeParkimetro.services.CondutorService;
 import jakarta.validation.Valid;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,12 +44,9 @@ public class CondutorController {
     }
 
     @GetMapping("/tickets")
-    public ResponseEntity<List<TicketDTO>> buscarTickets(@RequestParam String condutorCPF){
-        System.out.println(condutorCPF);
-        var tickets = condutorService.buscarTickets(condutorCPF).stream().map(Ticket::toDTO).toList();
-
-        return ResponseEntity.ok().body(tickets);
-
+    public ResponseEntity<List<TicketDTO>> buscarTickets(@RequestParam String condutorCPF) {
+        List<Ticket> tickets = condutorService.buscarTickets(condutorCPF);
+        return ResponseEntity.ok().body(tickets.stream().map(Ticket::toDTO).toList());
     }
 
     @PostMapping

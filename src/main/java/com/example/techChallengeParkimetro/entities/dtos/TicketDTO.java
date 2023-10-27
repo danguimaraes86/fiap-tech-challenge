@@ -23,7 +23,4 @@ public record TicketDTO(
         return new Ticket(condutor, veiculo, horarioEntrada, tipoCobranca);
     }
 
-    public Boolean isEmAberto() {
-        return horarioSaida == null;
-    }
 }

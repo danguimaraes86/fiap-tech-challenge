@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -34,18 +35,16 @@ public class TicketService {
         this.veiculoService = veiculoService;
     }
 
-    public Page<TicketDTO> findAllTicket(Pageable pageable) {
-        Page<Ticket> tickets = ticketRepository.findAll(pageable);
-        return tickets.map(Ticket::toDTO);
+    public Page<Ticket> findAllTicket(Pageable pageable) {
+        return ticketRepository.findAll(pageable);
     }
 
-    public TicketDTO findById(UUID uuid) {
-        Ticket ticket = ticketRepository.findById(uuid).orElseThrow(
+    public Ticket findById(UUID uuid) {
+        return ticketRepository.findById(uuid).orElseThrow(
                 () -> new NoSuchElementException("Ticket não encontrado"));
-        return ticket.toDTO();
     }
 
-    public TicketDTO registarEntrada(TicketDTO ticketDTO) {
+    public Ticket registarEntrada(TicketDTO ticketDTO) {
         Condutor condutor = condutorService.findCondutorByCpf(ticketDTO.condutorCpf());
         Veiculo veiculo = veiculoService.findByPlaca(ticketDTO.placaVeiculo());
         if (!condutor.getVeiculoList().contains(veiculo)) {
@@ -64,15 +63,15 @@ public class TicketService {
                 ticketDTO.toEntity(condutor.getCpf(), veiculo.getPlaca(), LocalDateTime.now(), tipoCobranca));
 
         condutorService.vincularTicket(condutor, ticktCreated);
-        return ticktCreated.toDTO();
+        return ticktCreated;
 
     }
 
-    public TicketDTO registrarSaida(TicketDTO ticketDTO) {
+    public Ticket registrarSaida(TicketDTO ticketDTO) {
         Condutor condutor = condutorService.findCondutorByCpf(ticketDTO.condutorCpf());
         Veiculo veiculo = veiculoService.findByPlaca(ticketDTO.placaVeiculo());
 
-        if(!condutor.getFormaPagamento().executarPagamento()) {
+        if (!condutor.getFormaPagamento().executarPagamento()) {
             throw new RuntimeException("Pagamento negado");
         }
 
@@ -85,15 +84,12 @@ public class TicketService {
                 () -> new NoSuchElementException("ticket não encontrado")
         );
 
-        System.out.println(condutor.getFormaPagamento().getModoPagamento());
-
         ticket.registarHorarioSaida();
-        return ticketRepository.save(ticket).toDTO();
+        return ticketRepository.save(ticket);
     }
 
-
-    public TicketDTO emitirRecibo(UUID uuid) {
-        TicketDTO ticket = findById(uuid);
+    public Ticket emitirRecibo(UUID uuid) {
+        Ticket ticket = findById(uuid);
         if (ticket.isEmAberto())
             throw new NoSuchElementException("ticket em aberto");
 
