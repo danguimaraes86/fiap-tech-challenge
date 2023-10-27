@@ -75,4 +75,17 @@ public class Ticket {
     public Boolean isEmAberto() {
         return horarioSaida == null;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", horarioEntrada=" + horarioEntrada +
+                ", horarioSaida=" + horarioSaida +
+                ", tipoCobranca=" + tipoCobranca.name() +
+                ", valorTotal=" + valorTotal +
+                ", veiculo='" + veiculo + '\'' +
+                ", condutor='" + condutor + '\'' +
+                '}';
+    }
 }

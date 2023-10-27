@@ -95,4 +95,8 @@ public class TicketService {
 
         return ticket;
     }
+
+    public List<Ticket> findTicketsAbertos() {
+        return ticketRepository.findTicketsByHorarioSaidaIsNull();
+    }
 }
