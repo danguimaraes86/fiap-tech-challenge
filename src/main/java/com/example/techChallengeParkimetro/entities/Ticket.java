@@ -10,8 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
@@ -30,6 +30,7 @@ public class Ticket {
     private LocalDateTime horarioSaida;
     @NotNull
     private TipoCobranca tipoCobranca;
+    private Duration permanencia;
     private Double valorTotal;
     @NotNull
     private String veiculo;
@@ -39,33 +40,28 @@ public class Ticket {
     public Ticket(
             String condutor,
             String veiculo,
-            LocalDateTime horarioEntrada,
-            TipoCobranca tipoCobranca
+            LocalDateTime horarioEntrada
     ) {
         this.condutor = condutor;
         this.veiculo = veiculo;
         this.horarioEntrada = horarioEntrada;
-        this.tipoCobranca = tipoCobranca;
     }
 
     public void registarHorarioSaida() {
         this.horarioSaida = LocalDateTime.now();
-        calcularValorTotal();
+        if (this.tipoCobranca.equals(TipoCobranca.FLEXIVEL)) {
+            this.permanencia = Duration.ofMinutes(this.horarioEntrada.until(this.horarioSaida, ChronoUnit.MINUTES));
+        }
+        this.calcularValorTotal();
     }
 
     private void calcularValorTotal() {
-        this.valorTotal = this.tipoCobranca.executar(this.horarioEntrada, this.horarioSaida);
-    }
-
-    private String calcularPermanencia(TipoCobranca tipoCobranca) {
-        if (tipoCobranca == TipoCobranca.FLEXIVEL)
-            return LocalTime.ofSecondOfDay(this.horarioEntrada.until(this.horarioSaida, ChronoUnit.SECONDS)) + " - Hrs : Min : Seg";
-
-        return (this.horarioEntrada.until(this.horarioSaida, ChronoUnit.DAYS) + 1) + " Diarias";
+        this.valorTotal = this.tipoCobranca.calcular(this.permanencia);
     }
 
     public TicketDTO toDTO() {
-        String permanencia = this.horarioSaida == null ? Ticket.VAZIO : this.calcularPermanencia(this.tipoCobranca);
+        String permanencia = this.horarioSaida == null && this.tipoCobranca.equals(TipoCobranca.FLEXIVEL) ?
+                Ticket.VAZIO : String.valueOf(this.permanencia.toMinutes());
 
         return new TicketDTO(this.id, this.horarioEntrada, this.horarioSaida, this.tipoCobranca.name(),
                 permanencia, this.valorTotal, this.condutor, this.veiculo
@@ -74,5 +70,15 @@ public class Ticket {
 
     public Boolean isEmAberto() {
         return horarioSaida == null;
+    }
+
+    public void handleTipoCobranca(TicketDTO ticketDTO) {
+        this.tipoCobranca = ticketDTO.tipoCobranca() == null ?
+                TipoCobranca.FLEXIVEL : TipoCobranca.valueOf(ticketDTO.tipoCobranca().toUpperCase());
+
+        if (this.tipoCobranca.equals(TipoCobranca.FIXO)) {
+            this.permanencia = ticketDTO.permanencia() == null ?
+                    Duration.ofHours(1) : Duration.ofHours(Long.parseLong(ticketDTO.permanencia()));
+        }
     }
 }

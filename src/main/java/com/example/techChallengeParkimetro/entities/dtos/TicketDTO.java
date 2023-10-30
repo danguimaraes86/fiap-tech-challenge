@@ -1,7 +1,6 @@
 package com.example.techChallengeParkimetro.entities.dtos;
 
 import com.example.techChallengeParkimetro.entities.Ticket;
-import com.example.techChallengeParkimetro.infra.enums.TipoCobranca;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
@@ -19,8 +18,8 @@ public record TicketDTO(
         @NotBlank
         String placaVeiculo
 ) {
-    public Ticket toEntity(String condutor, String veiculo, LocalDateTime horarioEntrada, TipoCobranca tipoCobranca) {
-        return new Ticket(condutor, veiculo, horarioEntrada, tipoCobranca);
+    public Ticket toEntity(String condutor, String veiculo, LocalDateTime horarioEntrada) {
+        return new Ticket(condutor, veiculo, horarioEntrada);
     }
 
 }

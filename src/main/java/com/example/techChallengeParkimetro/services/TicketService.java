@@ -4,7 +4,6 @@ import com.example.techChallengeParkimetro.entities.Condutor;
 import com.example.techChallengeParkimetro.entities.Ticket;
 import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
-import com.example.techChallengeParkimetro.infra.enums.TipoCobranca;
 import com.example.techChallengeParkimetro.infra.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -56,11 +55,10 @@ public class TicketService {
             throw new DataIntegrityViolationException("condutor ou veículo com ticket em aberto");
         }
 
-        TipoCobranca tipoCobranca = ticketDTO.tipoCobranca() == null ?
-                TipoCobranca.FLEXIVEL : TipoCobranca.valueOf(ticketDTO.tipoCobranca().toUpperCase());
+        Ticket ticket = ticketDTO.toEntity(condutor.getCpf(), veiculo.getPlaca(), LocalDateTime.now());
+        ticket.handleTipoCobranca(ticketDTO);
 
-        Ticket ticktCreated = ticketRepository.save(
-                ticketDTO.toEntity(condutor.getCpf(), veiculo.getPlaca(), LocalDateTime.now(), tipoCobranca));
+        Ticket ticktCreated = ticketRepository.save(ticket);
 
         condutorService.vincularTicket(condutor, ticktCreated);
         return ticktCreated;
