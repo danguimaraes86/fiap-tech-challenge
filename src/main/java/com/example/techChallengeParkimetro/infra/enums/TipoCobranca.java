@@ -1,43 +1,21 @@
 package com.example.techChallengeParkimetro.infra.enums;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.Duration;
 
 public enum TipoCobranca {
     FIXO {
-        @Override
-        public Double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
-            double valorInicialPrimeiroDia = 70;
-            double precoDiaAdicional = 60;
-            int contador = 0;
-            double DiasPermanecido = horarioEntrada.until(horarioSaida, ChronoUnit.HOURS);
-
-            if (DiasPermanecido / 24 > 1) {
-                int horasPermanecidoDescontoDaPrimeiraHora = ((int) DiasPermanecido / 24) - 1;
-
-                contador = contador + 1 + horasPermanecidoDescontoDaPrimeiraHora;
-            }
-
-            return (valorInicialPrimeiroDia + (precoDiaAdicional * contador));
+        public Double calcular(Duration permanencia) {
+            double horaInicial = 20;
+            double horaAdicional = permanencia.minusMinutes(60).toHours() * 10;
+            return horaInicial + horaAdicional;
         }
     },
     FLEXIVEL {
-        @Override
-        public Double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
-            double valorInicialPrimeiraHora = 15;
-            double precoHoraAdicional = 10;
-            int contador = 0;
-            double horasPermanecido = horarioEntrada.until(horarioSaida, ChronoUnit.SECONDS);
-
-            if (horasPermanecido / 60 > 1) {
-                int horasPermanecidoDescontoDaPrimeiraHora = ((int) horasPermanecido / 60) - 1;
-
-                contador = contador + 1 + horasPermanecidoDescontoDaPrimeiraHora;
-            }
-
-            return (valorInicialPrimeiraHora + (precoHoraAdicional * contador));
+        public Double calcular(Duration permanencia) {
+            double valorHora = 15;
+            return valorHora + (valorHora * permanencia.toHours());
         }
     };
 
-    public abstract Double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida);
+    public abstract Double calcular(Duration permanencia);
 }
