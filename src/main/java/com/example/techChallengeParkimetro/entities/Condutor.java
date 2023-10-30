@@ -36,9 +36,9 @@ public class Condutor {
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
     @OneToMany
-    private final List<Veiculo> veiculoList = new ArrayList<>();
+    private List<Veiculo> veiculoList = new ArrayList<>();
     @OneToMany
-    private List<Ticket> tickets= new ArrayList<>();
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Condutor(String nome, String cpf, String email, String celular, FormaPagamento formaPagamento) {
         this.nome = nome;
@@ -80,5 +80,9 @@ public class Condutor {
 
     public void vincularTicket(Ticket ticket) {
         this.tickets.add(ticket);
+    }
+
+    public void notificar(Ticket ticket, String mensagem) {
+        System.out.println(mensagem.formatted(this.nome, ticket.getHorarioEntrada()));
     }
 }
