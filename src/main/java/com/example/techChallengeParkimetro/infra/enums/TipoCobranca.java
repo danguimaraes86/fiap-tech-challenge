@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public enum TipoCobranca {
-    DIARIA {
+    FIXO {
         @Override
         public Double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
             double valorInicialPrimeiroDia = 70;
@@ -20,14 +20,8 @@ public enum TipoCobranca {
 
             return (valorInicialPrimeiroDia + (precoDiaAdicional * contador));
         }
-
-        @Override
-        public void notificar(LocalDateTime horarioDeEntrada) {
-
-            var diferencaHEntradaHSaida = horarioDeEntrada.until(LocalDateTime.now(), ChronoUnit.SECONDS);
-        }
     },
-    PORHORA {
+    FLEXIVEL {
         @Override
         public Double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida) {
             double valorInicialPrimeiraHora = 15;
@@ -43,28 +37,7 @@ public enum TipoCobranca {
 
             return (valorInicialPrimeiraHora + (precoHoraAdicional * contador));
         }
-
-        @Override
-        public void notificar(LocalDateTime horarioDeEntrada) {
-            String notificacao = "";
-            double diferencaHEntradaHSaida = horarioDeEntrada.until(LocalDateTime.now(), ChronoUnit.SECONDS);
-            double faltaParaCompletarProximoPeriodo = diferencaHEntradaHSaida % 60;
-
-            System.out.println(faltaParaCompletarProximoPeriodo);
-
-            if (faltaParaCompletarProximoPeriodo / 60 >= 0.9  && faltaParaCompletarProximoPeriodo / 60 < 0.916){
-                notificacao = "Falta 5 minutos para cobrança da proxima hora";
-                System.out.println(notificacao);
-            } else if (faltaParaCompletarProximoPeriodo / 60 >= 0.815  && faltaParaCompletarProximoPeriodo / 60 < 0.833) {
-                notificacao = "Falta 10 minutos para cobrança da proxima hora";
-                System.out.println(notificacao);
-            }
-        }
     };
 
     public abstract Double executar(LocalDateTime horarioEntrada, LocalDateTime horarioSaida);
-    public abstract void notificar(LocalDateTime horarioDeEntrada);
-    /* Em um cenario Pratico, este metodo deveria chamar uma requisição REST para o frontEnd, que
-    lançasse para o usuario uma notificaçao nos periodos determinados na logica
-     */
 }

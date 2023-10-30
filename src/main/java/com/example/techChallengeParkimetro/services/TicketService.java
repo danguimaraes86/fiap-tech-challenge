@@ -57,7 +57,7 @@ public class TicketService {
         }
 
         TipoCobranca tipoCobranca = ticketDTO.tipoCobranca() == null ?
-                TipoCobranca.PORHORA : TipoCobranca.valueOf(ticketDTO.tipoCobranca().toUpperCase());
+                TipoCobranca.FLEXIVEL : TipoCobranca.valueOf(ticketDTO.tipoCobranca().toUpperCase());
 
         Ticket ticktCreated = ticketRepository.save(
                 ticketDTO.toEntity(condutor.getCpf(), veiculo.getPlaca(), LocalDateTime.now(), tipoCobranca));

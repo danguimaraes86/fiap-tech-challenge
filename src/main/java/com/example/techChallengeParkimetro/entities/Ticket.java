@@ -53,12 +53,12 @@ public class Ticket {
         calcularValorTotal();
     }
 
-    public void calcularValorTotal() {
+    private void calcularValorTotal() {
         this.valorTotal = this.tipoCobranca.executar(this.horarioEntrada, this.horarioSaida);
     }
 
-    public String calcularPermanencia(TipoCobranca tipoCobranca) {
-        if (tipoCobranca == TipoCobranca.PORHORA)
+    private String calcularPermanencia(TipoCobranca tipoCobranca) {
+        if (tipoCobranca == TipoCobranca.FLEXIVEL)
             return LocalTime.ofSecondOfDay(this.horarioEntrada.until(this.horarioSaida, ChronoUnit.SECONDS)) + " - Hrs : Min : Seg";
 
         return (this.horarioEntrada.until(this.horarioSaida, ChronoUnit.DAYS) + 1) + " Diarias";
@@ -74,18 +74,5 @@ public class Ticket {
 
     public Boolean isEmAberto() {
         return horarioSaida == null;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", horarioEntrada=" + horarioEntrada +
-                ", horarioSaida=" + horarioSaida +
-                ", tipoCobranca=" + tipoCobranca.name() +
-                ", valorTotal=" + valorTotal +
-                ", veiculo='" + veiculo + '\'' +
-                ", condutor='" + condutor + '\'' +
-                '}';
     }
 }
