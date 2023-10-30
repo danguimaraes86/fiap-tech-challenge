@@ -4,7 +4,6 @@ import com.example.techChallengeParkimetro.entities.Condutor;
 import com.example.techChallengeParkimetro.entities.Ticket;
 import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.CondutorDTO;
-import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
 import com.example.techChallengeParkimetro.infra.repositories.CondutorRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

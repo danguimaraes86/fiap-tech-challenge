@@ -3,7 +3,7 @@ package com.example.techChallengeParkimetro.infra.enums;
 import java.util.Random;
 
 public enum FormaPagamento {
-    DEBITO ("Pago via Debito"){
+    DEBITO("Pago via Debito") {
         @Override
         public boolean executarPagamento() {
 
@@ -17,7 +17,7 @@ public enum FormaPagamento {
             return new Random().nextBoolean();
         }
     },
-    PIX ("Pago via PIX"){
+    PIX("Pago via PIX") {
         @Override
         public boolean executarPagamento() {
             return true;
@@ -27,10 +27,6 @@ public enum FormaPagamento {
 
     FormaPagamento(String formaPagamento) {
         this.modoPagamento = formaPagamento;
-    }
-
-    public String getModoPagamento() {
-        return modoPagamento;
     }
 
     public abstract boolean executarPagamento();
