@@ -4,6 +4,7 @@ import com.example.techChallengeParkimetro.entities.Condutor;
 import com.example.techChallengeParkimetro.entities.Ticket;
 import com.example.techChallengeParkimetro.entities.Veiculo;
 import com.example.techChallengeParkimetro.entities.dtos.TicketDTO;
+import com.example.techChallengeParkimetro.infra.enums.TipoCobranca;
 import com.example.techChallengeParkimetro.infra.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -94,7 +95,8 @@ public class TicketService {
         return ticket;
     }
 
-    public List<Ticket> findTicketsAbertos() {
-        return ticketRepository.findTicketsByHorarioSaidaIsNull();
+    public List<Ticket> findTicketsAbertos(TipoCobranca tipoCobranca) {
+        return ticketRepository.findTicketsByHorarioSaidaIsNull().stream()
+                .filter(ticket -> ticket.getTipoCobranca().equals(tipoCobranca)).toList();
     }
 }

@@ -32,10 +32,7 @@ public class ScheduleTasks {
 
     @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 30)
     public void notificarTicketsFlexiveis() {
-        List<Ticket> ticketsAbertos = ticketService.findTicketsAbertos();
-
-        List<Ticket> ticketsFlexivel = ticketsAbertos.stream()
-                .filter(ticket -> ticket.getTipoCobranca().equals(TipoCobranca.FLEXIVEL)).toList();
+        List<Ticket> ticketsFlexivel = ticketService.findTicketsAbertos(TipoCobranca.FLEXIVEL);
 
         ticketsFlexivel.forEach(ticket -> {
             if (ticket.getHorarioEntrada().until(LocalDateTime.now(), ChronoUnit.MINUTES) >= 50) {
@@ -47,10 +44,7 @@ public class ScheduleTasks {
 
     @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 30)
     public void notificarTicketsFixo() {
-        List<Ticket> ticketsAbertos = ticketService.findTicketsAbertos();
-
-        List<Ticket> ticketsFixo = ticketsAbertos.stream()
-                .filter(ticket -> ticket.getTipoCobranca().equals(TipoCobranca.FIXO)).toList();
+        List<Ticket> ticketsFixo = ticketService.findTicketsAbertos(TipoCobranca.FIXO);
 
         ticketsFixo.forEach(ticket -> {
             if (ticket.getHorarioEntrada().until(
