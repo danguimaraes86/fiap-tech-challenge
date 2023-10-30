@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ScheduleTasks {
@@ -27,25 +30,37 @@ public class ScheduleTasks {
         this.condutorService = condutorService;
     }
 
-    @Scheduled(cron = "0 50 * * * *")
-    public void buscarTicketsAbertos() {
-        System.out.println("------ cron rodando ------");
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 30)
+    public void notificarTicketsFlexiveis() {
         List<Ticket> ticketsAbertos = ticketService.findTicketsAbertos();
 
-        System.out.println("------ tickets FLEXÍVEL ------");
         List<Ticket> ticketsFlexivel = ticketsAbertos.stream()
                 .filter(ticket -> ticket.getTipoCobranca().equals(TipoCobranca.FLEXIVEL)).toList();
-        ticketsFlexivel.forEach(ticket -> {
-            Condutor condutor = condutorService.findCondutorByCpf(ticket.getCondutor());
-            condutor.notificar(ticket, mensagemTempoFlexivel);
-        });
 
-        System.out.println("------ tickets FIXO ------");
-        List<Ticket> ticketsFixo = ticketsAbertos.stream()
-                .filter(ticket -> ticket.getTipoCobranca().equals(TipoCobranca.FIXO)).toList();
-        ticketsFixo.forEach(ticket -> {
-            Condutor condutor = condutorService.findCondutorByCpf(ticket.getCondutor());
-            condutor.notificar(ticket, mensagemTempoFixo);
+        ticketsFlexivel.forEach(ticket -> {
+            if (ticket.getHorarioEntrada().until(LocalDateTime.now(), ChronoUnit.MINUTES) >= 50) {
+                Condutor condutor = condutorService.findCondutorByCpf(ticket.getCondutor());
+                condutor.notificar(ticket, mensagemTempoFlexivel);
+            }
         });
     }
+
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRate = 30)
+    public void notificarTicketsFixo() {
+        List<Ticket> ticketsAbertos = ticketService.findTicketsAbertos();
+
+        List<Ticket> ticketsFixo = ticketsAbertos.stream()
+                .filter(ticket -> ticket.getTipoCobranca().equals(TipoCobranca.FIXO)).toList();
+
+        ticketsFixo.forEach(ticket -> {
+            if (ticket.getHorarioEntrada().until(
+                    LocalDateTime.now().plusMinutes(
+                            ticket.getPermanencia()
+                                    .minusMinutes(60).toMinutes()), ChronoUnit.MINUTES) >= 50) {
+                Condutor condutor = condutorService.findCondutorByCpf(ticket.getCondutor());
+                condutor.notificar(ticket, mensagemTempoFixo);
+            }
+        });
+    }
+
 }
