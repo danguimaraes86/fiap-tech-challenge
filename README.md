@@ -1,5 +1,4 @@
-# Tech Challenge 
-
+# Tech Challenge
 Bem-vindo(a) a documentação oficial da API desenvolvidas para o Tech Challenge fase 3.
 
 ## Tecnologias e Ferramentas
@@ -18,101 +17,114 @@ Bem-vindo(a) a documentação oficial da API desenvolvidas para o Tech Challenge
 
 ## Explore
 
-### Api – Eletrodomésticos
+### Sistema de Notificação
+Nossa solução para a implementar o sistema de notificação de forma mock foi criar um serviço `Schedule` do próprio Spring,
+por meio da classe `ScheduleTasks` e dos métodos `notificarTicketsFlexiveis()` e `notificarTicketsFixo()`.
+Pensamos neste sistema como um meio de simular a aplicação em produção e com uso de **serviços da AWS**, de produtos como **o ECS
+e Lambda**.
 
-| Método | Url | Descrição | Modelo de Requisição válido |
-| ------ | --- | ----------- | ------------------------- |
-| POST    | /eletrodomestico | Cadastra um eletrodoméstico | [JSON](#createEletro)|
-| PUT   | /eletrodomestico/{id} | Atualiza um eletrodoméstico com Id específico | [JSON](#updateEletro) |
-| GET    | /eletrodomestico/{id} | Retorna um eletrodoméstico com Id específico | |
-| GET    | /eletrodomestico | Retorna todos os eletrodomésticos cadastrados | |
-| DELETE    | /eletrodomestico/{id} | Deleta um eletrodoméstico com Id específico | |
+### Endpoints – Condutor
 
-### Exemplos de entrada
-
-##### <a id="createEletro"> POST - /eletrodomestico</a>
-```json
-{
- "nome": "Geladeira",
- "potencia": "500w",
- "modelo": "Eletrolux",
- "fabricacao": "2019-12-09"
-}
-```
-
-##### <a id="updateEletro">PUT - /eletrodomestico/{id}</a>
-```json
-{
- "nome": "Fogão",
- "potencia": "3000w",
- "modelo": "Brastemp",
- "fabricacao": "2019-12-09"
-}
-```
-### Api – Pessoas
-
-| Método | Url | Descrição | Modelo de Requisição válido |
-| ------ | --- | ----------- | ------------------------- |
-| POST    | /pessoa | Cadastra uma pessoa | [JSON](#createPessoa)|
-| PUT   | /pessoa/{id} | Atualiza uma pessoa com Id específico | [JSON](#updatepessoa) |
-| GET    | /pessoa/{id} | Retorna uma pessoa com Id específico | |
-| GET    | /pessoa | Retorna todos as pessoas cadastrados | |
-| DELETE    | /pessoa/{id} | Deleta uma pessoa com Id específico | |
+| Método | Url                               | Descrição                                                      | Saída HttpStatus |
+|--------|-----------------------------------|----------------------------------------------------------------|------------------|
+| GET    | /condutor                         | Faz a busca de todos os condutores                             | OK (200)         |
+| GET    | /condutor/{id}                    | Faz a busca por um condutor específico                         | OK (200)         |
+| GET    | /condutor/tickets?cpf=48153023837 | Faz a busca do ticket de estacionamento do condutor específico | OK (200)         |
+| POST   | /condutor                         | Cadastra um novo condutor                                      | OK (200)         |
+| PUT    | /condutor/{cpf}                   | Alterar informações do condutor                                | OK (200)         |
+| DELETE | /condutor/{cpf}                   | Excluir um condutor                                            | No Content (204) | 
 
 ### Exemplos de entrada
 
-##### <a id="createPessoa"> POST - /pessoa</a>
+##### POST - /condutor
 ```json
 {
- "nome": "Marcos Leonardo",
- "dataNascimento": "2003-05-02",
- "sexo": "Masculino",
- "parentesco": "Filho"
+  "nome": "Daniel", /* String required */
+  "cpf": "99999999999", /* String required */
+  "email": "teste@teste", /* String required */
+  "celular": "(99) 98888-7777", /* String optional */
+  "formaPagamento": "pix" /* String optional */
 }
 ```
 
-##### <a id="updatepessoa">PUT - /pessoa/{id}</a>
+##### PUT - /condutor/{cpf}
 ```json
 {
- "nome": "Rodrigo Fernandez",
- "dataNascimento": "2003-05-02",
- "sexo": "Masculino",
- "parentesco": "Irmão"
+  "nome": "Daniel", /* String required */
+  "cpf": "99999999999", /* String required */
+  "email": "teste@teste", /* String required */
+  "celular": "(99) 98888-7777", /* String optional */
+  "formaPagamento": "pix" /* String optional */
 }
 ```
-### Api – Endereços
+### Endpoints - Veículos
 
-| Método | Url | Descrição | Modelo de Requisição válido |
-| ------ | --- | ----------- | ------------------------- |
-| POST    | /enderecos | Cadastra um endereço | [JSON](#createEndereco)|
-| PUT   | /enderecos/{id} | Atualiza um endereço com Id específico | [JSON](#updateEndereco) |
-| GET    | /enderecos/{id} | Retorna um endereço com Id específico | |
-| GET    | /enderecos | Retorna todos os endereços cadastrados | |
-| DELETE    | /enderecos/{id} | Deleta um endereço com Id específico | |
+| Método | Url              | Descrição                                                           | Saída HttpStatus |
+|--------|------------------|---------------------------------------------------------------------|------------------|
+| GET    | /veiculo         | Faz a busca de todos os veículos                                    | OK (200)         |
+| GET    | /veiculo/{id}    | Faz a busca de um veículo específico a partir do id                 | OK (200)         |
+| POST   | /veiculo         | Registra um novo veiculo                                            | OK (200)         |
+| PUT    | /veiculo/{placa} | Faz alterações no registro de um veículo a partir da placa do mesmo | OK (200)         |
+| DELETE | /veiculo/{placa} | Deleta um veículo a partir da sua placa                             | No Content (204) |
 
 ### Exemplos de entrada
 
-##### <a id="createEndereco"> POST - /enderecos</a>
+##### POST - /veiculo
 ```json
 {
- "nomeInstalacao": "Casa de Campo",
- "rua": "Rua Princesa Isabel",
- "numero": "70",
- "bairro": "Urbano Caldera",
- "cidade": "Santos",
- "estado": "São Paulo"
+  "headers": {
+    "condutorCpf": "99999999999" /* String required */
+  },
+  "body": {
+    "marca": "VW", /* String required */
+    "modelo": "Polo", /* String required */
+    "placa": "bbb2222" /* String required */
+  }
 }
 ```
 
-##### <a id="updateEndereco">PUT - /enderecos/{id}</a>
+##### PUT - /veiculo/{placa}
 ```json
 {
- "nomeInstalacao": "Escritório",
- "rua": "Rua Edson Arantes",
- "numero": "100",
- "bairro": "Urbano Caldera",
- "cidade": "Santos",
- "estado": "São Paulo"
+  "headers": {
+    "condutorCpf": "99999999999" /* String required */
+  },
+  "body": {
+    "marca": "VW", /* String required */
+    "modelo": "Polo", /* String required */
+    "placa": "bbb2222" /* String required */
+  }
+}
+```
+### Endpoints – Tickets
+
+| Método | Url                          | Descrição                                                                               | Saída HttpStatus |
+|--------|------------------------------|-----------------------------------------------------------------------------------------|------------------|
+| POST   | /ticket/registrarEntrada     | Faz o registro da entrada de um novo veículo                                            | OK (200)         |
+| POST   | /ticket/registrarSaida       | Faz o registro da saída de um veículo                                                   | OK (200)         |
+| GET    | /ticket                      | Faz a busca de todos os tickets                                                         | OK (200)         |
+| GET    | /ticket/{uuid}               | Faz a busca de um ticket a partir do seu uuid                                           | OK (200)         |
+| GET    | /ticket/emitirRescibo/{uuid} | Gera o ticket para que o cliente veja as informações entre o período de entrada e saída | OK (200)         |
+
+### Exemplos de entrada
+
+##### POST - /ticket/registrarEntrada
+```json
+{
+  "condutorCpf": "99999999999", /* String required */
+  "placaVeiculo": "bbb2222", /* String required */
+  "tipoCobranca": "flexivel", /* String (flexivel ou fixo) optional */
+  "permanencia": 3 /* Number optional */
+}
+```
+
+##### PUT - /ticket/registrarSaida
+```json
+{
+  "condutorCpf": "99999999999", /* String required */
+  "placaVeiculo": "bbb2222", /* String required */
+  "tipoCobranca": "flexivel", /* String (flexivel ou fixo) optional */
+  "permanencia": 3 /* Number optional */
 }
 ```
 
