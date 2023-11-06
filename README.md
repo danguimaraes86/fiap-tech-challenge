@@ -37,7 +37,7 @@ e Lambda**.
 ### Exemplos de entrada
 
 ##### POST - /condutor
-```json
+```
 {
   "nome": "Daniel", /* String required */
   "cpf": "99999999999", /* String required */
@@ -48,7 +48,7 @@ e Lambda**.
 ```
 
 ##### PUT - /condutor/{cpf}
-```json
+```
 {
   "nome": "Daniel", /* String required */
   "cpf": "99999999999", /* String required */
@@ -70,7 +70,7 @@ e Lambda**.
 ### Exemplos de entrada
 
 ##### POST - /veiculo
-```json
+```
 {
   "headers": {
     "condutorCpf": "99999999999" /* String required */
@@ -84,7 +84,7 @@ e Lambda**.
 ```
 
 ##### PUT - /veiculo/{placa}
-```json
+```
 {
   "headers": {
     "condutorCpf": "99999999999" /* String required */
@@ -109,7 +109,7 @@ e Lambda**.
 ### Exemplos de entrada
 
 ##### POST - /ticket/registrarEntrada
-```json
+```
 {
   "condutorCpf": "99999999999", /* String required */
   "placaVeiculo": "bbb2222", /* String required */
@@ -119,7 +119,7 @@ e Lambda**.
 ```
 
 ##### PUT - /ticket/registrarSaida
-```json
+```
 {
   "condutorCpf": "99999999999", /* String required */
   "placaVeiculo": "bbb2222", /* String required */
@@ -127,6 +127,3 @@ e Lambda**.
   "permanencia": 3 /* Number optional */
 }
 ```
-
-
-
