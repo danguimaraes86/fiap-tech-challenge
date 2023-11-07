@@ -1,0 +1,587 @@
+{
+	"info": {
+		"_postman_id": "9ad607b9-4c66-46aa-a561-069ec4241d2f",
+		"name": "Fiap Tech Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27560229"
+	},
+	"item": [
+		{
+			"name": "Consumidor",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/consumidor",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"consumidor"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "juliane",
+									"disabled": true
+								},
+								{
+									"key": "sexo",
+									"value": "feminino",
+									"disabled": true
+								},
+								{
+									"key": "parentesco",
+									"value": "teste",
+									"disabled": true
+								},
+								{
+									"key": "dataNascimento",
+									"value": "2000",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/consumidor/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"consumidor",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Consumidor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usuarioId",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"juliane\",\n    \"dataNascimento\": \"2020-11-12\",\n    \"sexo\": \"feminino\",\n    \"parentesco\": \"esposa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/consumidor",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"consumidor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Consumidor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/consumidor/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"consumidor",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Consumidor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/consumidor/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"consumidor",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuário",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							],
+							"query": [
+								{
+									"key": "tipoUsuario",
+									"value": "MEMBRO",
+									"disabled": true
+								},
+								{
+									"key": "tipoUsuario",
+									"value": "RESPONSAVEL",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"email@email.com\",\n    \"senha\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endereço",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/enderecos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"enderecos"
+							],
+							"query": [
+								{
+									"key": "nomeInstalacao",
+									"value": "escritorio",
+									"disabled": true
+								},
+								{
+									"key": "estado",
+									"value": "sp",
+									"disabled": true
+								},
+								{
+									"key": "cidade",
+									"value": "anapolis",
+									"disabled": true
+								},
+								{
+									"key": "bairro",
+									"value": "plano piloto",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/enderecos/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"enderecos",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Endereço",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usuarioId",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nomeInstalacao\": \"casa2\",\n    \"rua\": \"rua 18\",\n    \"numero\": \"numero 1\",\n    \"bairro\": \"plano piloto\",\n    \"cidade\": \"brasilia\",\n    \"estado\": \"df\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/enderecos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"enderecos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Endereço",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/endereco/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"endereco",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Endereço",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/endereco/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"endereco",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Eletrodoméstico",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eletrodomestico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eletrodomestico"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "geladeira",
+									"disabled": true
+								},
+								{
+									"key": "modelo",
+									"value": "brastemp",
+									"disabled": true
+								},
+								{
+									"key": "fabricacao",
+									"value": "2022-01-",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/eletrodomestico/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eletrodomestico",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Eletrodoméstico",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usuarioId",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"aspirador\",\n    \"potencia\": \"500w\",\n    \"modelo\": \"xiaomi\",\n    \"fabricacao\": \"2020-12-11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eletrodomestico",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eletrodomestico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Eletrodoméstico",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eletrodomestico/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eletrodomestico",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Eletrodoméstico",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/eletrodomestico/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"eletrodomestico",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:3000"
+		}
+	]
+}
