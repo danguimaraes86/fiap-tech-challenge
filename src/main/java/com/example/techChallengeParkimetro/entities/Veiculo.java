@@ -34,7 +34,7 @@ public class Veiculo {
     }
 
     public VeiculoDTO toDTO() {
-        return new VeiculoDTO(this.id.toString(), this.marca, this.modelo, this.placa, this.condutorCPF);
+        return new VeiculoDTO(this.marca, this.modelo, this.placa, this.condutorCPF);
     }
 
     public void update(VeiculoDTO veiculoDTO) {

@@ -50,7 +50,7 @@ public class Condutor {
 
     public CondutorDTO toDTO() {
         return new CondutorDTO(
-                this.id.toString(), this.nome, this.cpf, this.email, this.celular,
+                this.nome, this.cpf, this.email, this.celular,
                 this.formaPagamento.toString().toLowerCase(),
                 this.veiculoList.stream().map(Veiculo::toDTO).toList());
     }
