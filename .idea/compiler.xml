@@ -6,10 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-tech-challenge" />
-        <module name="api-eletrodomesticos" />
-        <module name="api-usuarios" />
-        <module name="api-endereco-instalacao" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
@@ -19,6 +15,15 @@
         <module name="fase-04.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-eletrodomesticos" target="17" />
+      <module name="api-endereco-instalacao" target="17" />
+      <module name="api-tech-challenge" target="17" />
+      <module name="api-usuarios" target="17" />
+      <module name="fase-01" target="1.5" />
+      <module name="fase-02" target="1.5" />
+      <module name="fase-03" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

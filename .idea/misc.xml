@@ -12,6 +12,16 @@
         <option value="$PROJECT_DIR$/fase-02/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/fase-01/api-eletrodomesticos/pom.xml" />
+        <option value="$PROJECT_DIR$/fase-01/api-endereco-instalacao/pom.xml" />
+        <option value="$PROJECT_DIR$/fase-01/api-usuarios/pom.xml" />
+        <option value="$PROJECT_DIR$/fase-01/pom.xml" />
+        <option value="$PROJECT_DIR$/fase-02/api-tech-challenge/pom.xml" />
+        <option value="$PROJECT_DIR$/fase-02/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="temurin-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
