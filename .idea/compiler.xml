@@ -2,17 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-      </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
-        <module name="fase-04.main" />
+        <module name="fase-03.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,7 +17,6 @@
       <module name="api-usuarios" target="17" />
       <module name="fase-01" target="1.5" />
       <module name="fase-02" target="1.5" />
-      <module name="fase-03" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
