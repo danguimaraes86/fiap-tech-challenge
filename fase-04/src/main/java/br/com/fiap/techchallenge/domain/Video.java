@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,8 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
+@Getter
 @Document
 public class Video {
     @Id
@@ -18,5 +16,11 @@ public class Video {
     private String titulo;
     private String descricao;
     private String url;
-    private LocalDateTime dataPublicacao;
+    private final LocalDateTime dataPublicacao = LocalDateTime.now();
+
+    public Video(String titulo, String descricao, String url) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.url = url;
+    }
 }
