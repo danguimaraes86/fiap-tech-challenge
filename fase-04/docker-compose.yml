@@ -12,9 +12,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: toor
       MONGO_INITDB_DATABASE: mockflix
     volumes:
-      - tech-challenge-fase-04:/data/db
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
     ports:
       - "27017:27017"
 
 volumes:
-  tech-challenge-fase-04:
+  mongo-data:
+  mongo-config:
