@@ -12,7 +12,6 @@ public class VideoUtil {
 
     public static Video gerarVideoMock() {
         Faker faker = new Faker(new Locale("pt_BR"));
-
         return new Video(
                 ObjectId.get().toHexString(),
                 faker.witcher().witcher(),
@@ -24,7 +23,6 @@ public class VideoUtil {
 
     public static VideoDTO gerarVideoDTOMock() {
         Faker faker = new Faker(new Locale("pt_BR"));
-
         return new VideoDTO(
                 faker.witcher().witcher(),
                 faker.witcher().school(),

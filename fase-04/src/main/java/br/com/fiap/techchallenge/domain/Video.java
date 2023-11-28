@@ -24,5 +24,4 @@ public class Video {
         this.url = url;
         this.dataPublicacao = dataPublicacao;
     }
-
 }
