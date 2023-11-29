@@ -55,6 +55,9 @@ class VideoServiceTest {
                     .hasSize(3)
                     .isEqualTo(videoFaker)
                     .contains(videoFaker.get(Range.START_TO_START));
+                    .contains(videoFaker.get(Range.START_TO_START))
+                    .doesNotContainNull()
+                    .doesNotContain(VideoUtil.gerarVideoMock());
         }
 
         @Test
