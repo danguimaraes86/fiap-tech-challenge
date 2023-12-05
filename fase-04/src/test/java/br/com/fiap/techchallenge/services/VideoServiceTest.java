@@ -102,6 +102,7 @@ class VideoServiceTest {
             assertThat(videoNovo).isInstanceOf(Video.class)
                     .isEqualTo(videoFake);
             assertThat(videoNovo.getId()).isEqualTo(videoFake.getId());
+            assertThat(videoNovo.getUltimaAlteracao()).isAfterOrEqualTo(videoFake.getDataPublicacao());
         }
     }
 
@@ -112,7 +113,6 @@ class VideoServiceTest {
         void deveRemoverVideoPorId() {
             Video videoFake = VideoUtil.gerarVideoMock();
             String id = videoFake.getId();
-
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
 
             videoService.deleteById(id);

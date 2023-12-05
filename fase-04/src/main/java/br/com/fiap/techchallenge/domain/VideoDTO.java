@@ -6,7 +6,8 @@ public record VideoDTO(
         String titulo,
         String descricao,
         String url,
-        LocalDateTime dataPublicacao
+        LocalDateTime dataPublicacao,
+        LocalDateTime ultimaAlteracao
 ) {
 
     public Video toEntity() {

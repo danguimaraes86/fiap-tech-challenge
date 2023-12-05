@@ -17,11 +17,15 @@ public class Video {
     private String descricao;
     private String url;
     private LocalDateTime dataPublicacao;
+    private LocalDateTime ultimaAlteracao;
 
     public Video(String titulo, String descricao, String url, LocalDateTime dataPublicacao) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.url = url;
         this.dataPublicacao = dataPublicacao;
+        this.ultimaAlteracao = dataPublicacao;
+    }
+
     }
 }

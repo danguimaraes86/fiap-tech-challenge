@@ -12,22 +12,24 @@ public class VideoUtil {
 
     public static Video gerarVideoMock() {
         Faker faker = new Faker(new Locale("pt_BR"));
+        LocalDateTime publicacao = LocalDateTime.now();
         return new Video(
                 ObjectId.get().toHexString(),
                 faker.witcher().witcher(),
                 faker.witcher().school(),
-                faker.witcher().quote(),
-                LocalDateTime.now()
+                faker.internet().url(),
+                publicacao, publicacao
         );
     }
 
     public static VideoDTO gerarVideoDTOMock() {
         Faker faker = new Faker(new Locale("pt_BR"));
+        LocalDateTime publicacao = LocalDateTime.now();
         return new VideoDTO(
                 faker.witcher().witcher(),
                 faker.witcher().school(),
-                faker.witcher().quote(),
-                LocalDateTime.now()
+                faker.internet().url(),
+                publicacao, publicacao
         );
     }
 }
