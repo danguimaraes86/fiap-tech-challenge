@@ -131,4 +131,39 @@ class VideoServiceTest {
                     .hasMessage("video não encontrado");
         }
     }
+
+    @Nested
+    class AlterarVideos {
+
+        @Test
+        void deveAlterarVideoPorId() {
+            Video videoFake = VideoUtil.gerarVideoMock();
+            String id = videoFake.getId();
+            VideoDTO videoDTO = VideoUtil.gerarVideoDTOMock();
+            when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
+            videoFake.update(videoDTO);
+            when(videoRepository.save(any(Video.class))).thenReturn(videoFake);
+
+            Video videoAtualizado = videoService.updateVideoById(id, videoDTO);
+            verify(videoRepository, times(1)).findById(id);
+            verify(videoRepository, times(1)).save(videoAtualizado);
+
+            assertThat(videoAtualizado).isNotNull().isEqualTo(videoFake);
+            assertThat(videoAtualizado.getId()).isEqualTo(videoFake.getId());
+            assertThat(videoAtualizado.getTitulo()).isEqualTo(videoFake.getTitulo());
+            assertThat(videoAtualizado.getUltimaAlteracao()).isAfter(videoAtualizado.getDataPublicacao());
+        }
+
+        @Test
+        void deveLancarExcecao_AlterarVideoPorId_VideoNaoEncontrado() {
+            Video videoFaker = VideoUtil.gerarVideoMock();
+            String id = videoFaker.getId();
+            VideoDTO videoDTO = VideoUtil.gerarVideoDTOMock();
+            when(videoRepository.findById(id)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> videoService.updateVideoById(id, videoDTO))
+                    .isInstanceOf(VideoNotFoundException.class)
+                    .hasMessage("video não encontrado");
+        }
+    }
 }

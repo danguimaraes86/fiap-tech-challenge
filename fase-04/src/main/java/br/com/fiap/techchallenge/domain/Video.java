@@ -27,5 +27,13 @@ public class Video {
         this.ultimaAlteracao = dataPublicacao;
     }
 
+    public void update(VideoDTO videoDTO) {
+        if (videoDTO.titulo() != null)
+            this.titulo = videoDTO.titulo();
+        if (videoDTO.descricao() != null)
+            this.descricao = videoDTO.descricao();
+        if (videoDTO.url() != null)
+            this.url = videoDTO.url();
+        this.ultimaAlteracao = LocalDateTime.now();
     }
 }

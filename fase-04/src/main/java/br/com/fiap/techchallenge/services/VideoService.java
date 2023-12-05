@@ -33,4 +33,10 @@ public class VideoService {
         Video video = findById(id);
         videoRepository.delete(video);
     }
+
+    public Video updateVideoById(String id, VideoDTO videoDTO) {
+        Video video = findById(id);
+        video.update(videoDTO);
+        return videoRepository.save(video);
+    }
 }
