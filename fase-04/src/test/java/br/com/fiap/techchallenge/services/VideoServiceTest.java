@@ -104,4 +104,31 @@ class VideoServiceTest {
             assertThat(videoNovo.getId()).isEqualTo(videoFake.getId());
         }
     }
+
+    @Nested
+    class RemoverVideos {
+
+        @Test
+        void deveRemoverVideoPorId() {
+            Video videoFake = VideoUtil.gerarVideoMock();
+            String id = videoFake.getId();
+
+            when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
+
+            videoService.deleteById(id);
+            verify(videoRepository, times(1)).findById(id);
+            verify(videoRepository, times(1)).delete(videoFake);
+        }
+
+        @Test
+        void deveLancarExcecao_RemoverVideoPorId_VideoNaoEncontrado() {
+            Video videoFaker = VideoUtil.gerarVideoMock();
+            String id = videoFaker.getId();
+            when(videoRepository.findById(id)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> videoService.deleteById(id))
+                    .isInstanceOf(VideoNotFoundException.class)
+                    .hasMessage("video não encontrado");
+        }
+    }
 }

@@ -28,4 +28,9 @@ public class VideoService {
                 () -> new VideoNotFoundException("video não encontrado")
         );
     }
+
+    public void deleteById(String id) {
+        Video video = findById(id);
+        videoRepository.delete(video);
+    }
 }
