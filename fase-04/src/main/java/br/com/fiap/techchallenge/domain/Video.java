@@ -36,4 +36,8 @@ public class Video {
             this.url = videoDTO.url();
         this.ultimaAlteracao = LocalDateTime.now();
     }
+
+    public VideoDTO toVideoDTO() {
+        return new VideoDTO(this.titulo, this.descricao, this.url, this.dataPublicacao, this.ultimaAlteracao);
+    }
 }
