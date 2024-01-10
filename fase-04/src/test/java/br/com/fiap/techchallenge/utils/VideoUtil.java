@@ -29,7 +29,7 @@ public class VideoUtil {
                 faker.witcher().witcher(),
                 faker.witcher().school(),
                 faker.internet().url(),
-                publicacao, publicacao
+                publicacao, null
         );
     }
 }

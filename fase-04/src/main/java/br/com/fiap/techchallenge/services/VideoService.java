@@ -7,6 +7,7 @@ import br.com.fiap.techchallenge.repositories.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,7 +21,9 @@ public class VideoService {
     }
 
     public Video insert(VideoDTO videoDTO) {
-        return videoRepository.insert(videoDTO.toEntity());
+        return videoRepository.insert(
+                new Video(videoDTO.titulo(), videoDTO.descricao(), videoDTO.url(), LocalDateTime.now())
+        );
     }
 
     public Video findById(String id) {

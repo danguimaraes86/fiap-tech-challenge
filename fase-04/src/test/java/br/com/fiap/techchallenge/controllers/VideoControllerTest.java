@@ -5,7 +5,6 @@ import br.com.fiap.techchallenge.domain.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.services.VideoService;
-import br.com.fiap.techchallenge.utils.JsonUtil;
 import br.com.fiap.techchallenge.utils.VideoUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class VideoControllerTest {
 
@@ -57,7 +59,7 @@ class VideoControllerTest {
 
             mockMvc.perform(get("/videos"))
                     .andExpect(status().isOk())
-                    .andExpect(content().json(JsonUtil.toJsonString(videoFakerList)));
+                    .andExpect(content().json(toJsonString(videoFakerList)));
             verify(videoService, times(1)).findAll();
         }
 
@@ -73,7 +75,7 @@ class VideoControllerTest {
             List<VideoDTO> videoDTOList = videoFakerList.stream().map(Video::toVideoDTO).toList();
             mockMvc.perform(get("/videos"))
                     .andExpect(status().isOk())
-                    .andExpect(content().json(JsonUtil.toJsonString(videoDTOList)));
+                    .andExpect(content().json(toJsonString(videoDTOList)));
             verify(videoService, times(1)).findAll();
         }
 
@@ -87,7 +89,7 @@ class VideoControllerTest {
             VideoDTO videoDTO = videoFake.toVideoDTO();
             mockMvc.perform(get("/videos/{id}", id))
                     .andExpect(status().isOk())
-                    .andExpect(content().json(JsonUtil.toJsonString(videoDTO)));
+                    .andExpect(content().json(toJsonString(videoDTO)));
             verify(videoService, times(1)).findById(anyString());
         }
 
@@ -99,6 +101,36 @@ class VideoControllerTest {
             mockMvc.perform(get("/videos/{id}", id))
                     .andExpect(status().isNotFound());
             verify(videoService, times(1)).findById(anyString());
+        }
+    }
+
+    @Nested
+    class InserirVideo {
+
+        @Test
+        void deveInserirVideo() throws Exception {
+            Video videoFake = VideoUtil.gerarVideoMock();
+            VideoDTO videoDTOFake = videoFake.toVideoDTO();
+            when(videoService.insert(videoDTOFake)).thenReturn(videoFake);
+
+            mockMvc.perform(post("/videos")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(videoDTOFake)))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json(toJsonString(videoDTOFake)))
+                    .andExpect(header().string("Location", containsString(videoFake.getId())));
+            verify(videoService, times(1)).insert(any(VideoDTO.class));
+        }
+
+        @Test
+        void deveLancarExcecao_InserirVideo_dadosInvalidos() throws Exception {
+            VideoDTO videoDTOFake = new VideoDTO(null, null, null, null, null);
+
+            mockMvc.perform(post("/videos")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(videoDTOFake)))
+                    .andExpect(status().isBadRequest());
+            verify(videoService, times(0)).insert(any(VideoDTO.class));
         }
     }
 }

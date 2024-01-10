@@ -3,14 +3,14 @@ package br.com.fiap.techchallenge.controllers;
 import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.VideoDTO;
 import br.com.fiap.techchallenge.services.VideoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,5 +31,14 @@ public class VideoController {
     public ResponseEntity<VideoDTO> findById(@PathVariable String id) {
         Video video = videoService.findById(id);
         return ResponseEntity.ok(video.toVideoDTO());
+    }
+
+    @PostMapping
+    public ResponseEntity<VideoDTO> insertVideo(@RequestBody @Valid VideoDTO videoForm) {
+        Video video = videoService.insert(videoForm);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(video.getId()).toUri();
+        return ResponseEntity.created(location).body(video.toVideoDTO());
     }
 }
