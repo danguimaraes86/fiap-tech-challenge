@@ -146,6 +146,21 @@ class VideoControllerTest {
     }
 
     @Nested
+    class RemoverVideo {
+
+        @Test
+        void deveRemoverVideo() throws Exception {
+            String id = ObjectId.get().toHexString();
+
+            mockMvc.perform(delete("/videos/{id}", id))
+                    .andExpect(status().isNoContent());
+            verify(videoService, times(1))
+                    .deleteById(id);
+
+        }
+    }
+
+    @Nested
     class Exceptions {
 
         @Test
@@ -185,6 +200,17 @@ class VideoControllerTest {
                     .andExpect(status().isNotFound());
             verify(videoService, times(1))
                     .updateVideoById(anyString(), any(VideoDTO.class));
+        }
+
+        @Test
+        void deveLancarExcecao_RemoverVideo_IdInvalido() throws Exception {
+            String id = ObjectId.get().toHexString();
+            doThrow(VideoNotFoundException.class).when(videoService).deleteById(anyString());
+
+            mockMvc.perform(delete("/videos/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound());
+            verify(videoService, times(1)).deleteById(id);
         }
 
         @Test
