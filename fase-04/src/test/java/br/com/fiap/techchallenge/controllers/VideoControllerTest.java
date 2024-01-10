@@ -5,7 +5,6 @@ import br.com.fiap.techchallenge.domain.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.services.VideoService;
-import br.com.fiap.techchallenge.utils.VideoUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +21,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
+import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoDTOMock;
+import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class VideoControllerTest {
@@ -120,6 +120,30 @@ class VideoControllerTest {
         }
     }
 
+    @Nested
+    class AlterarVideo {
+
+        @Test
+        void deveAtualizarVideo() throws Exception {
+            Video videoInicial = gerarVideoMock();
+            VideoDTO videoForm = gerarVideoDTOMock();
+            String id = videoInicial.getId();
+
+            Video videoAtualizado = videoInicial.update(videoForm);
+            when(videoService.updateVideoById(id, videoForm))
+                    .thenReturn(videoAtualizado);
+
+            mockMvc.perform(put("/videos/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(videoForm)))
+                    .andExpect(status().isAccepted())
+                    .andExpect(content().json(toJsonString(videoAtualizado.toVideoDTO())))
+                    .andExpect(jsonPath("$.titulo").value(videoForm.titulo()))
+                    .andExpect(jsonPath("$.descricao").value(videoForm.descricao()));
+            verify(videoService, times(1))
+                    .updateVideoById(id, videoForm);
+        }
+    }
 
     @Nested
     class Exceptions {
@@ -148,6 +172,29 @@ class VideoControllerTest {
                     .insert(any(VideoDTO.class));
         }
 
+        @Test
+        void deveLancarExcecao_AlterarVideo_IdInvalido() throws Exception {
+            VideoDTO videoDTOFake = gerarVideoDTOMock();
+            String id = ObjectId.get().toHexString();
+            when(videoService.updateVideoById(anyString(), any(VideoDTO.class)))
+                    .thenThrow(VideoNotFoundException.class);
+
+            mockMvc.perform(put("/videos/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(videoDTOFake)))
+                    .andExpect(status().isNotFound());
+            verify(videoService, times(1))
+                    .updateVideoById(anyString(), any(VideoDTO.class));
+        }
+
+        @Test
+        void deveLancarExcecao_AlterarVideo_IdVazio() throws Exception {
+            mockMvc.perform(put("/videos/")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isMethodNotAllowed());
+            verify(videoService, times(0))
+                    .updateVideoById(anyString(), any(VideoDTO.class));
+        }
 
         @Test
         void deveLancarExcecao_Payload_FormatoInvalido() throws Exception {

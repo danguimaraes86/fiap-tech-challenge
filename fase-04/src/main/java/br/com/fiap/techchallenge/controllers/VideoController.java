@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.VideoDTO;
 import br.com.fiap.techchallenge.services.VideoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,11 @@ public class VideoController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(video.getId()).toUri();
         return ResponseEntity.created(location).body(video.toVideoDTO());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VideoDTO> updateVideo(@PathVariable String id, @RequestBody VideoDTO videoForm) {
+        Video videoAtualizado = videoService.updateVideoById(id, videoForm);
+        return ResponseEntity.accepted().body(videoAtualizado.toVideoDTO());
     }
 }

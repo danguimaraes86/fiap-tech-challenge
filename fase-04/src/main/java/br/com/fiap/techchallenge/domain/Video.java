@@ -2,12 +2,14 @@ package br.com.fiap.techchallenge.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Document
 public class Video {
@@ -27,7 +29,7 @@ public class Video {
         this.ultimaAlteracao = dataPublicacao;
     }
 
-    public void update(VideoDTO videoDTO) {
+    public Video update(VideoDTO videoDTO) {
         if (videoDTO.titulo() != null)
             this.titulo = videoDTO.titulo();
         if (videoDTO.descricao() != null)
@@ -35,6 +37,7 @@ public class Video {
         if (videoDTO.url() != null)
             this.url = videoDTO.url();
         this.ultimaAlteracao = LocalDateTime.now();
+        return this;
     }
 
     public VideoDTO toVideoDTO() {
