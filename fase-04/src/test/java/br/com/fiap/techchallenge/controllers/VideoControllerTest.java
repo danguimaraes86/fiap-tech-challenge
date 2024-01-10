@@ -55,52 +55,47 @@ class VideoControllerTest {
         @Test
         void deveRetornarListaVazia() throws Exception {
             List<Video> videoFakerList = new ArrayList<>();
-            when(videoService.findAll()).thenReturn(videoFakerList);
+            when(videoService.findAll())
+                    .thenReturn(videoFakerList);
 
             mockMvc.perform(get("/videos"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(videoFakerList)));
-            verify(videoService, times(1)).findAll();
+            verify(videoService, times(1))
+                    .findAll();
         }
 
         @Test
         void deveListarTodosOsVideos() throws Exception {
             List<Video> videoFakerList = Arrays.asList(
-                    VideoUtil.gerarVideoMock(),
-                    VideoUtil.gerarVideoMock(),
-                    VideoUtil.gerarVideoMock()
+                    gerarVideoMock(),
+                    gerarVideoMock(),
+                    gerarVideoMock()
             );
-            when(videoService.findAll()).thenReturn(videoFakerList);
+            when(videoService.findAll())
+                    .thenReturn(videoFakerList);
 
             List<VideoDTO> videoDTOList = videoFakerList.stream().map(Video::toVideoDTO).toList();
             mockMvc.perform(get("/videos"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(videoDTOList)));
-            verify(videoService, times(1)).findAll();
+            verify(videoService, times(1))
+                    .findAll();
         }
-
 
         @Test
         void deveBuscarVideoPorId() throws Exception {
-            Video videoFake = VideoUtil.gerarVideoMock();
+            Video videoFake = gerarVideoMock();
             String id = videoFake.getId();
-            when(videoService.findById(anyString())).thenReturn(videoFake);
+            when(videoService.findById(anyString()))
+                    .thenReturn(videoFake);
 
             VideoDTO videoDTO = videoFake.toVideoDTO();
             mockMvc.perform(get("/videos/{id}", id))
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(videoDTO)));
-            verify(videoService, times(1)).findById(anyString());
-        }
-
-        @Test
-        void deveLancarExcecao_BuscarVideoPorId_VideoNaoEncontrado() throws Exception {
-            String id = ObjectId.get().toHexString();
-            when(videoService.findById(anyString())).thenThrow(VideoNotFoundException.class);
-
-            mockMvc.perform(get("/videos/{id}", id))
-                    .andExpect(status().isNotFound());
-            verify(videoService, times(1)).findById(anyString());
+            verify(videoService, times(1))
+                    .findById(anyString());
         }
     }
 
@@ -109,9 +104,10 @@ class VideoControllerTest {
 
         @Test
         void deveInserirVideo() throws Exception {
-            Video videoFake = VideoUtil.gerarVideoMock();
+            Video videoFake = gerarVideoMock();
             VideoDTO videoDTOFake = videoFake.toVideoDTO();
-            when(videoService.insert(videoDTOFake)).thenReturn(videoFake);
+            when(videoService.insert(videoDTOFake))
+                    .thenReturn(videoFake);
 
             mockMvc.perform(post("/videos")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +115,25 @@ class VideoControllerTest {
                     .andExpect(status().isCreated())
                     .andExpect(content().json(toJsonString(videoDTOFake)))
                     .andExpect(header().string("Location", containsString(videoFake.getId())));
-            verify(videoService, times(1)).insert(any(VideoDTO.class));
+            verify(videoService, times(1))
+                    .insert(any(VideoDTO.class));
+        }
+    }
+
+
+    @Nested
+    class Exceptions {
+
+        @Test
+        void deveLancarExcecao_BuscarVideoPorId_VideoNaoEncontrado() throws Exception {
+            String id = ObjectId.get().toHexString();
+            when(videoService.findById(anyString()))
+                    .thenThrow(VideoNotFoundException.class);
+
+            mockMvc.perform(get("/videos/{id}", id))
+                    .andExpect(status().isNotFound());
+            verify(videoService, times(1))
+                    .findById(anyString());
         }
 
         @Test
@@ -130,7 +144,16 @@ class VideoControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(toJsonString(videoDTOFake)))
                     .andExpect(status().isBadRequest());
-            verify(videoService, times(0)).insert(any(VideoDTO.class));
+            verify(videoService, times(0))
+                    .insert(any(VideoDTO.class));
+        }
+
+
+        @Test
+        void deveLancarExcecao_Payload_FormatoInvalido() throws Exception {
+            mockMvc.perform(post("/videos")
+                            .contentType(MediaType.APPLICATION_XML))
+                    .andExpect(status().isUnsupportedMediaType());
         }
     }
 }

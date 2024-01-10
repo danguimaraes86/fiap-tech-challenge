@@ -14,8 +14,4 @@ public record VideoDTO(
         LocalDateTime dataPublicacao,
         LocalDateTime ultimaAlteracao
 ) {
-
-    public Video toEntity() {
-        return new Video(titulo, descricao, url, dataPublicacao);
-    }
 }
