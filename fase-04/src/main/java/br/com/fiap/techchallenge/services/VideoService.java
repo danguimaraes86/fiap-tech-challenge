@@ -5,10 +5,11 @@ import br.com.fiap.techchallenge.domain.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +17,8 @@ public class VideoService {
 
     private final VideoRepository videoRepository;
 
-    public List<Video> findAll() {
-        return videoRepository.findAll();
+    public Page<Video> findAll(Pageable pageRequest) {
+        return videoRepository.findAll(pageRequest);
     }
 
     public Video insert(VideoDTO videoDTO) {

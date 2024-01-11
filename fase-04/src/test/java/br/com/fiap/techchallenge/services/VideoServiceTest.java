@@ -11,10 +11,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.w3c.dom.ranges.Range;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,21 +48,32 @@ class VideoServiceTest {
 
         @Test
         void deveListarTodosOsVideos() {
-            List<Video> videoFaker = Arrays.asList(
+            Page<Video> videoFakerPage = new PageImpl<>(Arrays.asList(
                     VideoUtil.gerarVideoMock(),
                     VideoUtil.gerarVideoMock(),
                     VideoUtil.gerarVideoMock()
-            );
-            when(videoRepository.findAll()).thenReturn(videoFaker);
+            ));
+            when(videoRepository.findAll(any(Pageable.class))).thenReturn(videoFakerPage);
 
-            List<Video> videoList = videoService.findAll();
-            verify(videoRepository, times(1)).findAll();
-            assertThat(videoList)
+            Page<Video> videoPage = videoService.findAll(PageRequest.of(1, 10));
+            assertThat(videoPage.getContent())
                     .hasSize(3)
-                    .isEqualTo(videoFaker)
-                    .contains(videoFaker.get(Range.START_TO_START))
+                    .contains(videoFakerPage.getContent().get(Range.START_TO_START))
                     .doesNotContainNull()
-                    .doesNotContain(VideoUtil.gerarVideoMock());
+                    .doesNotContain(VideoUtil.gerarVideoMock())
+                    .isEqualTo(videoFakerPage.getContent());
+            verify(videoRepository, times(1)).findAll(any(Pageable.class));
+        }
+
+        @Test
+        void deveRetornarListaVazia() {
+            Page<Video> videoFakerPage = new PageImpl<>(Collections.emptyList());
+            when(videoRepository.findAll(any(Pageable.class))).thenReturn(videoFakerPage);
+
+            Page<Video> videoPage = videoService.findAll(PageRequest.of(1, 10));
+            assertThat(videoPage.getContent())
+                    .isEmpty();
+            verify(videoRepository, times(1)).findAll(any(Pageable.class));
         }
 
         @Test
