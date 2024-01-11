@@ -12,13 +12,15 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
 import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoDTOMock;
@@ -54,33 +56,33 @@ class VideoControllerTest {
 
         @Test
         void deveRetornarListaVazia() throws Exception {
-            List<Video> videoFakerList = new ArrayList<>();
-            when(videoService.findAll())
+            Page<Video> videoFakerList = new PageImpl<>(Collections.emptyList());
+            when(videoService.findAll(any(Pageable.class)))
                     .thenReturn(videoFakerList);
 
             mockMvc.perform(get("/videos"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(videoFakerList)));
             verify(videoService, times(1))
-                    .findAll();
+                    .findAll(any(Pageable.class));
         }
 
         @Test
         void deveListarTodosOsVideos() throws Exception {
-            List<Video> videoFakerList = Arrays.asList(
+            Page<Video> videoFakerList = new PageImpl<>(Arrays.asList(
                     gerarVideoMock(),
                     gerarVideoMock(),
                     gerarVideoMock()
-            );
-            when(videoService.findAll())
+            ));
+            when(videoService.findAll(any(Pageable.class)))
                     .thenReturn(videoFakerList);
 
-            List<VideoDTO> videoDTOList = videoFakerList.stream().map(Video::toVideoDTO).toList();
+            Page<VideoDTO> videoDTOList = videoFakerList.map(Video::toVideoDTO);
             mockMvc.perform(get("/videos"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(videoDTOList)));
             verify(videoService, times(1))
-                    .findAll();
+                    .findAll(any(Pageable.class));
         }
 
         @Test

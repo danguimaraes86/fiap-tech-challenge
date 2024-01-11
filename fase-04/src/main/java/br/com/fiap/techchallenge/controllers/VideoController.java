@@ -5,13 +5,14 @@ import br.com.fiap.techchallenge.domain.VideoDTO;
 import br.com.fiap.techchallenge.services.VideoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/videos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -21,10 +22,14 @@ public class VideoController {
     private final VideoService videoService;
 
     @GetMapping
-    public ResponseEntity<List<VideoDTO>> findAllVideos() {
-        List<Video> videoList = videoService.findAll();
-        List<VideoDTO> videoDTOList = videoList.stream().map(Video::toVideoDTO).toList();
-        return ResponseEntity.ok(videoDTOList);
+    public ResponseEntity<Page<VideoDTO>> findAllVideos(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue = "10", required = false) int size
+    ) {
+        Page<VideoDTO> videoDTOPage = videoService
+                .findAll(PageRequest.of(page, size))
+                .map(Video::toVideoDTO);
+        return ResponseEntity.ok(videoDTOPage);
     }
 
     @GetMapping("/{id}")
