@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @RestController
 @RequestMapping(value = "/videos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,6 +36,18 @@ public class VideoController {
     public ResponseEntity<VideoDTO> findById(@PathVariable String id) {
         Video video = videoService.findById(id);
         return ResponseEntity.ok(video.toVideoDTO());
+    }
+
+    @GetMapping("/busca")
+    public ResponseEntity<Page<VideoDTO>> findByAtributo(
+            Pageable pageable,
+            @RequestParam(required = false, defaultValue = "") String titulo,
+            @RequestParam(required = false) LocalDate publicacao
+    ) {
+        LocalDateTime dataPublicacao = (publicacao == null) ?
+                LocalDateTime.now() : LocalDateTime.of(publicacao, LocalTime.MAX);
+        Page<Video> videoPage = videoService.findByAtributo(titulo, dataPublicacao, pageable);
+        return ResponseEntity.ok(videoPage.map(Video::toVideoDTO));
     }
 
     @PostMapping

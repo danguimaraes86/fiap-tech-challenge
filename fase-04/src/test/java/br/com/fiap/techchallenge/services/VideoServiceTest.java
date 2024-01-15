@@ -13,10 +13,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.w3c.dom.ranges.Range;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -55,7 +55,7 @@ class VideoServiceTest {
             ));
             when(videoRepository.findAll(any(Pageable.class))).thenReturn(videoFakerPage);
 
-            Page<Video> videoPage = videoService.findAll(PageRequest.of(1, 10));
+            Page<Video> videoPage = videoService.findAll(Pageable.unpaged());
             assertThat(videoPage.getContent())
                     .hasSize(3)
                     .contains(videoFakerPage.getContent().get(Range.START_TO_START))
@@ -70,7 +70,7 @@ class VideoServiceTest {
             Page<Video> videoFakerPage = new PageImpl<>(Collections.emptyList());
             when(videoRepository.findAll(any(Pageable.class))).thenReturn(videoFakerPage);
 
-            Page<Video> videoPage = videoService.findAll(PageRequest.of(1, 10));
+            Page<Video> videoPage = videoService.findAll(Pageable.unpaged());
             assertThat(videoPage.getContent())
                     .isEmpty();
             verify(videoRepository, times(1)).findAll(any(Pageable.class));
@@ -89,6 +89,31 @@ class VideoServiceTest {
                     .isEqualTo(videoFaker)
                     .isNotNull();
             assertThat(video.getId()).isEqualTo(id);
+        }
+
+        @Test
+        void deveBuscarVideoPorAtributo() {
+            Page<Video> videoFakerPage = new PageImpl<>(Arrays.asList(
+                    VideoUtil.gerarVideoMock(),
+                    VideoUtil.gerarVideoMock(),
+                    VideoUtil.gerarVideoMock()
+            ));
+            Video videoFake = videoFakerPage.getContent().get(0);
+            when(videoRepository.findVideoByTituloLikeIgnoreCaseAndDataPublicacaoBefore(
+                    anyString(), any(LocalDateTime.class), any(Pageable.class)))
+                    .thenReturn(videoFakerPage);
+
+            Page<Video> videoPage = videoService
+                    .findByAtributo(videoFake.getTitulo(), videoFake.getDataPublicacao(), Pageable.unpaged());
+            verify(videoRepository, times(1))
+                    .findVideoByTituloLikeIgnoreCaseAndDataPublicacaoBefore(
+                            anyString(), any(LocalDateTime.class), any(Pageable.class));
+            assertThat(videoPage.getContent())
+                    .isEqualTo(videoFakerPage.getContent());
+            assertThat(videoPage.getContent().get(0))
+                    .isEqualTo(videoFake);
+            assertThat(videoPage.getContent().get(1))
+                    .isNotEqualTo(videoFake);
         }
 
         @Test

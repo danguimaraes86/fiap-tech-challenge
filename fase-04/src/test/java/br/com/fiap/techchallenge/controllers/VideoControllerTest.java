@@ -15,10 +15,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -28,6 +30,7 @@ import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class VideoControllerTest {
@@ -43,6 +46,7 @@ class VideoControllerTest {
         VideoController videoController = new VideoController(videoService);
         mockMvc = MockMvcBuilders.standaloneSetup(videoController)
                 .setControllerAdvice(ControllerExceptionHandler.class)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
 
@@ -98,6 +102,28 @@ class VideoControllerTest {
                     .andExpect(content().json(toJsonString(videoDTO)));
             verify(videoService, times(1))
                     .findById(anyString());
+        }
+
+        @Test
+        void deveBuscarVideoPorAtributo() throws Exception {
+            Page<Video> videoFakerList = new PageImpl<>(Arrays.asList(
+                    gerarVideoMock(),
+                    gerarVideoMock(),
+                    gerarVideoMock()
+            ));
+            Video videoFake = videoFakerList.getContent().stream().findFirst().orElseThrow();
+
+            when(videoService.findByAtributo(anyString(), any(LocalDateTime.class), any(Pageable.class)))
+                    .thenReturn(videoFakerList);
+
+            Page<VideoDTO> videoDTOPage = videoFakerList.map(Video::toVideoDTO);
+            mockMvc.perform(get("/videos/busca", Pageable.unpaged())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("titulo", videoFake.getTitulo()))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(toJsonString(videoDTOPage)));
+            verify(videoService, times(1))
+                    .findByAtributo(anyString(), any(LocalDateTime.class), any(Pageable.class));
         }
     }
 
