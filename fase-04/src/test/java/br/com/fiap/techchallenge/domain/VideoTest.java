@@ -8,6 +8,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VideoTest {
 
     @Test
+    void deveCriarObjetoCorretamente() {
+        Video video = new Video();
+        assertThat(video)
+                .isInstanceOf(Video.class);
+    }
+
+    @Test
     void deveAtualizarDadosVideo() {
         Video videoFake = VideoUtil.gerarVideoMock();
         VideoDTO videoDTOFake = VideoUtil.gerarVideoDTOMock();
