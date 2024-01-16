@@ -43,4 +43,10 @@ public class VideoService {
         video.update(videoDTO);
         return videoRepository.save(video);
     }
+
+    public Page<Video> findByAtributo(String titulo, LocalDateTime dataPublicacao, Pageable pageable) {
+        return videoRepository.findVideoByTituloLikeIgnoreCaseAndDataPublicacaoBefore(
+                titulo, dataPublicacao, pageable
+        );
+    }
 }

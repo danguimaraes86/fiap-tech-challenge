@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MockFlixApplicationTests {
+class MockFlixApplicationIntegration {
 
     @Test
-    void contextLoads() {
+    void main() {
+        MockFlixApplication.main(new String[]{});
     }
 
 }
