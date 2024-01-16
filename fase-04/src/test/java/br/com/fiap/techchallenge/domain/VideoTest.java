@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain;
 
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.utils.VideoUtil;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.domain;
+package br.com.fiap.techchallenge.domain.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 

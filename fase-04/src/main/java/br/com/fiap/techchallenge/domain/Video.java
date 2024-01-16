@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain;
 
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.services;
 
 import br.com.fiap.techchallenge.domain.Video;
-import br.com.fiap.techchallenge.domain.VideoDTO;
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
 import br.com.fiap.techchallenge.utils.VideoUtil;

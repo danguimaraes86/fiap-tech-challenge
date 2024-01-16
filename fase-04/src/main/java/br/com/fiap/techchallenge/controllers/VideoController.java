@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.controllers;
 
 import br.com.fiap.techchallenge.domain.Video;
-import br.com.fiap.techchallenge.domain.VideoDTO;
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.services.VideoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

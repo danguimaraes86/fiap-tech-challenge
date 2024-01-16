@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.utils;
 
 import br.com.fiap.techchallenge.domain.Video;
-import br.com.fiap.techchallenge.domain.VideoDTO;
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import com.github.javafaker.Faker;
 import org.bson.types.ObjectId;
 
