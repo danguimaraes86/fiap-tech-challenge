@@ -31,8 +31,6 @@ dependencies {
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'org.assertj:assertj-core:3.24.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.h2database:h2:2.1.214'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 tasks.named('bootBuildImage') {
@@ -40,5 +38,21 @@ tasks.named('bootBuildImage') {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags('integration')
+    }
+}
+
+tasks.register('integrationTest', Test) {
+    group = 'verification'
+    useJUnitPlatform {
+        includeTags('integration')
+    }
+    shouldRunAfter(tasks.named('test'))
+}
+
+tasks.withType(Test).configureEach {
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
 }
