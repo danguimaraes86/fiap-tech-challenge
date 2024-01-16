@@ -3,7 +3,6 @@ package br.com.fiap.techchallenge.domain;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Document
-@Setter
 public class Video {
     @Id
     private String id;
