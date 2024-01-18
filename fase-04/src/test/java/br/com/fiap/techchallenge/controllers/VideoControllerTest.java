@@ -91,8 +91,8 @@ class VideoControllerTest {
         @Test
         void deveBuscarVideoPorId() throws Exception {
             Video videoFake = gerarVideoMock();
-            String id = videoFake.getId();
-            when(videoService.findById(anyString()))
+            ObjectId id = videoFake.getId();
+            when(videoService.findById(any(ObjectId.class)))
                     .thenReturn(videoFake);
 
             VideoDTO videoDTO = videoFake.toVideoDTO();
@@ -100,7 +100,7 @@ class VideoControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(videoDTO)));
             verify(videoService, times(1))
-                    .findById(anyString());
+                    .findById(id);
         }
 
         @Test
@@ -141,7 +141,7 @@ class VideoControllerTest {
                             .content(toJsonString(videoDTOFake)))
                     .andExpect(status().isCreated())
                     .andExpect(content().json(toJsonString(videoDTOFake)))
-                    .andExpect(header().string("Location", containsString(videoFake.getId())));
+                    .andExpect(header().string("Location", containsString(videoFake.getId().toHexString())));
             verify(videoService, times(1))
                     .insert(any(VideoDTO.class));
         }
@@ -154,7 +154,7 @@ class VideoControllerTest {
         void deveAtualizarVideo() throws Exception {
             Video videoInicial = gerarVideoMock();
             VideoDTO videoForm = gerarVideoDTOMock();
-            String id = videoInicial.getId();
+            ObjectId id = videoInicial.getId();
 
             Video videoAtualizado = videoInicial.update(videoForm);
             when(videoService.updateVideoById(id, videoForm))
@@ -177,7 +177,7 @@ class VideoControllerTest {
 
         @Test
         void deveRemoverVideo() throws Exception {
-            String id = ObjectId.get().toHexString();
+            ObjectId id = ObjectId.get();
 
             mockMvc.perform(delete("/videos/{id}", id))
                     .andExpect(status().isNoContent());
@@ -192,14 +192,14 @@ class VideoControllerTest {
 
         @Test
         void deveLancarExcecao_BuscarVideoPorId_VideoNaoEncontrado() throws Exception {
-            String id = ObjectId.get().toHexString();
-            when(videoService.findById(anyString()))
+            ObjectId id = ObjectId.get();
+            when(videoService.findById(any(ObjectId.class)))
                     .thenThrow(VideoNotFoundException.class);
 
             mockMvc.perform(get("/videos/{id}", id))
                     .andExpect(status().isNotFound());
             verify(videoService, times(1))
-                    .findById(anyString());
+                    .findById(id);
         }
 
         @Test
@@ -217,8 +217,8 @@ class VideoControllerTest {
         @Test
         void deveLancarExcecao_AlterarVideo_IdInvalido() throws Exception {
             VideoDTO videoDTOFake = gerarVideoDTOMock();
-            String id = ObjectId.get().toHexString();
-            when(videoService.updateVideoById(anyString(), any(VideoDTO.class)))
+            ObjectId id = ObjectId.get();
+            when(videoService.updateVideoById(any(ObjectId.class), any(VideoDTO.class)))
                     .thenThrow(VideoNotFoundException.class);
 
             mockMvc.perform(put("/videos/{id}", id)
@@ -226,13 +226,13 @@ class VideoControllerTest {
                             .content(toJsonString(videoDTOFake)))
                     .andExpect(status().isNotFound());
             verify(videoService, times(1))
-                    .updateVideoById(anyString(), any(VideoDTO.class));
+                    .updateVideoById(any(ObjectId.class), any(VideoDTO.class));
         }
 
         @Test
         void deveLancarExcecao_RemoverVideo_IdInvalido() throws Exception {
-            String id = ObjectId.get().toHexString();
-            doThrow(VideoNotFoundException.class).when(videoService).deleteById(anyString());
+            ObjectId id = ObjectId.get();
+            doThrow(VideoNotFoundException.class).when(videoService).deleteById(any(ObjectId.class));
 
             mockMvc.perform(delete("/videos/{id}", id)
                             .contentType(MediaType.APPLICATION_JSON))
@@ -246,7 +246,7 @@ class VideoControllerTest {
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isMethodNotAllowed());
             verify(videoService, times(0))
-                    .updateVideoById(anyString(), any(VideoDTO.class));
+                    .updateVideoById(any(ObjectId.class), any(VideoDTO.class));
         }
 
         @Test

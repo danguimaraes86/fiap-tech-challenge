@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,18 +28,18 @@ public class VideoService {
         );
     }
 
-    public Video findById(String id) {
+    public Video findById(ObjectId id) {
         return videoRepository.findById(id).orElseThrow(
                 () -> new VideoNotFoundException("video não encontrado")
         );
     }
 
-    public void deleteById(String id) {
+    public void deleteById(ObjectId id) {
         Video video = findById(id);
         videoRepository.delete(video);
     }
 
-    public Video updateVideoById(String id, VideoDTO videoDTO) {
+    public Video updateVideoById(ObjectId id, VideoDTO videoDTO) {
         Video video = findById(id);
         video.update(videoDTO);
         return videoRepository.save(video);

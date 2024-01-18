@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.domain;
 
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.utils.VideoUtil;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +24,7 @@ class VideoTest {
         Video videoAtualizado = videoFake.update(videoDTOFake);
 
         assertThat(videoFake).isEqualTo(videoAtualizado);
-        assertThat(videoAtualizado.getId()).isNotEmpty().isNotBlank();
+        assertThat(videoAtualizado.getId()).isInstanceOf(ObjectId.class);
         assertThat(videoAtualizado.getTitulo()).isEqualTo(videoDTOFake.titulo());
         assertThat(videoAtualizado.getUrl()).isEqualTo(videoDTOFake.url());
         assertThat(videoAtualizado.getDescricao()).isEqualTo(videoDTOFake.descricao());

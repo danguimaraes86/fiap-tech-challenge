@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Document
 public class Video {
     @Id
-    private String id;
+    private ObjectId id;
     private String titulo;
     private String descricao;
     private String url;

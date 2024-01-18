@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
 import br.com.fiap.techchallenge.utils.VideoUtil;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -79,11 +80,11 @@ class VideoServiceTest {
         @Test
         void deveBuscarVideoPorId() {
             Video videoFaker = VideoUtil.gerarVideoMock();
-            String id = videoFaker.getId();
+            ObjectId id = videoFaker.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFaker));
 
             Video video = videoService.findById(id);
-            verify(videoRepository, times(1)).findById(anyString());
+            verify(videoRepository, times(1)).findById(id);
             assertThat(video)
                     .isInstanceOf(Video.class)
                     .isEqualTo(videoFaker)
@@ -119,7 +120,7 @@ class VideoServiceTest {
         @Test
         void deveLancarExcecao_BuscarVideoPorId_VideoNaoEncontrado() {
             Video videoFaker = VideoUtil.gerarVideoMock();
-            String id = videoFaker.getId();
+            ObjectId id = videoFaker.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> videoService.findById(id))
@@ -152,7 +153,7 @@ class VideoServiceTest {
         @Test
         void deveRemoverVideoPorId() {
             Video videoFake = VideoUtil.gerarVideoMock();
-            String id = videoFake.getId();
+            ObjectId id = videoFake.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
 
             videoService.deleteById(id);
@@ -163,7 +164,7 @@ class VideoServiceTest {
         @Test
         void deveLancarExcecao_RemoverVideoPorId_VideoNaoEncontrado() {
             Video videoFaker = VideoUtil.gerarVideoMock();
-            String id = videoFaker.getId();
+            ObjectId id = videoFaker.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> videoService.deleteById(id))
@@ -178,7 +179,7 @@ class VideoServiceTest {
         @Test
         void deveAlterarVideoPorId() {
             Video videoFake = VideoUtil.gerarVideoMock();
-            String id = videoFake.getId();
+            ObjectId id = videoFake.getId();
             VideoDTO videoDTO = VideoUtil.gerarVideoDTOMock();
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
             videoFake.update(videoDTO);
@@ -197,7 +198,7 @@ class VideoServiceTest {
         @Test
         void deveLancarExcecao_AlterarVideoPorId_VideoNaoEncontrado() {
             Video videoFaker = VideoUtil.gerarVideoMock();
-            String id = videoFaker.getId();
+            ObjectId id = videoFaker.getId();
             VideoDTO videoDTO = VideoUtil.gerarVideoDTOMock();
             when(videoRepository.findById(id)).thenReturn(Optional.empty());
 

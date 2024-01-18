@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.services.VideoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -33,7 +34,13 @@ public class VideoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VideoDTO> findById(@PathVariable String id) {
+    public ResponseEntity<VideoDTO> findById(@PathVariable ObjectId id) {
+        Video video = videoService.findById(id);
+        return ResponseEntity.ok(video.toVideoDTO());
+    }
+
+    @GetMapping("/{id}/watch")
+    public ResponseEntity<VideoDTO> watchVideo(@PathVariable ObjectId id) {
         Video video = videoService.findById(id);
         return ResponseEntity.ok(video.toVideoDTO());
     }
@@ -60,13 +67,13 @@ public class VideoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VideoDTO> updateVideo(@PathVariable String id, @RequestBody VideoDTO videoForm) {
+    public ResponseEntity<VideoDTO> updateVideo(@PathVariable ObjectId id, @RequestBody VideoDTO videoForm) {
         Video videoAtualizado = videoService.updateVideoById(id, videoForm);
         return ResponseEntity.accepted().body(videoAtualizado.toVideoDTO());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVideo(@PathVariable String id) {
+    public ResponseEntity<Void> deleteVideo(@PathVariable ObjectId id) {
         videoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
