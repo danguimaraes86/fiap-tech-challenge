@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.services;
 
 import br.com.fiap.techchallenge.domain.Usuario;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
+import br.com.fiap.techchallenge.exceptions.FavoritoNaoEncontradoException;
 import br.com.fiap.techchallenge.exceptions.UsuarioNotFoundException;
 import br.com.fiap.techchallenge.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
+
     public Page<Usuario> findAll(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
     }
@@ -29,13 +31,29 @@ public class UsuarioService {
     }
 
     public Usuario insert(UsuarioDTO usuarioDTO) {
-        return usuarioRepository.insert(
-                new Usuario(usuarioDTO.nome())
-                        .adicionarFavorito(usuarioDTO.favoritos())
-        );
+        Usuario usuario = new Usuario(usuarioDTO.nome());
+        if (usuarioDTO.favoritos() != null) {
+            usuario.adicionarFavorito(
+                    validarObjectId(usuarioDTO.favoritos())
+            );
+        }
+        return usuarioRepository.insert(usuario);
     }
 
-    public Usuario adicionarFavoritos(String id, List<ObjectId> favoritos) {
-        return usuarioRepository.save(findById(id).adicionarFavorito(favoritos));
+    public Usuario adicionarFavoritos(ObjectId id, List<String> favoritos) {
+        Usuario usuario = findById(id)
+                .adicionarFavorito(validarObjectId(favoritos));
+        return usuarioRepository.save(usuario);
+    }
+
+    private List<ObjectId> validarObjectId(List<String> favoritos) {
+        favoritos.forEach(favorito -> {
+            if (!ObjectId.isValid(favorito)) {
+                throw new FavoritoNaoEncontradoException(
+                        String.format("video %s não encontrado", favorito)
+                );
+            }
+        });
+        return favoritos.stream().map(ObjectId::new).toList();
     }
 }

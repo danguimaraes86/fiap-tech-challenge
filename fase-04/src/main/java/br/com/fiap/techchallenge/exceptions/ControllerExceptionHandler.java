@@ -19,6 +19,11 @@ public class ControllerExceptionHandler {
         return ResponseEntity.notFound().build();
     }
 
+    @ExceptionHandler(FavoritoNaoEncontradoException.class)
+    public ResponseEntity<String> favoritoNotFoundException(Exception exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> methodArgumentTypeMismatchException() {
         return ResponseEntity.badRequest().body("id com formato incorreto");
