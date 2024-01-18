@@ -129,24 +129,24 @@ class UsuarioServiceTest {
         @Test
         void deveAdicionarFavoritos() {
             Usuario usuarioMock = gerarUsuarioMock();
-            List<ObjectId> favoritosMock = gerarFavoritos();
-            when(usuarioRepository.findById(anyString())).thenReturn(Optional.of(usuarioMock));
+            List<String> favoritosMock = gerarFavoritos();
+            when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuarioMock));
             when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
 
             Usuario usuario = usuarioService.adicionarFavoritos(usuarioMock.getId(), favoritosMock);
             verify(usuarioRepository, times(1)).findById(usuarioMock.getId());
             assertThat(usuario.getFavoritos())
                     .isNotEmpty()
-                    .isEqualTo(favoritosMock)
+                    .isEqualTo(favoritosMock.stream().map(ObjectId::new).toList())
                     .hasSize(favoritosMock.size());
             assertThat(usuario).isEqualTo(usuarioMock);
         }
 
         @Test
         void deveLancarExcecao_AdicionarFavoritos_UsuarioNaoEncontrado() {
-            List<ObjectId> favoritosMock = gerarFavoritos();
-            when(usuarioRepository.findById(anyString())).thenReturn(Optional.empty());
             ObjectId id = ObjectId.get();
+            List<String> favoritosMock = gerarFavoritos();
+            when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> usuarioService.adicionarFavoritos(id, favoritosMock))
                     .isInstanceOf(UsuarioNotFoundException.class)

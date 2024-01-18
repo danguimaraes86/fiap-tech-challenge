@@ -32,6 +32,8 @@ public class Usuario {
     }
 
     public UsuarioDTO toUsuarioDTO() {
-        return new UsuarioDTO(this.nome, this.favoritos);
+        List<String> favoritosList = this.favoritos
+                .stream().map(ObjectId::toHexString).toList();
+        return new UsuarioDTO(this.nome, favoritosList);
     }
 }

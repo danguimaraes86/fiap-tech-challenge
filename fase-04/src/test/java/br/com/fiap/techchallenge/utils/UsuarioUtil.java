@@ -21,12 +21,12 @@ public class UsuarioUtil {
         );
     }
 
-    public static List<ObjectId> gerarFavoritos() {
+    public static List<String> gerarFavoritos() {
         return new ArrayList<>(Arrays.asList(
-                ObjectId.get(),
-                ObjectId.get(),
-                ObjectId.get(),
-                ObjectId.get()
+                ObjectId.get().toHexString(),
+                ObjectId.get().toHexString(),
+                ObjectId.get().toHexString(),
+                ObjectId.get().toHexString()
         ));
     }
 
