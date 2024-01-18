@@ -21,12 +21,12 @@ public class UsuarioUtil {
         );
     }
 
-    public static List<String> gerarFavoritos() {
-        Faker faker = new Faker(new Locale("pt_BR"));
+    public static List<ObjectId> gerarFavoritos() {
         return new ArrayList<>(Arrays.asList(
-                faker.witcher().school(),
-                faker.witcher().school(),
-                faker.witcher().school()
+                ObjectId.get(),
+                ObjectId.get(),
+                ObjectId.get(),
+                ObjectId.get()
         ));
     }
 

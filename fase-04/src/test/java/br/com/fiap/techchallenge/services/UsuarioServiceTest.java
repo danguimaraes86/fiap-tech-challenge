@@ -129,7 +129,7 @@ class UsuarioServiceTest {
         @Test
         void deveAdicionarFavoritos() {
             Usuario usuarioMock = gerarUsuarioMock();
-            List<String> favoritosMock = gerarFavoritos();
+            List<ObjectId> favoritosMock = gerarFavoritos();
             when(usuarioRepository.findById(anyString())).thenReturn(Optional.of(usuarioMock));
             when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
 
@@ -138,14 +138,14 @@ class UsuarioServiceTest {
             assertThat(usuario.getFavoritos())
                     .isNotEmpty()
                     .isEqualTo(favoritosMock)
-                    .hasSize(3);
+                    .hasSize(favoritosMock.size());
             assertThat(usuario).isEqualTo(usuarioMock);
         }
 
         @Test
         void deveLancarExcecao_AdicionarFavoritos_UsuarioNaoEncontrado() {
             String id = ObjectId.get().toHexString();
-            List<String> favoritosMock = gerarFavoritos();
+            List<ObjectId> favoritosMock = gerarFavoritos();
             when(usuarioRepository.findById(anyString())).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> usuarioService.adicionarFavoritos(id, favoritosMock))

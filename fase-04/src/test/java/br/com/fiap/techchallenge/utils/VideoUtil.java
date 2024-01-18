@@ -14,9 +14,9 @@ public class VideoUtil {
         Faker faker = new Faker(new Locale("pt_BR"));
         LocalDateTime publicacao = LocalDateTime.now();
         return new Video(
-                ObjectId.get().toHexString(),
-                faker.witcher().witcher(),
-                faker.witcher().school(),
+                ObjectId.get(),
+                faker.name().name(),
+                faker.witcher().quote(),
                 faker.internet().url(),
                 publicacao, publicacao
         );
@@ -26,8 +26,8 @@ public class VideoUtil {
         Faker faker = new Faker(new Locale("pt_BR"));
         LocalDateTime publicacao = LocalDateTime.now();
         return new VideoDTO(
-                faker.witcher().witcher(),
-                faker.witcher().school(),
+                faker.name().name(),
+                faker.witcher().quote(),
                 faker.internet().url(),
                 publicacao, null
         );

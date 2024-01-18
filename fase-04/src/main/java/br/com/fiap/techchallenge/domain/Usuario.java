@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,13 +20,13 @@ public class Usuario {
     @Id
     private String id;
     private String nome;
-    private List<String> favoritos = new ArrayList<>();
+    private List<ObjectId> favoritos = new ArrayList<>();
 
     public Usuario(String nome) {
         this.nome = nome;
     }
 
-    public Usuario adicionarFavorito(List<String> favoritos) {
+    public Usuario adicionarFavorito(List<ObjectId> favoritos) {
         this.favoritos.addAll(favoritos);
         return this;
     }
