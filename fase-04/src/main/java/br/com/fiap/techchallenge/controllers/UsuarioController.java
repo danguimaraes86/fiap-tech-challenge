@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
 import br.com.fiap.techchallenge.services.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -28,7 +29,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> findById(@PathVariable String id) {
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable ObjectId id) {
         Usuario usuario = usuarioService.findById(id);
         return ResponseEntity.ok(usuario.toUsuarioDTO());
     }

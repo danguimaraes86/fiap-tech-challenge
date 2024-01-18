@@ -15,7 +15,7 @@ public class UsuarioUtil {
     public static Usuario gerarUsuarioMock() {
         Faker faker = new Faker(new Locale("pt_BR"));
         return new Usuario(
-                ObjectId.get().toHexString(),
+                ObjectId.get(),
                 faker.witcher().witcher(),
                 new ArrayList<>()
         );

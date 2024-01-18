@@ -18,7 +18,7 @@ import java.util.List;
 public class Usuario {
 
     @Id
-    private String id;
+    private ObjectId id;
     private String nome;
     private List<ObjectId> favoritos = new ArrayList<>();
 

@@ -79,8 +79,8 @@ class UsuarioServiceTest {
         @Test
         void deveBuscarUsuarioPorId() {
             Usuario usuarioMock = gerarUsuarioMock();
-            String id = usuarioMock.getId();
-            when(usuarioRepository.findById(anyString())).thenReturn(Optional.of(usuarioMock));
+            ObjectId id = usuarioMock.getId();
+            when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuarioMock));
 
             Usuario usuarioById = usuarioService.findById(id);
             verify(usuarioRepository, times(1)).findById(id);
@@ -95,7 +95,7 @@ class UsuarioServiceTest {
         @Test
         void deveLancarExcecao_BuscarUsarioPorId_UsuarioNaoEncontrado() {
             Usuario usuarioMock = mock(Usuario.class);
-            String id = usuarioMock.getId();
+            ObjectId id = usuarioMock.getId();
             when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> usuarioService.findById(id))
@@ -144,9 +144,9 @@ class UsuarioServiceTest {
 
         @Test
         void deveLancarExcecao_AdicionarFavoritos_UsuarioNaoEncontrado() {
-            String id = ObjectId.get().toHexString();
             List<ObjectId> favoritosMock = gerarFavoritos();
             when(usuarioRepository.findById(anyString())).thenReturn(Optional.empty());
+            ObjectId id = ObjectId.get();
 
             assertThatThrownBy(() -> usuarioService.adicionarFavoritos(id, favoritosMock))
                     .isInstanceOf(UsuarioNotFoundException.class)

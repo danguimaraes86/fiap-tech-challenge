@@ -22,7 +22,7 @@ public class UsuarioService {
         return usuarioRepository.findAll(pageable);
     }
 
-    public Usuario findById(String id) {
+    public Usuario findById(ObjectId id) {
         return usuarioRepository.findById(id).orElseThrow(
                 () -> new UsuarioNotFoundException("usuário não encontrado")
         );

@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.Usuario;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
 import br.com.fiap.techchallenge.services.UsuarioService;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -88,8 +89,8 @@ class UsuarioControllerTest {
         @Test
         void deveBuscarUsuarioPorId() throws Exception {
             Usuario usuarioMock = gerarUsuarioMock();
-            String id = usuarioMock.getId();
-            when(usuarioService.findById(anyString()))
+            ObjectId id = usuarioMock.getId();
+            when(usuarioService.findById(any(ObjectId.class)))
                     .thenReturn(usuarioMock);
 
             UsuarioDTO usuarioDTO = usuarioMock.toUsuarioDTO();
@@ -97,7 +98,7 @@ class UsuarioControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(content().json(toJsonString(usuarioDTO)));
             verify(usuarioService, times(1))
-                    .findById(anyString());
+                    .findById(id);
         }
     }
 
@@ -116,7 +117,7 @@ class UsuarioControllerTest {
                             .content(toJsonString(usuarioDTOMock)))
                     .andExpect(status().isCreated())
                     .andExpect(content().json(toJsonString(usuarioDTOMock)))
-                    .andExpect(header().string("Location", containsString(usuarioMock.getId())));
+                    .andExpect(header().string("Location", containsString(usuarioMock.getId().toHexString())));
             verify(usuarioService, times(1))
                     .insert(any(UsuarioDTO.class));
         }
