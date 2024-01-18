@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @Tag("integration")
-class MockFlixApplicationIntegration {
+class MockFlixApplicationIntegrationTest {
 
     @Test
     void main() {

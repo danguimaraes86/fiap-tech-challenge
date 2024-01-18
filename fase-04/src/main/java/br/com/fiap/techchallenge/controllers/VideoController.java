@@ -26,7 +26,7 @@ public class VideoController {
     private final VideoService videoService;
 
     @GetMapping
-    public ResponseEntity<Page<VideoDTO>> findAllVideos(Pageable pageable) {
+    public ResponseEntity<Page<VideoDTO>> findAll(Pageable pageable) {
         Page<VideoDTO> videoDTOPage = videoService
                 .findAll(pageable)
                 .map(Video::toVideoDTO);
@@ -35,12 +35,6 @@ public class VideoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<VideoDTO> findById(@PathVariable ObjectId id) {
-        Video video = videoService.findById(id);
-        return ResponseEntity.ok(video.toVideoDTO());
-    }
-
-    @GetMapping("/{id}/watch")
-    public ResponseEntity<VideoDTO> watchVideo(@PathVariable ObjectId id) {
         Video video = videoService.findById(id);
         return ResponseEntity.ok(video.toVideoDTO());
     }
