@@ -149,6 +149,9 @@ class VideoServiceTest {
             assertThat(videoNovo).isInstanceOf(Video.class)
                     .isEqualTo(videoFake);
             assertThat(videoNovo.getId()).isEqualTo(videoFake.getId());
+            assertThat(videoNovo.getTitulo()).isEqualTo(videoFake.getTitulo());
+            assertThat(videoNovo.getDescricao()).isEqualTo(videoFake.getDescricao());
+            assertThat(videoNovo.getUrl()).isEqualTo(videoFake.getUrl());
             assertThat(videoNovo.getUltimaAlteracao()).isAfterOrEqualTo(videoFake.getDataPublicacao());
         }
     }
@@ -220,6 +223,7 @@ class VideoServiceTest {
         @Test
         void deveRetornar_MonoVideo(){
             Video videoMock = gerarVideoMock();
+            when(videoRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(videoMock));
             when(videoReactive.findById(any(ObjectId.class))).thenReturn(Mono.just(videoMock));
 
             StepVerifier.create(videoService.watchVideo(videoMock.getId()))

@@ -20,6 +20,7 @@ public class Video {
     private String titulo;
     private String descricao;
     private String url;
+    private Integer visualizacoes = 0;
     private LocalDateTime dataPublicacao;
     private LocalDateTime ultimaAlteracao;
 
@@ -39,6 +40,11 @@ public class Video {
         if (videoDTO.url() != null)
             this.url = videoDTO.url();
         this.ultimaAlteracao = LocalDateTime.now();
+        return this;
+    }
+
+    public Video addVisualizacao() {
+        this.visualizacoes++;
         return this;
     }
 

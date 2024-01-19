@@ -18,7 +18,7 @@ public class VideoUtil {
                 faker.name().name(),
                 faker.witcher().quote(),
                 faker.internet().url(),
-                publicacao, publicacao
+                0, publicacao, publicacao
         );
     }
 

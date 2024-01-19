@@ -62,7 +62,12 @@ public class VideoService {
         );
     }
 
+    public void addVisualizacao(ObjectId id) {
+        videoRepository.save(findById(id).addVisualizacao());
+    }
+
     public Mono<Video> watchVideo(ObjectId id) {
+        addVisualizacao(id);
         return videoReactive.findById(id);
     }
 }
