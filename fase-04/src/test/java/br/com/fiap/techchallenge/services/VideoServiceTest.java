@@ -17,12 +17,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.w3c.dom.ranges.Range;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
+import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -53,9 +56,9 @@ class VideoServiceTest {
         @Test
         void deveListarTodosOsVideos() {
             Page<Video> videoFakerPage = new PageImpl<>(Arrays.asList(
-                    VideoUtil.gerarVideoMock(),
-                    VideoUtil.gerarVideoMock(),
-                    VideoUtil.gerarVideoMock()
+                    gerarVideoMock(),
+                    gerarVideoMock(),
+                    gerarVideoMock()
             ));
             when(videoRepository.findAll(any(Pageable.class))).thenReturn(videoFakerPage);
 
@@ -64,7 +67,7 @@ class VideoServiceTest {
                     .hasSize(3)
                     .contains(videoFakerPage.getContent().get(Range.START_TO_START))
                     .doesNotContainNull()
-                    .doesNotContain(VideoUtil.gerarVideoMock())
+                    .doesNotContain(gerarVideoMock())
                     .isEqualTo(videoFakerPage.getContent());
             verify(videoRepository, times(1)).findAll(any(Pageable.class));
         }
@@ -82,7 +85,7 @@ class VideoServiceTest {
 
         @Test
         void deveBuscarVideoPorId() {
-            Video videoFaker = VideoUtil.gerarVideoMock();
+            Video videoFaker = gerarVideoMock();
             ObjectId id = videoFaker.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFaker));
 
@@ -98,9 +101,9 @@ class VideoServiceTest {
         @Test
         void deveBuscarVideoPorAtributo() {
             Page<Video> videoFakerPage = new PageImpl<>(Arrays.asList(
-                    VideoUtil.gerarVideoMock(),
-                    VideoUtil.gerarVideoMock(),
-                    VideoUtil.gerarVideoMock()
+                    gerarVideoMock(),
+                    gerarVideoMock(),
+                    gerarVideoMock()
             ));
             Video videoFake = videoFakerPage.getContent().get(0);
             when(videoRepository.findVideoByTituloLikeIgnoreCaseAndDataPublicacaoBefore(
@@ -122,7 +125,7 @@ class VideoServiceTest {
 
         @Test
         void deveLancarExcecao_BuscarVideoPorId_VideoNaoEncontrado() {
-            Video videoFaker = VideoUtil.gerarVideoMock();
+            Video videoFaker = gerarVideoMock();
             ObjectId id = videoFaker.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -137,7 +140,7 @@ class VideoServiceTest {
 
         @Test
         void deveInserirVideo_RetornaVideoInserido() {
-            Video videoFake = VideoUtil.gerarVideoMock();
+            Video videoFake = gerarVideoMock();
             VideoDTO videoDTOfake = VideoUtil.gerarVideoDTOMock();
             when(videoRepository.insert(any(Video.class))).thenReturn(videoFake);
 
@@ -155,7 +158,7 @@ class VideoServiceTest {
 
         @Test
         void deveRemoverVideoPorId() {
-            Video videoFake = VideoUtil.gerarVideoMock();
+            Video videoFake = gerarVideoMock();
             ObjectId id = videoFake.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
 
@@ -166,7 +169,7 @@ class VideoServiceTest {
 
         @Test
         void deveLancarExcecao_RemoverVideoPorId_VideoNaoEncontrado() {
-            Video videoFaker = VideoUtil.gerarVideoMock();
+            Video videoFaker = gerarVideoMock();
             ObjectId id = videoFaker.getId();
             when(videoRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -181,7 +184,7 @@ class VideoServiceTest {
 
         @Test
         void deveAlterarVideoPorId() {
-            Video videoFake = VideoUtil.gerarVideoMock();
+            Video videoFake = gerarVideoMock();
             ObjectId id = videoFake.getId();
             VideoDTO videoDTO = VideoUtil.gerarVideoDTOMock();
             when(videoRepository.findById(id)).thenReturn(Optional.of(videoFake));
@@ -200,7 +203,7 @@ class VideoServiceTest {
 
         @Test
         void deveLancarExcecao_AlterarVideoPorId_VideoNaoEncontrado() {
-            Video videoFaker = VideoUtil.gerarVideoMock();
+            Video videoFaker = gerarVideoMock();
             ObjectId id = videoFaker.getId();
             VideoDTO videoDTO = VideoUtil.gerarVideoDTOMock();
             when(videoRepository.findById(id)).thenReturn(Optional.empty());
@@ -208,6 +211,20 @@ class VideoServiceTest {
             assertThatThrownBy(() -> videoService.updateVideoById(id, videoDTO))
                     .isInstanceOf(VideoNotFoundException.class)
                     .hasMessage(String.format("video_id %s não encontrado", id));
+        }
+    }
+
+    @Nested
+    class WatchVideos{
+
+        @Test
+        void deveRetornar_MonoVideo(){
+            Video videoMock = gerarVideoMock();
+            when(videoReactive.findById(any(ObjectId.class))).thenReturn(Mono.just(videoMock));
+
+            StepVerifier.create(videoService.watchVideo(videoMock.getId()))
+                    .expectNext(videoMock)
+                    .verifyComplete();
         }
     }
 }

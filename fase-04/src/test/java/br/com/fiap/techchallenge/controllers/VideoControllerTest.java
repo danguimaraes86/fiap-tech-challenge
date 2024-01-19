@@ -10,15 +10,19 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -36,6 +40,8 @@ class VideoControllerTest {
 
     private AutoCloseable mock;
     private MockMvc mockMvc;
+    @InjectMocks
+    private VideoController videoController;
     @Mock
     private VideoService videoService;
 
@@ -184,6 +190,27 @@ class VideoControllerTest {
             verify(videoService, times(1))
                     .deleteById(id);
 
+        }
+    }
+
+    @Nested
+    class Watch {
+
+        @Test
+        void deveRetornar_MonoVideo() {
+            Video videoMock = gerarVideoMock();
+            when(videoService.watchVideo(any(ObjectId.class))).thenReturn(Mono.just(videoMock));
+
+            StepVerifier.create(videoController.watchVideo(videoMock.getId()))
+                    .expectSubscription()
+                    .expectNextMatches(responseEntity -> {
+                        VideoDTO videoDTO = responseEntity.getBody();
+                        HttpStatusCode httpStatus = responseEntity.getStatusCode();
+                        return videoDTO != null &&
+                                videoDTO.equals(videoMock.toVideoDTO()) &&
+                                httpStatus.is2xxSuccessful();
+                    })
+                    .verifyComplete();
         }
     }
 
