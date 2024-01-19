@@ -18,6 +18,7 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final VideoService videoService;
 
 
     public Page<Usuario> findAll(Pageable pageable) {
@@ -47,14 +48,19 @@ public class UsuarioService {
         );
     }
 
-    private List<ObjectId> validarObjectId(List<String> favoritos) {
-        favoritos.forEach(favorito -> {
-            if (!ObjectId.isValid(favorito)) {
-                throw new FavoritoNaoEncontradoException(
-                        String.format("video %s não encontrado", favorito)
-                );
-            }
-        });
-        return favoritos.stream().map(ObjectId::new).toList();
+    private List<ObjectId> validarVideos(List<String> favoritos) {
+        favoritos.forEach(this::validarObjectId);
+        List<ObjectId> videosList = favoritos.stream().map(ObjectId::new).toList();
+        videosList.forEach(videoService::findById);
+        return videosList;
+    }
+
+
+    private void validarObjectId(String favorito) {
+        if (!ObjectId.isValid(favorito)) {
+            throw new FavoritoNaoEncontradoException(
+                    String.format("video_id %s com formato incorreto", favorito)
+            );
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,11 @@ public class VideoService {
 
     public Page<Video> findAll(Pageable pageRequest) {
         return videoRepository.findAll(pageRequest);
+    }
+
+    public List<ObjectId> findAllById(List<ObjectId> videos) {
+        return videoRepository.findAllById(videos)
+                .stream().map(Video::getId).toList();
     }
 
     public Video insert(VideoDTO videoDTO) {

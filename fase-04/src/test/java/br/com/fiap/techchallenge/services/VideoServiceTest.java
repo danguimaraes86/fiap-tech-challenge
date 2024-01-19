@@ -125,7 +125,7 @@ class VideoServiceTest {
 
             assertThatThrownBy(() -> videoService.findById(id))
                     .isInstanceOf(VideoNotFoundException.class)
-                    .hasMessage("video não encontrado");
+                    .hasMessage(String.format("video_id %s não encontrado", id));
         }
     }
 
@@ -169,7 +169,7 @@ class VideoServiceTest {
 
             assertThatThrownBy(() -> videoService.deleteById(id))
                     .isInstanceOf(VideoNotFoundException.class)
-                    .hasMessage("video não encontrado");
+                    .hasMessage(String.format("video_id %s não encontrado", id));
         }
     }
 
@@ -204,7 +204,7 @@ class VideoServiceTest {
 
             assertThatThrownBy(() -> videoService.updateVideoById(id, videoDTO))
                     .isInstanceOf(VideoNotFoundException.class)
-                    .hasMessage("video não encontrado");
+                    .hasMessage(String.format("video_id %s não encontrado", id));
         }
     }
 }

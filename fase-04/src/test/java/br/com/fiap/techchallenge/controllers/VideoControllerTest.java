@@ -210,7 +210,7 @@ class VideoControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(toJsonString(videoDTOFake)))
                     .andExpect(status().isBadRequest());
-            verify(videoService, times(0))
+            verify(videoService, never())
                     .insert(any(VideoDTO.class));
         }
 
