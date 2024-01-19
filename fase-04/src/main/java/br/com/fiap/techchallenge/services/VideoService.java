@@ -30,7 +30,9 @@ public class VideoService {
 
     public Video findById(ObjectId id) {
         return videoRepository.findById(id).orElseThrow(
-                () -> new VideoNotFoundException("video não encontrado")
+                () -> new VideoNotFoundException(
+                        String.format("video_id %s não encontrado", id)
+                )
         );
     }
 

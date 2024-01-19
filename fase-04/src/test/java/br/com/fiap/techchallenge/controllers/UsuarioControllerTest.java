@@ -3,6 +3,9 @@ package br.com.fiap.techchallenge.controllers;
 import br.com.fiap.techchallenge.domain.Usuario;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
+import br.com.fiap.techchallenge.exceptions.FavoritoNaoEncontradoException;
+import br.com.fiap.techchallenge.exceptions.UsuarioNotFoundException;
+import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.services.UsuarioService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
@@ -21,13 +24,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
+import static br.com.fiap.techchallenge.utils.UsuarioUtil.gerarFavoritos;
 import static br.com.fiap.techchallenge.utils.UsuarioUtil.gerarUsuarioMock;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class UsuarioControllerTest {
@@ -120,6 +126,102 @@ class UsuarioControllerTest {
                     .andExpect(header().string("Location", containsString(usuarioMock.getId().toHexString())));
             verify(usuarioService, times(1))
                     .insert(any(UsuarioDTO.class));
+        }
+    }
+
+    @Nested
+    class AdicionarFavorito {
+
+        @Test
+        void deveAdicionarFavorito() throws Exception {
+            Usuario usuarioMock = gerarUsuarioMock();
+            List<String> favoritosMock = gerarFavoritos();
+            when(usuarioService.adicionarFavoritos(any(ObjectId.class), anyList()))
+                    .thenReturn(usuarioMock.adicionarFavorito(
+                            favoritosMock.stream().map(ObjectId::new).toList()));
+
+            mockMvc.perform(post("/usuarios/{id}", usuarioMock.getId())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(favoritosMock)))
+                    .andExpect(status().isAccepted())
+                    .andExpect(content().json(toJsonString(usuarioMock.toUsuarioDTO())));
+            verify(usuarioService, times(1)).adicionarFavoritos(any(ObjectId.class), anyList());
+        }
+    }
+
+    @Nested
+    class Exceptions {
+
+        @Test
+        void deveLancarExcecao_BuscarPorId_NaoEncontrado() throws Exception {
+            ObjectId id = ObjectId.get();
+            doThrow(UsuarioNotFoundException.class).when(usuarioService).findById(any());
+
+            mockMvc.perform(get("/usuarios/{id}", id))
+                    .andExpect(status().isNotFound());
+            verify(usuarioService, times(1))
+                    .findById(id);
+        }
+
+        @Test
+        void deveLancarExcecao_InserirUsario_DadosInvalidos() throws Exception {
+            mockMvc.perform(post("/usuarios"))
+                    .andExpect(status().isBadRequest());
+            verify(usuarioService, never())
+                    .insert(any(UsuarioDTO.class));
+        }
+
+        @Test
+        void deveLancarExcecao_InserirUsario_FormatoInvalido() throws Exception {
+            mockMvc.perform(post("/usuarios/{id}", "object_id"))
+                    .andExpect(status().isBadRequest());
+            verify(usuarioService, never())
+                    .insert(any(UsuarioDTO.class));
+        }
+
+        @Test
+        void deveLancarExcecao_AdicionarFavorito_UsuarioNaoEncontrado() throws Exception {
+            ObjectId id = ObjectId.get();
+            List<String> favoritosMock = Collections.singletonList(ObjectId.get().toHexString());
+            doThrow(UsuarioNotFoundException.class).when(usuarioService).adicionarFavoritos(any(ObjectId.class), anyList());
+
+            mockMvc.perform(post("/usuarios/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(favoritosMock))
+                    )
+                    .andExpect(status().isNotFound());
+            verify(usuarioService, times(1))
+                    .adicionarFavoritos(id, favoritosMock);
+        }
+
+        @Test
+        void deveLancarExcecao_AdicionarFavorito_VideoNaoEncontrado() throws Exception {
+            ObjectId id = ObjectId.get();
+            List<String> favoritosMock = Collections.singletonList(ObjectId.get().toHexString());
+            doThrow(VideoNotFoundException.class).when(usuarioService).adicionarFavoritos(any(ObjectId.class), anyList());
+
+            mockMvc.perform(post("/usuarios/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(favoritosMock))
+                    )
+                    .andExpect(status().isNotFound());
+            verify(usuarioService, times(1))
+                    .adicionarFavoritos(id, favoritosMock);
+        }
+
+        @Test
+        void deveLancarExcecao_AdicionarFavorito_ObjectId_FormatoInvalido() throws Exception {
+            ObjectId id = ObjectId.get();
+            List<String> favoritosMock = Collections.singletonList(ObjectId.get().toHexString());
+            doThrow(FavoritoNaoEncontradoException.class).when(usuarioService).adicionarFavoritos(any(ObjectId.class), anyList());
+
+            mockMvc.perform(post("/usuarios/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(toJsonString(favoritosMock)))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
+            verify(usuarioService, times(1))
+                    .adicionarFavoritos(id, favoritosMock);
         }
     }
 }

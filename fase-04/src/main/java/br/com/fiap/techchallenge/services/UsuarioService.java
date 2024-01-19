@@ -26,24 +26,25 @@ public class UsuarioService {
 
     public Usuario findById(ObjectId id) {
         return usuarioRepository.findById(id).orElseThrow(
-                () -> new UsuarioNotFoundException("usuário não encontrado")
+                () -> new UsuarioNotFoundException(
+                        String.format("usuario_id %s não encontrado", id)
+                )
         );
     }
 
     public Usuario insert(UsuarioDTO usuarioDTO) {
-        Usuario usuario = new Usuario(usuarioDTO.nome());
+        Usuario usuario = usuarioRepository.insert(new Usuario(usuarioDTO.nome()));
         if (usuarioDTO.favoritos() != null) {
-            usuario.adicionarFavorito(
-                    validarObjectId(usuarioDTO.favoritos())
-            );
+            usuario.adicionarFavorito(validarVideos(usuarioDTO.favoritos()));
         }
-        return usuarioRepository.insert(usuario);
+        return usuarioRepository.save(usuario);
     }
 
-    public Usuario adicionarFavoritos(ObjectId id, List<String> favoritos) {
-        Usuario usuario = findById(id)
-                .adicionarFavorito(validarObjectId(favoritos));
-        return usuarioRepository.save(usuario);
+    public Usuario adicionarFavoritos(ObjectId id, List<String> favoritosList) {
+        Usuario usuario = findById(id);
+        return usuarioRepository.save(
+                usuario.adicionarFavorito(validarVideos(favoritosList))
+        );
     }
 
     private List<ObjectId> validarObjectId(List<String> favoritos) {

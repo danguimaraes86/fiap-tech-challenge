@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,5 +42,14 @@ public class UsuarioController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(location).body(usuario.toUsuarioDTO());
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> adicionarFavorito(
+            @PathVariable ObjectId id,
+            @RequestBody List<String> favoritos
+    ) {
+        Usuario usuario = usuarioService.adicionarFavoritos(id, favoritos);
+        return ResponseEntity.accepted().body(usuario.toUsuarioDTO());
     }
 }

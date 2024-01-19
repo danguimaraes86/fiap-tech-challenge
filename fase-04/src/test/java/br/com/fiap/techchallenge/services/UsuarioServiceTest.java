@@ -1,9 +1,13 @@
 package br.com.fiap.techchallenge.services;
 
 import br.com.fiap.techchallenge.domain.Usuario;
+import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
+import br.com.fiap.techchallenge.exceptions.FavoritoNaoEncontradoException;
 import br.com.fiap.techchallenge.exceptions.UsuarioNotFoundException;
+import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.UsuarioRepository;
+import br.com.fiap.techchallenge.repositories.VideoRepository;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.fiap.techchallenge.utils.UsuarioUtil.*;
+import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -30,13 +35,17 @@ class UsuarioServiceTest {
 
     private AutoCloseable mocks;
     private UsuarioService usuarioService;
+    private VideoService videoService;
     @Mock
     private UsuarioRepository usuarioRepository;
+    @Mock
+    private VideoRepository videoRepository;
 
     @BeforeEach
     void setup() {
         mocks = MockitoAnnotations.openMocks(this);
-        usuarioService = new UsuarioService(usuarioRepository);
+        videoService = new VideoService(videoRepository);
+        usuarioService = new UsuarioService(usuarioRepository, videoService);
     }
 
     @AfterEach
@@ -91,17 +100,6 @@ class UsuarioServiceTest {
                     .isNotEqualTo(gerarUsuarioMock());
             assertThat(usuarioById.getId()).isEqualTo(id);
         }
-
-        @Test
-        void deveLancarExcecao_BuscarUsarioPorId_UsuarioNaoEncontrado() {
-            Usuario usuarioMock = mock(Usuario.class);
-            ObjectId id = usuarioMock.getId();
-            when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
-
-            assertThatThrownBy(() -> usuarioService.findById(id))
-                    .isInstanceOf(UsuarioNotFoundException.class)
-                    .hasMessage("usuário não encontrado");
-        }
     }
 
     @Nested
@@ -112,9 +110,11 @@ class UsuarioServiceTest {
             Usuario usuarioMock = gerarUsuarioMock();
             UsuarioDTO usuarioDTOMock = gerarUsuarioDTOMock();
             when(usuarioRepository.insert(any(Usuario.class))).thenReturn(usuarioMock);
+            when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
 
             Usuario usuarioNovo = usuarioService.insert(usuarioDTOMock);
             verify(usuarioRepository, times(1)).insert(any(Usuario.class));
+            verify(usuarioRepository, times(1)).save(any(Usuario.class));
             assertThat(usuarioNovo)
                     .isInstanceOf(Usuario.class)
                     .isEqualTo(usuarioMock);
@@ -129,17 +129,35 @@ class UsuarioServiceTest {
         @Test
         void deveAdicionarFavoritos() {
             Usuario usuarioMock = gerarUsuarioMock();
-            List<String> favoritosMock = gerarFavoritos();
+            List<Video> videoListMock = Collections.singletonList(gerarVideoMock());
+            List<String> favoritosMock = videoListMock.stream().map(Video::getId).map(ObjectId::toHexString).toList();
+
             when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuarioMock));
             when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioMock);
+            when(videoRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(videoListMock.get(0)));
 
             Usuario usuario = usuarioService.adicionarFavoritos(usuarioMock.getId(), favoritosMock);
             verify(usuarioRepository, times(1)).findById(usuarioMock.getId());
+            verify(videoRepository, times(1)).findById(any(ObjectId.class));
             assertThat(usuario.getFavoritos())
                     .isNotEmpty()
                     .isEqualTo(favoritosMock.stream().map(ObjectId::new).toList())
                     .hasSize(favoritosMock.size());
             assertThat(usuario).isEqualTo(usuarioMock);
+        }
+    }
+
+    @Nested
+    class Exceptions {
+
+        @Test
+        void deveLancarExcecao_BuscarUsarioPorId_UsuarioNaoEncontrado() {
+            ObjectId id = ObjectId.get();
+            when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> usuarioService.findById(id))
+                    .isInstanceOf(UsuarioNotFoundException.class)
+                    .hasMessage(String.format("usuario_id %s não encontrado", id));
         }
 
         @Test
@@ -150,7 +168,44 @@ class UsuarioServiceTest {
 
             assertThatThrownBy(() -> usuarioService.adicionarFavoritos(id, favoritosMock))
                     .isInstanceOf(UsuarioNotFoundException.class)
-                    .hasMessage("usuário não encontrado");
+                    .hasMessage(String.format("usuario_id %s não encontrado", id));
+            verify(usuarioRepository, times(1)).findById(id);
+            verify(usuarioRepository, never()).save(any(Usuario.class));
+        }
+
+        @Test
+        void deveLancarExcecao_AdicionarFavoritos_ObjectId_FormatoIncorreto() {
+            Usuario usuarioMock = gerarUsuarioMock();
+            ObjectId id = usuarioMock.getId();
+            List<String> favoritosMock = Collections.singletonList(
+                    "objeto_aleatorio"
+            );
+            when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuarioMock));
+
+            assertThatThrownBy(() -> usuarioService.adicionarFavoritos(id, favoritosMock))
+                    .isInstanceOf(FavoritoNaoEncontradoException.class)
+                    .hasMessage(
+                            String.format("video_id %s com formato incorreto", favoritosMock.get(0))
+                    );
+            verify(usuarioRepository, times(1)).findById(id);
+            verify(usuarioRepository, never()).save(any(Usuario.class));
+        }
+
+        @Test
+        void deveLancarExcecao_AdicionarFavoritos_VideoNaoEncontrado() {
+            Usuario usuarioMock = gerarUsuarioMock();
+            ObjectId id = usuarioMock.getId();
+            List<String> favoritosMock = Collections.singletonList(
+                    ObjectId.get().toHexString()
+            );
+            when(usuarioRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(usuarioMock));
+            when(videoService.findAllById(anyList())).thenReturn(Collections.emptyList());
+
+            assertThatThrownBy(() -> usuarioService.adicionarFavoritos(usuarioMock.getId(), favoritosMock))
+                    .isInstanceOf(VideoNotFoundException.class)
+                    .hasMessage(
+                            String.format("video_id %s não encontrado", favoritosMock.get(0))
+                    );
             verify(usuarioRepository, times(1)).findById(id);
             verify(usuarioRepository, never()).save(any(Usuario.class));
         }
