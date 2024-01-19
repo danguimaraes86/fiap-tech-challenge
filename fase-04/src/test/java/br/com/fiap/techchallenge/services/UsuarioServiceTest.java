@@ -8,6 +8,7 @@ import br.com.fiap.techchallenge.exceptions.UsuarioNotFoundException;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.UsuarioRepository;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
+import br.com.fiap.techchallenge.repositories.VideoRepositoryReactive;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,11 +41,13 @@ class UsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
     @Mock
     private VideoRepository videoRepository;
+    @Mock
+    private VideoRepositoryReactive videoReactive;
 
     @BeforeEach
     void setup() {
         mocks = MockitoAnnotations.openMocks(this);
-        videoService = new VideoService(videoRepository);
+        videoService = new VideoService(videoRepository, videoReactive);
         usuarioService = new UsuarioService(usuarioRepository, videoService);
     }
 

@@ -4,11 +4,13 @@ import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
+import br.com.fiap.techchallenge.repositories.VideoRepositoryReactive;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 public class VideoService {
 
     private final VideoRepository videoRepository;
+    private final VideoRepositoryReactive videoReactive;
 
     public Page<Video> findAll(Pageable pageRequest) {
         return videoRepository.findAll(pageRequest);
@@ -57,5 +60,9 @@ public class VideoService {
         return videoRepository.findVideoByTituloLikeIgnoreCaseAndDataPublicacaoBefore(
                 titulo, dataPublicacao, pageable
         );
+    }
+
+    public Mono<Video> watchVideo(ObjectId id) {
+        return videoReactive.findById(id);
     }
 }

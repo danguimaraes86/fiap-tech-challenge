@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
+import br.com.fiap.techchallenge.repositories.VideoRepositoryReactive;
 import br.com.fiap.techchallenge.utils.VideoUtil;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
@@ -32,11 +33,13 @@ class VideoServiceTest {
     private VideoService videoService;
     @Mock
     private VideoRepository videoRepository;
+    @Mock
+    private VideoRepositoryReactive videoReactive;
 
     @BeforeEach
     void setup() {
         mocks = MockitoAnnotations.openMocks(this);
-        videoService = new VideoService(videoRepository);
+        videoService = new VideoService(videoRepository, videoReactive);
     }
 
     @AfterEach

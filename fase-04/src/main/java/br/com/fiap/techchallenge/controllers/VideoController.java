@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -37,6 +38,11 @@ public class VideoController {
     public ResponseEntity<VideoDTO> findById(@PathVariable ObjectId id) {
         Video video = videoService.findById(id);
         return ResponseEntity.ok(video.toVideoDTO());
+    }
+
+    @GetMapping("/{id}/watch")
+    public Mono<ResponseEntity<VideoDTO>> watchVideo(@PathVariable ObjectId id) {
+        return videoService.watchVideo(id).map(video -> ResponseEntity.ok().body(video.toVideoDTO()));
     }
 
     @GetMapping("/busca")
