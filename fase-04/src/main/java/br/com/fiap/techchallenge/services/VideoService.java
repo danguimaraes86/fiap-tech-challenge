@@ -33,7 +33,7 @@ public class VideoService {
 
     public Video insert(VideoDTO videoDTO) {
         return videoRepository.insert(
-                new Video(videoDTO.titulo(), videoDTO.descricao(), videoDTO.url(), LocalDateTime.now())
+                new Video(videoDTO.titulo(), videoDTO.descricao(), videoDTO.codeCategoria(), videoDTO.url(), LocalDateTime.now())
         );
     }
 
@@ -43,6 +43,10 @@ public class VideoService {
                         String.format("video_id %s não encontrado", id)
                 )
         );
+    }
+
+    public Page<Video> findByCategoria(String categoria) {
+        return videoRepository.findByCategoria(categoria);
     }
 
     public void deleteById(ObjectId id) {

@@ -17,6 +17,7 @@ public class VideoUtil {
                 ObjectId.get(),
                 faker.name().name(),
                 faker.witcher().quote(),
+                "AÇÃO",
                 faker.internet().url(),
                 0, publicacao, publicacao
         );
@@ -28,6 +29,7 @@ public class VideoUtil {
         return new VideoDTO(
                 faker.name().name(),
                 faker.witcher().quote(),
+                "1",
                 faker.internet().url(),
                 publicacao, null
         );

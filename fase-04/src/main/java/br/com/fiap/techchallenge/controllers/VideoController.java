@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.controllers;
 
+import br.com.fiap.techchallenge.Categoria;
 import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.services.VideoService;
@@ -18,6 +19,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/videos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,4 +79,12 @@ public class VideoController {
         videoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/categoria/{codeCategoria}")
+    public ResponseEntity<Page<VideoDTO>> findByCategoria(@RequestParam String codeCategoria){
+        String categoria = Categoria.getEnum(codeCategoria).getGenero();
+        Page<Video> videoPage = videoService.findByCategoria(categoria);
+        return ResponseEntity.ok(videoPage.map(Video::toVideoDTO));
+    }
+
 }

@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.services;
 
+import br.com.fiap.techchallenge.Categoria;
 import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
@@ -96,6 +97,21 @@ class VideoServiceTest {
                     .isEqualTo(videoFaker)
                     .isNotNull();
             assertThat(video.getId()).isEqualTo(id);
+        }
+
+        @Test
+        void deveBuscarVideoPorCategoria() {
+            Page<Video> videoFakerList = new PageImpl<>(Arrays.asList(gerarVideoMock()));
+            String categoria = videoFakerList.getContent().get(0).getCategoria();
+            when(videoRepository.findByCategoria(categoria)).thenReturn(videoFakerList);
+
+            Page<Video> page = videoService.findByCategoria(categoria);
+            verify(videoRepository, times(1)).findByCategoria(categoria);
+            assertThat(page)
+                    .isInstanceOf(Page.class)
+                    .isEqualTo(videoFakerList)
+                    .isNotNull();
+            assertThat(page.getContent().get(0).getCategoria()).isEqualTo(categoria);
         }
 
         @Test

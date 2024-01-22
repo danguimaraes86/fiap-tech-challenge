@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.controllers;
 
+import br.com.fiap.techchallenge.Categoria;
 import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
@@ -27,6 +28,7 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
 import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoDTOMock;
@@ -107,6 +109,20 @@ class VideoControllerTest {
                     .andExpect(content().json(toJsonString(videoDTO)));
             verify(videoService, times(1))
                     .findById(id);
+        }
+
+        @Test
+        void deveBuscarVideoPorCategoria() throws Exception {
+            Page<Video> videoFakeList = new PageImpl<>(Arrays.asList(gerarVideoMock()));
+            String categoria = Objects.requireNonNull(Categoria.getEnum("1")).getCode();
+            when(videoService.findByCategoria(categoria))
+                    .thenReturn(videoFakeList);
+            Video videoFake = videoFakeList.getContent().stream().findFirst().orElseThrow();
+
+            Page<VideoDTO> videoDTOPage = videoFakeList.map(Video::toVideoDTO);
+            mockMvc.perform(get("/videos/categoria/{codeCategoria}", Pageable.unpaged())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("titulo", videoFake.getTitulo()));
         }
 
         @Test
@@ -231,7 +247,7 @@ class VideoControllerTest {
 
         @Test
         void deveLancarExcecao_InserirVideo_dadosInvalidos() throws Exception {
-            VideoDTO videoDTOFake = new VideoDTO(null, null, null, null, null);
+            VideoDTO videoDTOFake = new VideoDTO(null, null, null, null, null, null);
 
             mockMvc.perform(post("/videos")
                             .contentType(MediaType.APPLICATION_JSON)
