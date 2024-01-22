@@ -1,5 +1,6 @@
-package br.com.fiap.techchallenge;
+package br.com.fiap.techchallenge.integrationTest;
 
+import br.com.fiap.techchallenge.MockFlixApplication;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @Tag("integration")
-class MockFlixApplicationIntegrationTest {
+class MockFlixApplicationIT {
 
     @Test
     void main() {
