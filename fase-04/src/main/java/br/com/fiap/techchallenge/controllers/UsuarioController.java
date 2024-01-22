@@ -44,7 +44,7 @@ public class UsuarioController {
         return ResponseEntity.created(location).body(usuario.toUsuarioDTO());
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/adicionarFavoritos")
     public ResponseEntity<UsuarioDTO> adicionarFavorito(
             @PathVariable ObjectId id,
             @RequestBody List<String> favoritos
