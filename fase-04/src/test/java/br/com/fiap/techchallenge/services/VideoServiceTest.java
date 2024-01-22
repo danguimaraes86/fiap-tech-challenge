@@ -218,10 +218,10 @@ class VideoServiceTest {
     }
 
     @Nested
-    class WatchVideos{
+    class WatchVideos {
 
         @Test
-        void deveRetornar_MonoVideo(){
+        void deveRetornar_MonoVideo() {
             Video videoMock = gerarVideoMock();
             when(videoRepository.findById(any(ObjectId.class))).thenReturn(Optional.of(videoMock));
             when(videoReactive.findById(any(ObjectId.class))).thenReturn(Mono.just(videoMock));

@@ -4,28 +4,49 @@ import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.repositories.VideoRepository;
 import br.com.fiap.techchallenge.services.VideoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoDTOMock;
+import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Tag("integration")
-class VideoIntegrationTest {
+class VideoServiceIT {
 
     @Autowired
     private VideoService service;
-
     @Autowired
     private VideoRepository repository;
 
+    @BeforeEach
+    void setUp() {
+        repository.deleteAll();
+    }
+
+    @Test
+    void deveRetornarListaVazia() {
+        var listaVideos = repository.findAll();
+        assertThat(listaVideos).isEmpty();
+    }
+
     @Test
     void deveListarTodosOsVideos() {
+        List<Video> videoList = Arrays.asList(
+                gerarVideoMock(),
+                gerarVideoMock(),
+                gerarVideoMock()
+        );
+        repository.insert(videoList);
         var listaVideos = repository.findAll();
-        assertThat(listaVideos).hasSizeGreaterThanOrEqualTo(0);
+        assertThat(listaVideos).hasSize(videoList.size());
     }
 
     @Test
