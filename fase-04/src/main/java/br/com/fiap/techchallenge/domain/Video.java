@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.domain;
 
-import br.com.fiap.techchallenge.Categoria;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
+import br.com.fiap.techchallenge.domain.enums.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

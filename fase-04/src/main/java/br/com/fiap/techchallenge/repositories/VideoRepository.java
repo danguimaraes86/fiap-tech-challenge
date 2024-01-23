@@ -17,5 +17,6 @@ public interface VideoRepository extends MongoRepository<Video, ObjectId> {
             LocalDateTime dataPublicacao,
             Pageable pageable
     );
+
     Page<Video> findByCategoria(String categoria);
 }

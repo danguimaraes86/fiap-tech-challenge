@@ -27,19 +27,21 @@ sobre os vídeos armazenados.
 
 ### Endpoints – Videos
 
-| Método | Url                | Descrição                                                |
-|--------|--------------------|----------------------------------------------------------|
-| GET    | /videos            | Retorna todos os video cadastrados                       |                             
-| GET    | /videos/{id}       | Retorna um vídeo com ID específico                       |                             
-| POST   | /videos            | Cadastra um vídeo                                        | 
-| PUT    | /videos/{id}       | Atualiza um vídeo com ID específico                      | 
-| DELETE | /videos/{id}       | Deleta um vídeo com ID específico                        |                             
-| GET    | /videos/busca      | Retorna uma lista de vídeo com base nos filtros de busca |                             
-| GET    | /videos/{id}/watch | Retorna um vídeo em endpoint reativo para streaming      |                             
+| Método | Url                                       | Descrição                                                 |
+|--------|-------------------------------------------|-----------------------------------------------------------|
+| GET    | /videos                                   | Retorna todos os video cadastrados                        |                             
+| GET    | /videos/{id: ObjectId}                    | Retorna um vídeo com ID específico                        |                             
+| POST   | /videos                                   | Cadastra um vídeo                                         | 
+| PUT    | /videos/{id: ObjectId}                    | Atualiza um vídeo com ID específico                       | 
+| DELETE | /videos/{id: ObjectId}                    | Deleta um vídeo com ID específico                         |                             
+| GET    | /videos/busca                             | Retorna uma lista de vídeos com base nos filtros de busca |                             
+| GET    | /videos/categoria/{codeCategoria: String} | Retorna uma lista de vídeos com base na categoria         |                             
+| GET    | /videos/{id}/watch                        | Retorna um vídeo em endpoint reativo para streaming       |                             
 
 ### Exemplos de entrada
 
 ##### POST /videos
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -65,6 +67,7 @@ sobre os vídeos armazenados.
 ```
 
 ##### PUT /video/{id}
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -101,6 +104,7 @@ sobre os vídeos armazenados.
 ### Exemplos de entrada
 
 ##### POST /usuarios
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -124,6 +128,7 @@ sobre os vídeos armazenados.
 ```
 
 ##### PUT /pessoa/{id}/adicionarFavoritos
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -152,6 +157,7 @@ sobre os vídeos armazenados.
 ### Exemplos de entrada
 
 ##### GET /estatisticas
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",

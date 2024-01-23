@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge;
+package br.com.fiap.techchallenge.domain.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

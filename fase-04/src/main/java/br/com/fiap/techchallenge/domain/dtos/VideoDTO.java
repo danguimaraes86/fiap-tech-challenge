@@ -1,6 +1,5 @@
 package br.com.fiap.techchallenge.domain.dtos;
 
-import br.com.fiap.techchallenge.Categoria;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;

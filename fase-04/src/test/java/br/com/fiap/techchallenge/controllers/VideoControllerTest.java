@@ -1,8 +1,8 @@
 package br.com.fiap.techchallenge.controllers;
 
-import br.com.fiap.techchallenge.Categoria;
 import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
+import br.com.fiap.techchallenge.domain.enums.Categoria;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
 import br.com.fiap.techchallenge.exceptions.VideoNotFoundException;
 import br.com.fiap.techchallenge.services.VideoService;
@@ -121,8 +121,8 @@ class VideoControllerTest {
 
             Page<VideoDTO> videoDTOPage = videoFakeList.map(Video::toVideoDTO);
             mockMvc.perform(get("/videos/categoria/{codeCategoria}", Pageable.unpaged())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .param("titulo", videoFake.getTitulo()));
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .param("titulo", videoFake.getTitulo()));
         }
 
         @Test
