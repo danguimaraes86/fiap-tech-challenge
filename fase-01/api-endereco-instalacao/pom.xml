@@ -11,8 +11,8 @@
 	<groupId>br.com.fiap</groupId>
 	<artifactId>api-endereco-instalacao</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tech-challenge</name>
-	<description>Tech Challenge Grupo 17</description>
+	<name>api-enderecos</name>
+	<description>api-enderecos</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
