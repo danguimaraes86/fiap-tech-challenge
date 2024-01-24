@@ -19,7 +19,7 @@ import static br.com.fiap.techchallenge.utils.UsuarioUtil.gerarUsuarioMock;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class EstatisticasServiceTest {
+class EstatisticasServiceTest {
 
     private AutoCloseable mocks;
     private EstatisticasService estatisticasService;
