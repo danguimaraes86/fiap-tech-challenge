@@ -23,7 +23,24 @@ sobre os vídeos armazenados.
 - Git
 - GitHub
 
-## Explore
+## Testes
+
+### Comandos
+
+Para realizar os testes, utilize o `gradle`. Caso não tenha o Gradle instalado, você pode utilizar o wrapper que
+acompanha o projeto. Neste caso, entre na pasta raiz da Fase-04 e utilize o comando `./gradlew`.
+
+| Comando                     | Descrição                                                  | Requisitos                  |
+|-----------------------------|------------------------------------------------------------|-----------------------------|
+| `./gradlew test`            | Realização dos Testes Unitários                            | Nenhum                      |
+| `./gradlew integrationTest` | Realização dos Testes de Integração                        | Docker rodando com MongoDB  |
+| `docker-compose up -d`      | Subir os serviços necessários para os Testes de Integração | Docker instalado na máquina |
+
+### Relatórios
+
+Após a execução dos testes, os relatórios gerados pelo JaCoCo estarão disponíveis na pasta `fase-04/build/reports`.
+
+## Endpoints
 
 ### Endpoints – Videos
 
@@ -38,9 +55,9 @@ sobre os vídeos armazenados.
 | GET    | /videos/categoria/{codeCategoria: String} | Retorna uma lista de vídeos com base na categoria         |                             
 | GET    | /videos/{id}/watch                        | Retorna um vídeo em endpoint reativo para streaming       |                             
 
-### Exemplos de entrada
+#### Exemplos de entrada
 
-##### POST /videos
+#### POST /videos
 
 ```json
 {
@@ -66,7 +83,7 @@ sobre os vídeos armazenados.
 }
 ```
 
-##### PUT /video/{id}
+#### PUT /video/{id}
 
 ```json
 {
@@ -94,16 +111,17 @@ sobre os vídeos armazenados.
 
 ### Endpoints – Usuário
 
-| Método | Url                               | Descrição                            | 
-|--------|-----------------------------------|--------------------------------------|
-| GET    | /usuarios                         | Retorna todos os video cadastrados   |
-| GET    | /usuarios/{id}                    | Retorna um Usuário com ID específico |
-| POST   | /usuarios/                        | Cadastra um Usuário                  |
-| POST   | /usuarios/{id}/adicionarFavoritos | Cadastra os Favoritos de um Usuário  |
+| Método | Url                                         | Descrição                                          | 
+|--------|---------------------------------------------|----------------------------------------------------|
+| GET    | /usuarios                                   | Retorna todos os video cadastrados                 |
+| GET    | /usuarios/{id: ObjectId}                    | Retorna um Usuário com ID específico               |
+| POST   | /usuarios                                   | Cadastra um Usuário                                |
+| POST   | /usuarios/adicionarFavoritos/{id: ObjectId} | Cadastra os Favoritos de um Usuário                |
+| GET    | /usuarios/recomendacoes/{id: ObjectId}      | Retorna uma lista de vídeos com base nos favoritos |
 
-### Exemplos de entrada
+#### Exemplos de entrada
 
-##### POST /usuarios
+#### POST /usuarios
 
 ```json
 {
@@ -127,7 +145,7 @@ sobre os vídeos armazenados.
 }
 ```
 
-##### PUT /pessoa/{id}/adicionarFavoritos
+#### PUT /pessoa/{id}/adicionarFavoritos
 
 ```json
 {
@@ -154,9 +172,9 @@ sobre os vídeos armazenados.
 |--------|---------------|------------------------------------|
 | GET    | /estatisticas | Retorna as estatísticas do sistema |
 
-### Exemplos de entrada
+#### Exemplos de saída
 
-##### GET /estatisticas
+#### GET /estatisticas
 
 ```json
 {

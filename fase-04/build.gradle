@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.1.3'
+    id 'jacoco'
 }
 
 group = 'br.com.fiap.tech-challenge'
@@ -9,6 +10,10 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '17'
+}
+
+jacoco {
+    toolVersion = "0.8.9"
 }
 
 configurations {
@@ -44,6 +49,7 @@ tasks.named('test') {
     useJUnitPlatform {
         excludeTags('integration')
     }
+    finalizedBy jacocoTestReport
 }
 
 tasks.register('integrationTest', Test) {
@@ -57,5 +63,14 @@ tasks.register('integrationTest', Test) {
 tasks.withType(Test).configureEach {
     testLogging {
         events 'passed', 'skipped', 'failed'
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('reports/coverage')
     }
 }
