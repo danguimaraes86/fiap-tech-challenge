@@ -8,3 +8,10 @@ Você encontra os links para as Fases abaixo:
 - [Fase 02](fase-02)
 - [Fase 03](fase-03)
 - [Fase 04](fase-04)
+
+## Integrantes
+
+- Felipe Ferreira de Paula
+- João Pedro Gomes
+- Daniel Reis de Medeiros Guimarães
+- Rafael Souza Araujo
