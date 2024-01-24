@@ -28,6 +28,7 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
@@ -113,16 +114,16 @@ class VideoControllerTest {
 
         @Test
         void deveBuscarVideoPorCategoria() throws Exception {
-            Page<Video> videoFakeList = new PageImpl<>(Arrays.asList(gerarVideoMock()));
+            List<Video> videoFakeList = Collections.singletonList(gerarVideoMock());
             String categoria = Objects.requireNonNull(Categoria.getEnum("1")).getCode();
             when(videoService.findByCategoria(categoria))
                     .thenReturn(videoFakeList);
-            Video videoFake = videoFakeList.getContent().stream().findFirst().orElseThrow();
 
-            Page<VideoDTO> videoDTOPage = videoFakeList.map(Video::toVideoDTO);
-            mockMvc.perform(get("/videos/categoria/{codeCategoria}", Pageable.unpaged())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .param("titulo", videoFake.getTitulo()));
+            Page<VideoDTO> videoDTOPage = new PageImpl<>(videoFakeList.stream().map(Video::toVideoDTO).toList());
+            mockMvc.perform(get("/videos/categoria/{codeCategoria}", categoria)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(toJsonString(videoDTOPage)));
         }
 
         @Test

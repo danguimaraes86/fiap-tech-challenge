@@ -23,6 +23,7 @@ import reactor.test.StepVerifier;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
@@ -100,17 +101,16 @@ class VideoServiceTest {
 
         @Test
         void deveBuscarVideoPorCategoria() {
-            Page<Video> videoFakerList = new PageImpl<>(Arrays.asList(gerarVideoMock()));
-            String categoria = videoFakerList.getContent().get(0).getCategoria();
+            List<Video> videoFakerList = Collections.singletonList(gerarVideoMock());
+            String categoria = videoFakerList.get(0).getCategoria();
             when(videoRepository.findByCategoria(categoria)).thenReturn(videoFakerList);
 
-            Page<Video> page = videoService.findByCategoria(categoria);
+            List<Video> videoList = videoService.findByCategoria(categoria);
             verify(videoRepository, times(1)).findByCategoria(categoria);
-            assertThat(page)
-                    .isInstanceOf(Page.class)
+            assertThat(videoList)
                     .isEqualTo(videoFakerList)
                     .isNotNull();
-            assertThat(page.getContent().get(0).getCategoria()).isEqualTo(categoria);
+            assertThat(videoList.get(0).getCategoria()).isEqualTo(categoria);
         }
 
         @Test
