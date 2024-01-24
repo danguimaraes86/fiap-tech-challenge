@@ -26,9 +26,8 @@ public class VideoService {
         return videoRepository.findAll(pageRequest);
     }
 
-    public List<ObjectId> findAllById(List<ObjectId> videos) {
-        return videoRepository.findAllById(videos)
-                .stream().map(Video::getId).toList();
+    public List<Video> findAllById(List<ObjectId> videos) {
+        return videoRepository.findAllById(videos);
     }
 
     public Video insert(VideoDTO videoDTO) {
@@ -45,7 +44,7 @@ public class VideoService {
         );
     }
 
-    public Page<Video> findByCategoria(String categoria) {
+    public List<Video> findByCategoria(String categoria) {
         return videoRepository.findByCategoria(categoria);
     }
 

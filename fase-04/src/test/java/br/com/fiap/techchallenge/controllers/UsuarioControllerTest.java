@@ -1,7 +1,9 @@
 package br.com.fiap.techchallenge.controllers;
 
 import br.com.fiap.techchallenge.domain.Usuario;
+import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.exceptions.ControllerExceptionHandler;
 import br.com.fiap.techchallenge.exceptions.FavoritoNaoEncontradoException;
 import br.com.fiap.techchallenge.exceptions.UsuarioNotFoundException;
@@ -29,11 +31,11 @@ import java.util.List;
 import static br.com.fiap.techchallenge.utils.JsonUtil.toJsonString;
 import static br.com.fiap.techchallenge.utils.UsuarioUtil.gerarFavoritos;
 import static br.com.fiap.techchallenge.utils.UsuarioUtil.gerarUsuarioMock;
+import static br.com.fiap.techchallenge.utils.VideoUtil.gerarVideoMock;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class UsuarioControllerTest {
@@ -140,12 +142,32 @@ class UsuarioControllerTest {
                     .thenReturn(usuarioMock.adicionarFavorito(
                             favoritosMock.stream().map(ObjectId::new).toList()));
 
-            mockMvc.perform(post("/usuarios/{id}", usuarioMock.getId())
+            mockMvc.perform(post("/usuarios/{id}/adicionarFavoritos", usuarioMock.getId())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(toJsonString(favoritosMock)))
                     .andExpect(status().isAccepted())
                     .andExpect(content().json(toJsonString(usuarioMock.toUsuarioDTO())));
             verify(usuarioService, times(1)).adicionarFavoritos(any(ObjectId.class), anyList());
+        }
+    }
+
+    @Nested
+    class Recomendados {
+
+        @Test
+        void deveRetornarRecomendados() throws Exception {
+            Usuario usuarioMock = gerarUsuarioMock();
+            List<Video> videosMock = Collections.singletonList(gerarVideoMock());
+            when(usuarioService.getVideosRecomendados(any(ObjectId.class)))
+                    .thenReturn(videosMock);
+
+
+            List<VideoDTO> videoDTOS = videosMock.stream().map(Video::toVideoDTO).toList();
+            mockMvc.perform(get("/usuarios/{id}/recomendacoes", usuarioMock.getId())
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(toJsonString(videoDTOS)));
+            verify(usuarioService, times(1)).getVideosRecomendados(any(ObjectId.class));
         }
     }
 
@@ -172,8 +194,8 @@ class UsuarioControllerTest {
         }
 
         @Test
-        void deveLancarExcecao_InserirUsario_FormatoInvalido() throws Exception {
-            mockMvc.perform(post("/usuarios/{id}", "object_id"))
+        void deveLancarExcecao_BuscarUsario_FormatoInvalido() throws Exception {
+            mockMvc.perform(get("/usuarios/{id}", "object_id"))
                     .andExpect(status().isBadRequest());
             verify(usuarioService, never())
                     .insert(any(UsuarioDTO.class));
@@ -185,7 +207,7 @@ class UsuarioControllerTest {
             List<String> favoritosMock = Collections.singletonList(ObjectId.get().toHexString());
             doThrow(UsuarioNotFoundException.class).when(usuarioService).adicionarFavoritos(any(ObjectId.class), anyList());
 
-            mockMvc.perform(post("/usuarios/{id}", id)
+            mockMvc.perform(post("/usuarios/{id}/adicionarFavoritos", id)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(toJsonString(favoritosMock))
                     )
@@ -200,7 +222,7 @@ class UsuarioControllerTest {
             List<String> favoritosMock = Collections.singletonList(ObjectId.get().toHexString());
             doThrow(VideoNotFoundException.class).when(usuarioService).adicionarFavoritos(any(ObjectId.class), anyList());
 
-            mockMvc.perform(post("/usuarios/{id}", id)
+            mockMvc.perform(post("/usuarios/{id}/adicionarFavoritos", id)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(toJsonString(favoritosMock))
                     )
@@ -215,10 +237,9 @@ class UsuarioControllerTest {
             List<String> favoritosMock = Collections.singletonList(ObjectId.get().toHexString());
             doThrow(FavoritoNaoEncontradoException.class).when(usuarioService).adicionarFavoritos(any(ObjectId.class), anyList());
 
-            mockMvc.perform(post("/usuarios/{id}", id)
+            mockMvc.perform(post("/usuarios/{id}/adicionarFavoritos", id)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(toJsonString(favoritosMock)))
-                    .andDo(print())
                     .andExpect(status().isBadRequest());
             verify(usuarioService, times(1))
                     .adicionarFavoritos(id, favoritosMock);

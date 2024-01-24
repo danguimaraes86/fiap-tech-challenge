@@ -151,6 +151,30 @@ class UsuarioServiceTest {
     }
 
     @Nested
+    class Recomendados {
+
+        @Test
+        void deveRetornarListaRecomendados() {
+            Usuario usuarioMock = gerarUsuarioMock();
+            List<Video> videoListMock = Collections.singletonList(gerarVideoMock());
+            List<ObjectId> idList = videoListMock.stream().map(Video::getId).toList();
+
+            when(usuarioRepository.findById(any(ObjectId.class)))
+                    .thenReturn(Optional.of(usuarioMock.adicionarFavorito(idList)));
+            when(videoRepository.findAllById(idList)).thenReturn(videoListMock);
+            when(videoRepository.findByCategoria(anyString())).thenReturn(videoListMock);
+
+            List<Video> videoList = usuarioService.getVideosRecomendados(usuarioMock.getId());
+            verify(usuarioRepository, times(1)).findById(usuarioMock.getId());
+            verify(videoRepository, times(1)).findAllById(anyList());
+            assertThat(videoList)
+                    .isNotEmpty()
+                    .isEqualTo(videoListMock)
+                    .hasSize(videoListMock.size());
+        }
+    }
+
+    @Nested
     class Exceptions {
 
         @Test

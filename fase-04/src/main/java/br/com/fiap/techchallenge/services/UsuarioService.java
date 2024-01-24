@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.services;
 
 import br.com.fiap.techchallenge.domain.Usuario;
+import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
 import br.com.fiap.techchallenge.exceptions.FavoritoNaoEncontradoException;
 import br.com.fiap.techchallenge.exceptions.UsuarioNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -62,5 +64,15 @@ public class UsuarioService {
                     String.format("video_id %s com formato incorreto", favorito)
             );
         }
+    }
+
+    public List<Video> getVideosRecomendados(ObjectId id) {
+        List<Video> recomendados = new ArrayList<>();
+        videoService.findAllById(
+                findById(id).getFavoritos()).forEach(
+                video -> videoService.findByCategoria(video.getCategoria())
+                        .stream().findFirst().ifPresent(recomendados::add)
+        );
+        return recomendados;
     }
 }

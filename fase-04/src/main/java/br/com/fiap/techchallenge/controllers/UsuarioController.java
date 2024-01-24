@@ -1,7 +1,9 @@
 package br.com.fiap.techchallenge.controllers;
 
 import br.com.fiap.techchallenge.domain.Usuario;
+import br.com.fiap.techchallenge.domain.Video;
 import br.com.fiap.techchallenge.domain.dtos.UsuarioDTO;
+import br.com.fiap.techchallenge.domain.dtos.VideoDTO;
 import br.com.fiap.techchallenge.services.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,5 +53,11 @@ public class UsuarioController {
     ) {
         Usuario usuario = usuarioService.adicionarFavoritos(id, favoritos);
         return ResponseEntity.accepted().body(usuario.toUsuarioDTO());
+    }
+
+    @GetMapping("/{id}/recomendacoes")
+    public ResponseEntity<List<VideoDTO>> videosRecomendados(@PathVariable ObjectId id) {
+        List<Video> videosRecomendados = usuarioService.getVideosRecomendados(id);
+        return ResponseEntity.ok(videosRecomendados.stream().map(Video::toVideoDTO).toList());
     }
 }
