@@ -5,3 +5,10 @@ Separamos nosso projeto por branchs e pastas para facilitar a localização dos 
 Você encontra os links para as Fases abaixo:
 
 - [Fase 04](fase-04)
+
+# Integrantes
+
+- Felipe Ferreira de Paula
+- João Pedro Gomes
+- Daniel Reis de Medeiros Guimarães
+- Rafael Souza Araujo
