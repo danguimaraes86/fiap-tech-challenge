@@ -1,3 +1,0 @@
-### Linguagem Ubíqua
-
-- **Usuário**: 
