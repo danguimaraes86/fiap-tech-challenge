@@ -23,6 +23,17 @@ sobre os vídeos armazenados.
 - Git
 - GitHub
 
+## Como inicar o projeto
+
+Para inicar o projeto, utilize o `gradle`. Caso não tenha o Gradle instalado, você pode utilizar o wrapper que
+acompanha o projeto. Neste caso, entre na pasta raiz da Fase-04 e utilize o comando `./gradlew`.
+É necessário estar com `Docker` rodando para conexão com banco de dados.
+
+| Comando                | Descrição                           | Requisitos                  |
+|------------------------|-------------------------------------|-----------------------------|
+| `docker-compose up -d` | Subir os serviços de banco de dados | Docker instalado na máquina |
+| `./gradlew bootRun`    | Realização dos Testes Unitários     | MongoDB rodando             |
+
 ## Testes
 
 ### Comandos
@@ -53,7 +64,7 @@ Após a execução dos testes, os relatórios gerados pelo JaCoCo estarão dispo
 | DELETE | /videos/{id: ObjectId}                    | Deleta um vídeo com ID específico                         |                             
 | GET    | /videos/busca                             | Retorna uma lista de vídeos com base nos filtros de busca |                             
 | GET    | /videos/categoria/{codeCategoria: String} | Retorna uma lista de vídeos com base na categoria         |                             
-| GET    | /videos/{id}/watch                        | Retorna um vídeo em endpoint reativo para streaming       |                             
+| GET    | /videos/{id: ObjectId}/watch              | Retorna um vídeo em endpoint reativo para streaming       |                             
 
 #### Exemplos de entrada
 
@@ -116,8 +127,8 @@ Após a execução dos testes, os relatórios gerados pelo JaCoCo estarão dispo
 | GET    | /usuarios                                   | Retorna todos os video cadastrados                 |
 | GET    | /usuarios/{id: ObjectId}                    | Retorna um Usuário com ID específico               |
 | POST   | /usuarios                                   | Cadastra um Usuário                                |
-| POST   | /usuarios/adicionarFavoritos/{id: ObjectId} | Cadastra os Favoritos de um Usuário                |
-| GET    | /usuarios/recomendacoes/{id: ObjectId}      | Retorna uma lista de vídeos com base nos favoritos |
+| POST   | /usuarios/{id: ObjectId}/adicionarFavoritos | Cadastra os Favoritos de um Usuário                |
+| GET    | /usuarios/{id: ObjectId}/recomendacoes      | Retorna uma lista de vídeos com base nos favoritos |
 
 #### Exemplos de entrada
 
