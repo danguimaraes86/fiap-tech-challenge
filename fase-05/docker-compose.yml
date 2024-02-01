@@ -1,22 +1,50 @@
-# Use root/example as user/password credentials
-version: '3.1'
+version: '3.5'
 
 services:
+  ms-usuarios:
+    image: postgres:latest
+    container_name: ms-usuarios
+    environment:
+      POSTGRES_DB: "ms-usuarios"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    #      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ms-usuarios:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
 
-  mongodb:
+  ms-produtos:
+    image: postgres:latest
+    container_name: ms-produtos
+    environment:
+      POSTGRES_DB: "ms-produtos"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    #      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ms-produtos:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+
+  ms-carrinho:
     image: mongo:latest
-    container_name: magazine_fiap_mongodb
+    container_name: ms-carrinho
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: toor
-      MONGO_INITDB_DATABASE: magazine_fiap
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+      MONGO_INITDB_DATABASE: ms-carrinho
     volumes:
-      - mongo-data:/data/db
-      - mongo-config:/data/configdb
+      - ms-carrinho-data:/data/db
+      - ms-carrinho-config:/data/configdb
     ports:
       - "27017:27017"
 
 volumes:
-  mongo-data:
-  mongo-config:
+  ms-carrinho-data:
+  ms-carrinho-config:
+  ms-produtos:
+  ms-usuarios:
