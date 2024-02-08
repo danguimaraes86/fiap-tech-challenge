@@ -87,7 +87,7 @@ class ProdutoServiceTest {
             Produto produtoMock = getProdutoMock(id, 10L);
             when(produtoRepository.findById(anyString())).thenReturn(Optional.of(produtoMock));
 
-            Produto produto = produtoService.findById(id);
+            Produto produto = produtoService.findProdutoById(id);
             verify(produtoRepository, times(1)).findById(id);
 
             assertThat(produto).isEqualTo(produtoMock);
@@ -109,7 +109,7 @@ class ProdutoServiceTest {
             ProdutoDTO produtoDTO = produtoMock.toProdutoDTO();
             when(produtoRepository.save(any(Produto.class))).thenReturn(produtoMock);
 
-            Produto produto = produtoService.insert(produtoDTO);
+            Produto produto = produtoService.insertProduto(produtoDTO);
             verify(produtoRepository, times(1)).save(any(Produto.class));
 
             assertThat(produto).isInstanceOf(Produto.class);
@@ -141,14 +141,30 @@ class ProdutoServiceTest {
     }
 
     @Nested
+    class RemoverProduto {
+
+        @Test
+        void deveRemoverProduto_comSucesso() {
+            String id = UUID.randomUUID().toString();
+            Produto produtoMock = getProdutoMock(id, 10L);
+            when(produtoRepository.findById(anyString())).thenReturn(Optional.of(produtoMock));
+            doNothing().when(produtoRepository).delete(any(Produto.class));
+
+            produtoService.deleteProduto(id);
+            verify(produtoRepository, times(1)).findById(anyString());
+            verify(produtoRepository, times(1)).delete(any(Produto.class));
+        }
+    }
+
+    @Nested
     class Exceptions {
 
         @Test
-        void deveLancarExcecao_buscarProdutoPorId() {
+        void deveLancarExcecao_buscarProdutoPorId_produtoNaoEncontrado() {
             String id = UUID.randomUUID().toString();
             when(produtoRepository.findById(anyString())).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> produtoService.findById(id))
+            assertThatThrownBy(() -> produtoService.findProdutoById(id))
                     .isInstanceOf(ProdutoNaoEncontradoException.class)
                     .hasMessage(String.format("produto_id %s não encontrado", id));
             verify(produtoRepository, times(1)).findById(anyString());
@@ -168,6 +184,17 @@ class ProdutoServiceTest {
             verify(produtoRepository, times(1)).findById(anyString());
             verify(produtoRepository, never()).save(produtoMock);
         }
-    }
 
+        @Test
+        void deveLancarExcecao_removerProduto_produtoNaoEncontrado() {
+            String id = UUID.randomUUID().toString();
+            when(produtoRepository.findById(anyString())).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> produtoService.deleteProduto(id))
+                    .isInstanceOf(ProdutoNaoEncontradoException.class)
+                    .hasMessage(String.format("produto_id %s não encontrado", id));
+            verify(produtoRepository, times(1)).findById(anyString());
+            verify(produtoRepository, never()).delete(any(Produto.class));
+        }
+    }
 }

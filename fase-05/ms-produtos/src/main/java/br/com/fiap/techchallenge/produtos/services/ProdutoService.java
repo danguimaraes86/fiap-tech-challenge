@@ -19,21 +19,26 @@ public class ProdutoService {
         return produtoRepository.findAll(pageable);
     }
 
-    public Produto findById(String id) {
+    public Produto findProdutoById(String id) {
         return produtoRepository.findById(id).orElseThrow(() ->
                 new ProdutoNaoEncontradoException(String.format("produto_id %s não encontrado", id))
         );
     }
 
-    public Produto insert(ProdutoDTO produtoDTO) {
+    public Produto insertProduto(ProdutoDTO produtoDTO) {
         return produtoRepository.save(
                 new Produto(produtoDTO.nome(), produtoDTO.descricao(), produtoDTO.preco())
         );
     }
 
     public Produto updateEstoque(String id, Long alteracaoEstoque) {
-        Produto produto = findById(id);
+        Produto produto = findProdutoById(id);
         produto.updateEstoqe(alteracaoEstoque);
         return produtoRepository.save(produto);
+    }
+
+    public void deleteProduto(String id) {
+        Produto produto = findProdutoById(id);
+        produtoRepository.delete(produto);
     }
 }
