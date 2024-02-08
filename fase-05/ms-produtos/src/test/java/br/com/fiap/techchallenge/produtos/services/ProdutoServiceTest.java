@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.produtos.services;
 
 import br.com.fiap.techchallenge.produtos.exceptions.EstoqueInsuficienteException;
+import br.com.fiap.techchallenge.produtos.exceptions.ProdutoJaCadastradoException;
 import br.com.fiap.techchallenge.produtos.exceptions.ProdutoNaoEncontradoException;
 import br.com.fiap.techchallenge.produtos.model.Produto;
 import br.com.fiap.techchallenge.produtos.model.dtos.ProdutoDTO;
@@ -171,7 +172,21 @@ class ProdutoServiceTest {
         }
 
         @Test
-        void deveLancarExcecao_produtoSemEstoque() {
+        void deveLancarExcecao_inserirProduto_nomeJaCadastrado() {
+            String id = UUID.randomUUID().toString();
+            Produto produtoMock = getProdutoMock(id, 10L);
+            ProdutoDTO produtoDTOMock = produtoMock.toProdutoDTO();
+            when(produtoRepository.findByNomeIgnoreCase(anyString())).thenReturn(Optional.of(produtoMock));
+
+            assertThatThrownBy(() -> produtoService.insertProduto(produtoDTOMock))
+                    .isInstanceOf(ProdutoJaCadastradoException.class)
+                    .hasMessage(String.format("produto_nome %s já cadastrado", produtoDTOMock.nome()));
+            verify(produtoRepository, times(1)).findByNomeIgnoreCase(anyString());
+            verify(produtoRepository, never()).save(produtoMock);
+        }
+
+        @Test
+        void deveLancarExcecao_alterarEstoque_produtoSemEstoque() {
             String id = UUID.randomUUID().toString();
             Produto produtoMock = getProdutoMock(id, 10L);
             Long alterarEstoque = (-13L);
