@@ -8,7 +8,6 @@ services:
       POSTGRES_DB: "ms-usuarios"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
-    #      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ms-usuarios:/var/lib/postgresql/data
     ports:
@@ -22,7 +21,6 @@ services:
       POSTGRES_DB: "ms-produtos"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
-    #      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ms-produtos:/var/lib/postgresql/data
     ports:
