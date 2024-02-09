@@ -1,8 +1,9 @@
 package br.com.fiap.techchallenge.produtos.services;
 
-import br.com.fiap.techchallenge.produtos.exceptions.EstoqueInsuficienteException;
-import br.com.fiap.techchallenge.produtos.exceptions.ProdutoJaCadastradoException;
-import br.com.fiap.techchallenge.produtos.exceptions.ProdutoNaoEncontradoException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.EstoqueInsuficienteException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.PrecoAbaixoZeroException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoJaCadastradoException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoNaoEncontradoException;
 import br.com.fiap.techchallenge.produtos.model.Produto;
 import br.com.fiap.techchallenge.produtos.model.dtos.ProdutoDTO;
 import br.com.fiap.techchallenge.produtos.repositories.ProdutoRepository;
@@ -16,9 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import static br.com.fiap.techchallenge.produtos.exceptions.domain.MensagensErro.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,13 +36,8 @@ class ProdutoServiceTest {
     @Mock
     private ProdutoRepository produtoRepository;
 
-    private static Produto getProdutoMock(String id, Long estoque) {
-        return new Produto(id,
-                RandomString.make(),
-                RandomString.make(),
-                BigDecimal.valueOf(new Random().nextDouble()),
-                estoque
-        );
+    private static Produto getProdutoMock(String id, Double preco, Long estoque) {
+        return new Produto(id, RandomString.make(), RandomString.make(), preco, estoque);
     }
 
     @BeforeEach
@@ -60,7 +59,7 @@ class ProdutoServiceTest {
             Page<Produto> produtoPageFake = new PageImpl<>(Collections.emptyList());
             when(produtoRepository.findAll(any(Pageable.class))).thenReturn(produtoPageFake);
 
-            Page<Produto> videoPage = produtoService.findAll(Pageable.unpaged());
+            Page<Produto> videoPage = produtoService.findAllProdutos(Pageable.unpaged());
             verify(produtoRepository, times(1)).findAll(Pageable.unpaged());
 
             assertThat(videoPage).isInstanceOf(Page.class);
@@ -75,7 +74,7 @@ class ProdutoServiceTest {
                     mock(Produto.class)));
             when(produtoRepository.findAll(any(Pageable.class))).thenReturn(produtoPageFake);
 
-            Page<Produto> videoPage = produtoService.findAll(Pageable.unpaged());
+            Page<Produto> videoPage = produtoService.findAllProdutos(Pageable.unpaged());
             verify(produtoRepository, times(1)).findAll(Pageable.unpaged());
 
             assertThat(videoPage).isInstanceOf(Page.class);
@@ -85,7 +84,7 @@ class ProdutoServiceTest {
         @Test
         void deveBuscarProdutoPorId() {
             String id = UUID.randomUUID().toString();
-            Produto produtoMock = getProdutoMock(id, 10L);
+            Produto produtoMock = getProdutoMock(id, 7.0, 7L);
             when(produtoRepository.findById(anyString())).thenReturn(Optional.of(produtoMock));
 
             Produto produto = produtoService.findProdutoById(id);
@@ -105,8 +104,7 @@ class ProdutoServiceTest {
 
         @Test
         void deveInserirProduto_comSucesso() {
-            String id = UUID.randomUUID().toString();
-            Produto produtoMock = getProdutoMock(id, 0L);
+            Produto produtoMock = new Produto(RandomString.make(), RandomString.make(), 7.0);
             ProdutoDTO produtoDTO = produtoMock.toProdutoDTO();
             when(produtoRepository.save(any(Produto.class))).thenReturn(produtoMock);
 
@@ -114,7 +112,6 @@ class ProdutoServiceTest {
             verify(produtoRepository, times(1)).save(any(Produto.class));
 
             assertThat(produto).isInstanceOf(Produto.class);
-            assertThat(produto.getId()).isEqualTo(produtoMock.getId());
             assertThat(produto.getNome()).isEqualTo(produtoDTO.nome());
             assertThat(produto.getDescricao()).isEqualTo(produtoDTO.descricao());
             assertThat(produto.getPreco()).isEqualTo(produtoDTO.preco());
@@ -128,12 +125,12 @@ class ProdutoServiceTest {
         @Test
         void deveAlterarEstoque_comSucesso() {
             String id = UUID.randomUUID().toString();
-            Produto produtoMock = getProdutoMock(id, 10L);
+            Produto produtoMock = getProdutoMock(id, 10.0, 10L);
             Long alteracaoEstoque = (-7L);
             when(produtoRepository.findById(anyString())).thenReturn(Optional.of(produtoMock));
             when(produtoRepository.save(any(Produto.class))).thenReturn(produtoMock);
 
-            Produto produto = produtoService.updateEstoque(id, alteracaoEstoque);
+            Produto produto = produtoService.updateProdutoEstoque(id, alteracaoEstoque);
             verify(produtoRepository, times(1)).findById(anyString());
             verify(produtoRepository, times(1)).save(any(Produto.class));
 
@@ -147,7 +144,7 @@ class ProdutoServiceTest {
         @Test
         void deveRemoverProduto_comSucesso() {
             String id = UUID.randomUUID().toString();
-            Produto produtoMock = getProdutoMock(id, 10L);
+            Produto produtoMock = getProdutoMock(id, 10.0, 10L);
             when(produtoRepository.findById(anyString())).thenReturn(Optional.of(produtoMock));
             doNothing().when(produtoRepository).delete(any(Produto.class));
 
@@ -167,20 +164,34 @@ class ProdutoServiceTest {
 
             assertThatThrownBy(() -> produtoService.findProdutoById(id))
                     .isInstanceOf(ProdutoNaoEncontradoException.class)
-                    .hasMessage(String.format("produto_id %s não encontrado", id));
+                    .hasMessage(String.format(PRODUTO_NAO_ENCONTRADO.getMensagem(), id));
             verify(produtoRepository, times(1)).findById(anyString());
         }
 
         @Test
         void deveLancarExcecao_inserirProduto_nomeJaCadastrado() {
             String id = UUID.randomUUID().toString();
-            Produto produtoMock = getProdutoMock(id, 10L);
+            Produto produtoMock = getProdutoMock(id, 10.0, 10L);
             ProdutoDTO produtoDTOMock = produtoMock.toProdutoDTO();
             when(produtoRepository.findByNomeIgnoreCase(anyString())).thenReturn(Optional.of(produtoMock));
 
             assertThatThrownBy(() -> produtoService.insertProduto(produtoDTOMock))
                     .isInstanceOf(ProdutoJaCadastradoException.class)
-                    .hasMessage(String.format("produto_nome %s já cadastrado", produtoDTOMock.nome()));
+                    .hasMessage(String.format(NOME_JA_CADASTRADO.getMensagem(), produtoDTOMock.nome()));
+            verify(produtoRepository, times(1)).findByNomeIgnoreCase(anyString());
+            verify(produtoRepository, never()).save(produtoMock);
+        }
+
+        @Test
+        void deveLancarExcecao_inserirProduto_precoMenorZero() {
+            String id = UUID.randomUUID().toString();
+            Produto produtoMock = getProdutoMock(id, -2.0, 10L);
+            ProdutoDTO produtoDTOMock = produtoMock.toProdutoDTO();
+            when(produtoRepository.findByNomeIgnoreCase(anyString())).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> produtoService.insertProduto(produtoDTOMock))
+                    .isInstanceOf(PrecoAbaixoZeroException.class)
+                    .hasMessage(PRECO_ABAIXO_ZERO.getMensagem());
             verify(produtoRepository, times(1)).findByNomeIgnoreCase(anyString());
             verify(produtoRepository, never()).save(produtoMock);
         }
@@ -188,13 +199,13 @@ class ProdutoServiceTest {
         @Test
         void deveLancarExcecao_alterarEstoque_produtoSemEstoque() {
             String id = UUID.randomUUID().toString();
-            Produto produtoMock = getProdutoMock(id, 10L);
+            Produto produtoMock = getProdutoMock(id, 10.0, 10L);
             Long alterarEstoque = (-13L);
             when(produtoRepository.findById(anyString())).thenReturn(Optional.of(produtoMock));
 
-            assertThatThrownBy(() -> produtoService.updateEstoque(id, alterarEstoque))
+            assertThatThrownBy(() -> produtoService.updateProdutoEstoque(id, alterarEstoque))
                     .isInstanceOf(EstoqueInsuficienteException.class)
-                    .hasMessage(String.format("o pedido atual é de %d. estoque atual é %d.",
+                    .hasMessage(String.format(ESTOQUE_INSUFICIENTE.getMensagem(),
                             alterarEstoque, produtoMock.getEstoque()));
             verify(produtoRepository, times(1)).findById(anyString());
             verify(produtoRepository, never()).save(produtoMock);

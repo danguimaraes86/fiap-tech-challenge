@@ -1,7 +1,9 @@
 package br.com.fiap.techchallenge.produtos.services;
 
-import br.com.fiap.techchallenge.produtos.exceptions.ProdutoJaCadastradoException;
-import br.com.fiap.techchallenge.produtos.exceptions.ProdutoNaoEncontradoException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.EstoqueInsuficienteException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.PrecoAbaixoZeroException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoJaCadastradoException;
+import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoNaoEncontradoException;
 import br.com.fiap.techchallenge.produtos.model.Produto;
 import br.com.fiap.techchallenge.produtos.model.dtos.ProdutoDTO;
 import br.com.fiap.techchallenge.produtos.repositories.ProdutoRepository;
@@ -10,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import static br.com.fiap.techchallenge.produtos.exceptions.domain.MensagensErro.*;
 
 @RequiredArgsConstructor
 @Service
@@ -18,13 +20,13 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
 
-    public Page<Produto> findAll(Pageable pageable) {
+    public Page<Produto> findAllProdutos(Pageable pageable) {
         return produtoRepository.findAll(pageable);
     }
 
     public Produto findProdutoById(String id) {
         return produtoRepository.findById(id).orElseThrow(() ->
-                new ProdutoNaoEncontradoException(String.format("produto_id %s não encontrado", id))
+                new ProdutoNaoEncontradoException(String.format(PRODUTO_NAO_ENCONTRADO.getMensagem(), id))
         );
     }
 
@@ -33,8 +35,11 @@ public class ProdutoService {
     }
 
     public Produto insertProduto(ProdutoDTO produtoDTO) {
-        if (findProdutoByNome(produtoDTO.nome()).isPresent()) {
-            throw new ProdutoJaCadastradoException(String.format("produto_nome %s já cadastrado", produtoDTO.nome()));
+        if (produtoRepository.findByNomeIgnoreCase(produtoDTO.nome()).isPresent()) {
+            throw new ProdutoJaCadastradoException(String.format(NOME_JA_CADASTRADO.getMensagem(), produtoDTO.nome()));
+        }
+        if (produtoDTO.preco() < 0) {
+            throw new PrecoAbaixoZeroException(PRECO_ABAIXO_ZERO.getMensagem());
         }
         return produtoRepository.save(new Produto(produtoDTO.nome(), produtoDTO.descricao(), produtoDTO.preco()));
     }
