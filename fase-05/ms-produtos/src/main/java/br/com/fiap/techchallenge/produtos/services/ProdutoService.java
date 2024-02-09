@@ -30,8 +30,8 @@ public class ProdutoService {
         );
     }
 
-    public Optional<Produto> findProdutoByNome(String nome) {
-        return produtoRepository.findByNomeIgnoreCase(nome);
+    public Page<Produto> buscaProdutosNomeDescricao(Pageable pageable, String nome, String descricao) {
+        return produtoRepository.findByNomeContainsIgnoreCaseAndDescricaoContainsIgnoreCase(pageable, nome, descricao);
     }
 
     public Produto insertProduto(ProdutoDTO produtoDTO) {
