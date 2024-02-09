@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.produtos.exceptions;
+package br.com.fiap.techchallenge.produtos.exceptions.domain;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
