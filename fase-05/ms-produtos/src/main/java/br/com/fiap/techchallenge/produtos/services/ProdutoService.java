@@ -39,8 +39,13 @@ public class ProdutoService {
         return produtoRepository.save(new Produto(produtoDTO.nome(), produtoDTO.descricao(), produtoDTO.preco()));
     }
 
-    public Produto updateEstoque(String id, Long alteracaoEstoque) {
+    public Produto updateProdutoEstoque(String id, Long alteracaoEstoque) {
         Produto produto = findProdutoById(id);
+        if (produto.getEstoque() + alteracaoEstoque < 0) {
+            throw new EstoqueInsuficienteException(
+                    String.format(ESTOQUE_INSUFICIENTE.getMensagem(), alteracaoEstoque, produto.getEstoque())
+            );
+        }
         produto.updateEstoqe(alteracaoEstoque);
         return produtoRepository.save(produto);
     }

@@ -31,11 +31,6 @@ public class Produto {
     }
 
     public void updateEstoqe(Long alteracaoEstoque) {
-        if (this.estoque + alteracaoEstoque < 0) {
-            throw new EstoqueInsuficienteException(
-                    String.format("o pedido atual é de %d. estoque atual é %d.", alteracaoEstoque, this.estoque)
-            );
-        }
         this.estoque += alteracaoEstoque;
     }
 
