@@ -1,60 +1,61 @@
 package br.com.fiap.techchallenge.carrinho.services;
 
-import br.com.fiap.techchallenge.carrinho.entities.Carrinho;
+import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-
 @Service
 public class CarrinhoService {
-
     private final CarrinhoRepository carrinhoRepository;
-
     public CarrinhoService(CarrinhoRepository carrinhoRepository) {
         this.carrinhoRepository = carrinhoRepository;
     }
 
-    public Carrinho addItemsOuCriarCarrinho(Long usuarioId, Produtos produto) {
+    public CarrinhoAberto findCarrinhoOpen(String usuarioId){
+        Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
 
-        Optional<Carrinho> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
+        return carrinhoAbertoEncontrado.orElseThrow(() -> new NoSuchElementException("Não há carrinho em aberto"));
+    }
 
-        if (carrinhoAbertoEncontrado.isEmpty()) {
-            Carrinho novoCarrinho = new Carrinho(usuarioId, produto);
+    public CarrinhoAberto addItemsOuCriarCarrinho(String usuarioId, Produtos produto) {
 
-            return carrinhoRepository.save(novoCarrinho);
-        } else if(carrinhoAbertoEncontrado.isPresent()){
+        Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
 
-            produtoExistenteNoCarrinhoSomarQuantidade(carrinhoAbertoEncontrado, produto);
-            }
+        if (!carrinhoAbertoEncontrado.isEmpty()) {
+            var carrinho = carrinhoAbertoEncontrado.get();
+            produtoExistenteNoCarrinhoSomarQuantidade(carrinho, produto);
 
+            return carrinhoRepository.save(carrinho);
+        } else {
+            CarrinhoAberto novoCarrinhoAberto = new CarrinhoAberto(usuarioId, produto);
+
+            return carrinhoRepository.save(novoCarrinhoAberto);
         }
     }
 
-        public void deletarCarrinho(Long carrinhoId){
+    public void deletarCarrinho(String usuarioId) {
 
-            carrinhoRepository.deleteById(carrinhoId);
-        }
+        carrinhoRepository.deleteById(usuarioId);
+    }
 
-        private void produtoExistenteNoCarrinhoSomarQuantidade(Carrinho carrinho, Produtos produto){
-            var exixteOProdutoNoCarrinho = carrinho.getProdutos().stream()
-                    .filter(produtosNoCarrinho ->
-                            produtosNoCarrinho.getProdutoId() == produto.getProdutoId())
-                    .findAny();
+    private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produtos produto) {
 
-            if ((exixteOProdutoNoCarrinho.isEmpty()) || (exixteOProdutoNoCarrinho == null)) {
-                carrinho.addProduto(produto);
-            } else {
-                carrinho.getProdutos().forEach(produtosNoCarrinho -> {
-                    if (produtosNoCarrinho.getProdutoId() == produto.getProdutoId()) {
-                        produtosNoCarrinho.addQuantidade(produto.getQuantidade());
-                    }
-                });
+        boolean exists = carrinhoAberto.getProdutos().stream()
+                .anyMatch(produtosNoCarrinho ->
+                        produtosNoCarrinho.getProdutoId().equals(produto.getProdutoId()));
 
+        if (!exists) {
+            carrinhoAberto.addProduto(produto);
+        } else {
+            carrinhoAberto.getProdutos().forEach(produtosNoCarrinho -> {
+                if (produtosNoCarrinho.getProdutoId() == produto.getProdutoId()) {
+                    produtosNoCarrinho.addQuantidade(produto.getQuantidade());
+                }
+            });
         }
     }
 }
