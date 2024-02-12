@@ -1,20 +1,27 @@
 package br.com.fiap.techchallenge.carrinho.services;
 
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
+import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
+import br.com.fiap.techchallenge.carrinho.entities.enums.Status;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
+import br.com.fiap.techchallenge.carrinho.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class CarrinhoService {
     private final CarrinhoRepository carrinhoRepository;
-    public CarrinhoService(CarrinhoRepository carrinhoRepository) {
+    private final PedidoRepository pedidoRepository;
+    public CarrinhoService(CarrinhoRepository carrinhoRepository, PedidoRepository pedidoRepository) {
         this.carrinhoRepository = carrinhoRepository;
+        this.pedidoRepository = pedidoRepository;
     }
 
+    // <>------ Services ----------------------------------------------------------------
     public CarrinhoAberto findCarrinhoOpen(String usuarioId){
         Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
 
@@ -37,11 +44,36 @@ public class CarrinhoService {
         }
     }
 
+    public CarrinhoFinalizado efetuandoCompraDoCarrrinho(String usuarioId){
+        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId);
+
+        if (carrinhoAbertoOptional.isPresent()){
+            CarrinhoFinalizado carrinhoFinalizado =
+                    new CarrinhoFinalizado(carrinhoAbertoOptional.get());
+
+            carrinhoFinalizado.setDataDoPagamento(LocalDateTime.now());
+            carrinhoFinalizado.setStatusPagamento(true);
+            carrinhoFinalizado.setStatusDoPedido(Status.PAGAMENTOAPROVADO);
+
+            var pedidoEfetuado = pedidoRepository.save(carrinhoFinalizado.getClass());
+
+            carrinhoRepository.deleteById(pedidoEfetuado.getUsuarioId());
+
+            return pedidoEfetuado;
+
+        } else {
+            throw new RuntimeException("Erro ao efetuar pedido");
+        }
+    }
+
     public void deletarCarrinho(String usuarioId) {
 
         carrinhoRepository.deleteById(usuarioId);
     }
 
+
+
+    // <>----- Metodos Complementares Privados Apenas a classe pode usar
     private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produtos produto) {
 
         boolean exists = carrinhoAberto.getProdutos().stream()
