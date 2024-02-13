@@ -4,6 +4,6 @@ import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
-public interface PedidoRepository extends MongoRepository<Long, CarrinhoFinalizado> {
+public interface CarrinhoFinalizadoRepository extends MongoRepository<CarrinhoFinalizado, Long> {
     List<CarrinhoFinalizado> findByUsuarioId(String usuarioId);
 }

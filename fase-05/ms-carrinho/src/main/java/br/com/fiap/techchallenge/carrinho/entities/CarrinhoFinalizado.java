@@ -13,6 +13,7 @@ import java.util.Set;
 public class CarrinhoFinalizado {
 
     @Id
+
     private Long id;
     private String usuarioId;
     private Set<Produtos> produtos;

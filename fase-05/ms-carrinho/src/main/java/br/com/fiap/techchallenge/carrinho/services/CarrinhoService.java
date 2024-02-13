@@ -5,7 +5,7 @@ import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import br.com.fiap.techchallenge.carrinho.entities.enums.Status;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
-import br.com.fiap.techchallenge.carrinho.repository.PedidoRepository;
+import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,10 +15,10 @@ import java.util.Optional;
 @Service
 public class CarrinhoService {
     private final CarrinhoRepository carrinhoRepository;
-    private final PedidoRepository pedidoRepository;
-    public CarrinhoService(CarrinhoRepository carrinhoRepository, PedidoRepository pedidoRepository) {
+    private final CarrinhoFinalizadoRepository carrinhoFinalizadoRepository;
+    public CarrinhoService(CarrinhoRepository carrinhoRepository, CarrinhoFinalizadoRepository carrinhoFinalizadoRepository) {
         this.carrinhoRepository = carrinhoRepository;
-        this.pedidoRepository = pedidoRepository;
+        this.carrinhoFinalizadoRepository = carrinhoFinalizadoRepository;
     }
 
     // <>------ Services ----------------------------------------------------------------
@@ -55,7 +55,7 @@ public class CarrinhoService {
             carrinhoFinalizado.setStatusPagamento(true);
             carrinhoFinalizado.setStatusDoPedido(Status.PAGAMENTOAPROVADO);
 
-            var pedidoEfetuado = pedidoRepository.save(carrinhoFinalizado.getClass());
+            var pedidoEfetuado = carrinhoFinalizadoRepository.save(carrinhoFinalizado);
 
             carrinhoRepository.deleteById(pedidoEfetuado.getUsuarioId());
 
