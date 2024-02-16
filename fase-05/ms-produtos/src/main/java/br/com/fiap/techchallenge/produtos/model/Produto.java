@@ -2,13 +2,14 @@ package br.com.fiap.techchallenge.produtos.model;
 
 import br.com.fiap.techchallenge.produtos.model.dtos.ProdutoDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Entity
 public class Produto {
@@ -18,16 +19,18 @@ public class Produto {
     private String id;
     @Column(unique = true)
     private String nome;
+    @NotBlank
     private String descricao;
     @PositiveOrZero
     private Double preco;
     @PositiveOrZero
-    private Long estoque = 0L;
+    private Long estoque;
 
-    public Produto(String nome, String descricao, Double preco) {
+    public Produto(String nome, String descricao, Double preco, Long estoque) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
+        this.estoque = estoque;
     }
 
     public void updateEstoqe(Long alteracaoEstoque) {
@@ -36,7 +39,7 @@ public class Produto {
 
     public ProdutoDTO toProdutoDTO() {
         return new ProdutoDTO(
-                this.id, this.nome, this.descricao, this.preco, this.estoque
+                this.id, this.nome, this.descricao, Optional.of(this.preco), Optional.of(this.estoque)
         );
     }
 }

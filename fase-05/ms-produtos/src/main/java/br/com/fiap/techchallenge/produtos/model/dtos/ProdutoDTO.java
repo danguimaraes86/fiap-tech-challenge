@@ -1,7 +1,9 @@
 package br.com.fiap.techchallenge.produtos.model.dtos;
 
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+
+import java.util.Optional;
 
 public record ProdutoDTO(
         String id,
@@ -9,7 +11,6 @@ public record ProdutoDTO(
         String nome,
         @NotBlank
         String descricao,
-        @DecimalMin(value = "0.0")
-        Double preco,
-        Long estoque) {
+        Optional<@PositiveOrZero Double> preco,
+        Optional<@PositiveOrZero Long> estoque) {
 }

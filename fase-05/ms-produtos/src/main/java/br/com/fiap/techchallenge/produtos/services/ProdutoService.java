@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.produtos.services;
 
 import br.com.fiap.techchallenge.produtos.exceptions.domain.EstoqueInsuficienteException;
-import br.com.fiap.techchallenge.produtos.exceptions.domain.PrecoAbaixoZeroException;
 import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoJaCadastradoException;
 import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoNaoEncontradoException;
 import br.com.fiap.techchallenge.produtos.model.Produto;
@@ -30,7 +29,7 @@ public class ProdutoService {
         );
     }
 
-    public Page<Produto> buscaProdutosNomeDescricao(Pageable pageable, String nome, String descricao) {
+    public Page<Produto> findProdutosNomeDescricao(Pageable pageable, String nome, String descricao) {
         return produtoRepository.findByNomeContainsIgnoreCaseAndDescricaoContainsIgnoreCase(pageable, nome, descricao);
     }
 
@@ -38,25 +37,27 @@ public class ProdutoService {
         if (produtoRepository.findByNomeIgnoreCase(produtoDTO.nome()).isPresent()) {
             throw new ProdutoJaCadastradoException(String.format(NOME_JA_CADASTRADO.getMensagem(), produtoDTO.nome()));
         }
-        if (produtoDTO.preco() < 0) {
-            throw new PrecoAbaixoZeroException(PRECO_ABAIXO_ZERO.getMensagem());
-        }
-        return produtoRepository.save(new Produto(produtoDTO.nome(), produtoDTO.descricao(), produtoDTO.preco()));
+        return produtoRepository.save(
+                new Produto(
+                        produtoDTO.nome(), produtoDTO.descricao(),
+                        produtoDTO.preco().orElse(0.0),
+                        produtoDTO.estoque().orElse(0L)
+                )
+        );
     }
 
     public Produto updateProdutoEstoque(String id, Long alteracaoEstoque) {
         Produto produto = findProdutoById(id);
-        if (produto.getEstoque() + alteracaoEstoque < 0) {
-            throw new EstoqueInsuficienteException(
-                    String.format(ESTOQUE_INSUFICIENTE.getMensagem(), alteracaoEstoque, produto.getEstoque())
-            );
-        }
+        validateEstoque(produto.getEstoque(), alteracaoEstoque);
         produto.updateEstoqe(alteracaoEstoque);
         return produtoRepository.save(produto);
     }
 
-    public void deleteProduto(String id) {
-        Produto produto = findProdutoById(id);
-        produtoRepository.delete(produto);
+    private void validateEstoque(Long estoque, Long alteracaoEstoque) {
+        if (estoque + alteracaoEstoque < 0) {
+            throw new EstoqueInsuficienteException(
+                    String.format(ESTOQUE_INSUFICIENTE.getMensagem(), alteracaoEstoque, estoque)
+            );
+        }
     }
 }
