@@ -95,6 +95,60 @@ public class UsuarioServiceTest {
             assertThat(produto.getNome()).isEqualTo(usuarioMock.getNome());
             assertThat(produto.getPassword()).isEqualTo(usuarioMock.getPassword());
         }
+
+        @Test
+        void deveBuscarUsuariosPor_EmailOuNome_RetornaPageableVazio() {
+            Page<Usuario> usuarioPageFake = new PageImpl<>(Collections.emptyList());
+            when(usuarioRespository.findByEmailIgnoreCaseOrNomeLikeIgnoreCase(
+                    any(Pageable.class), anyString(), anyString())).thenReturn(usuarioPageFake);
+
+            Page<Usuario> usuarioPage = usuarioService.findUsuarioByEmailOrNome(
+                    Pageable.unpaged(), "", "");
+            verify(usuarioRespository, times(1))
+                    .findByEmailIgnoreCaseOrNomeLikeIgnoreCase(
+                            Pageable.unpaged(), "", "");
+
+            assertThat(usuarioPage).isInstanceOf(Page.class);
+            assertThat(usuarioPage.getContent()).isEmpty();
+        }
+
+        @Test
+        void deveBuscarUsuariosPor_EmailOuNome_RetornaPageable() {
+            Page<Usuario> usuarioPageFake = new PageImpl<>(List.of(
+                    mock(Usuario.class),
+                    mock(Usuario.class),
+                    mock(Usuario.class)));
+            when(usuarioRespository.findByEmailIgnoreCaseOrNomeLikeIgnoreCase(
+                    any(Pageable.class), anyString(), anyString())).thenReturn(usuarioPageFake);
+
+            Page<Usuario> usuarioPage = usuarioService.findUsuarioByEmailOrNome(
+                    Pageable.unpaged(), "", "");
+            verify(usuarioRespository, times(1))
+                    .findByEmailIgnoreCaseOrNomeLikeIgnoreCase(
+                            Pageable.unpaged(), "", "");
+
+            assertThat(usuarioPage).isInstanceOf(Page.class);
+            assertThat(usuarioPage.getTotalElements()).isEqualTo(usuarioPageFake.getTotalElements());
+        }
+
+        @Nested
+        class InserirUsuario {
+
+            @Test
+            void deveInserirUsuario_comSucesso() {
+                Usuario usuarioMock = getUsuarioMock();
+                UsuarioDTO usuarioDTO = usuarioMock.toUsuarioDTO();
+                when(usuarioRespository.save(any(Usuario.class))).thenReturn(usuarioMock);
+
+                Usuario usuario = usuarioService.insertUsuario(usuarioDTO);
+                verify(usuarioRespository, times(1)).save(any(Usuario.class));
+
+                assertThat(usuario.getEmail()).isEqualTo(usuarioMock.getEmail());
+                assertThat(usuario.getNome()).isEqualTo(usuarioMock.getNome());
+                assertThat(usuario.getPassword()).isEqualTo(usuarioMock.getPassword());
+            }
+        }
+
         @Nested
         class Exceptions {
 

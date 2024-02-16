@@ -24,4 +24,13 @@ public class UsuarioService {
                 () -> new UsuarioNaoEncontradoException("usuario_id não encontrado")
         );
     }
+
+    public Page<Usuario> findUsuarioByEmailOrNome(Pageable pageable, String email, String nome) {
+        return usuarioRespository.findByEmailIgnoreCaseOrNomeLikeIgnoreCase(pageable, email, nome);
+    }
+
+    public Usuario insertUsuario(UsuarioDTO usuarioDTO) {
+        Usuario usuario = new Usuario(usuarioDTO.email(), usuarioDTO.nome(), usuarioDTO.password());
+        return usuarioRespository.save(usuario);
+    }
 }
