@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.produtos.controllers;
 
-import br.com.fiap.techchallenge.produtos.model.Produto;
-import br.com.fiap.techchallenge.produtos.model.dtos.ProdutoDTO;
+import br.com.fiap.techchallenge.produtos.models.Produto;
+import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoDTO;
 import br.com.fiap.techchallenge.produtos.services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

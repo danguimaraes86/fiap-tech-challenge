@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.produtos.repositories;
 
-import br.com.fiap.techchallenge.produtos.model.Produto;
+import br.com.fiap.techchallenge.produtos.models.Produto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
-package br.com.fiap.techchallenge.produtos.model;
+package br.com.fiap.techchallenge.produtos.models;
 
-import br.com.fiap.techchallenge.produtos.model.dtos.ProdutoDTO;
+import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;

@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.produtos.model.dtos;
+package br.com.fiap.techchallenge.produtos.models.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;

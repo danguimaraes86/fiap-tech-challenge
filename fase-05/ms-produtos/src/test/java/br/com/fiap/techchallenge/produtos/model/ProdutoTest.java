@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.produtos.model;
 
+import br.com.fiap.techchallenge.produtos.models.Produto;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
