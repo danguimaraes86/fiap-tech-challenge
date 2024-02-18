@@ -17,6 +17,9 @@ configurations {
     }
 }
 
+def serverPort = 8081
+
+
 repositories {
     mavenCentral()
 }
@@ -31,7 +34,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-function-web', version: '4.1.0'
-    implementation group: 'org.springgramework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.0'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.0'
 }
 
 tasks.named('test') {

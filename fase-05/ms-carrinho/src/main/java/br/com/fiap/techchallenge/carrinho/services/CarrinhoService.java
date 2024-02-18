@@ -85,7 +85,7 @@ public class CarrinhoService {
         } else {
             carrinhoAberto.getProdutos().forEach(produtosNoCarrinho -> {
                 if (produtosNoCarrinho.getProdutoId() == produto.getProdutoId()) {
-                    produtosNoCarrinho.addQuantidade(produto.getQuantidade());
+                    produtosNoCarrinho.addQuantidade(produto.getEstoque());
                 }
             });
         }
