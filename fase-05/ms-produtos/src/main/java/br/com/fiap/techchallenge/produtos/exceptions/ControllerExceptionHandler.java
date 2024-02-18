@@ -81,7 +81,7 @@ public class ControllerExceptionHandler {
                         LocalDateTime.now(),
                         HttpStatus.UNPROCESSABLE_ENTITY,
                         request.getContextPath(),
-                        Collections.singletonMap("estoque", exception.getMessage())
+                        Collections.singletonMap("quantidade", exception.getMessage())
                 ));
     }
 }

@@ -1,6 +1,7 @@
-package br.com.fiap.techchallenge.produtos.services;
+package br.com.fiap.techchallenge.produtos.functions;
 
 import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoRequestDTO;
+import br.com.fiap.techchallenge.produtos.services.ProdutoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +16,11 @@ public class ProdutoConsumer {
         this.produtoService = produtoService;
     }
 
-    @Bean(name = "remover-estoque")
+    @Bean(name = "removerestoque")
     Consumer<ProdutoRequestDTO> consumer(){
         return produtoRequestDTO ->
                 produtoService.updateProdutoEstoque(
-                        produtoRequestDTO.produtoId(), produtoRequestDTO.estoque());
+                        produtoRequestDTO.produtoId(), produtoRequestDTO.quantidade());
     }
 
 

@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import br.com.fiap.techchallenge.carrinho.entities.enums.Status;
+import br.com.fiap.techchallenge.carrinho.functions.EstoquePedidoProducer;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,16 @@ import java.util.Optional;
 public class CarrinhoService {
     private final CarrinhoRepository carrinhoRepository;
     private final CarrinhoFinalizadoRepository carrinhoFinalizadoRepository;
-    public CarrinhoService(CarrinhoRepository carrinhoRepository, CarrinhoFinalizadoRepository carrinhoFinalizadoRepository) {
+    private final EstoquePedidoProducer estoquePedidoProducer;
+
+    public CarrinhoService(CarrinhoRepository carrinhoRepository, CarrinhoFinalizadoRepository carrinhoFinalizadoRepository, EstoquePedidoProducer estoquePedidoProducer) {
         this.carrinhoRepository = carrinhoRepository;
         this.carrinhoFinalizadoRepository = carrinhoFinalizadoRepository;
+        this.estoquePedidoProducer = estoquePedidoProducer;
     }
 
     // <>------ Services ----------------------------------------------------------------
-    public CarrinhoAberto findCarrinhoOpen(String usuarioId){
+    public CarrinhoAberto findCarrinhoOpen(String usuarioId) {
         Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
 
         return carrinhoAbertoEncontrado.orElseThrow(() -> new NoSuchElementException("Não há carrinho em aberto"));
@@ -44,33 +48,30 @@ public class CarrinhoService {
         }
     }
 
-    public CarrinhoFinalizado efetuandoCompraDoCarrrinho(String usuarioId){
-        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId);
+    public CarrinhoFinalizado efetuandoCompraDoCarrrinho(String usuarioId) {
+        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId)
+                .orElseThrow(() -> new NoSuchElementException("Não ha carrinho aberto"));
 
-        if (carrinhoAbertoOptional.isPresent()){
-            CarrinhoFinalizado carrinhoFinalizado =
-                    new CarrinhoFinalizado(carrinhoAbertoOptional.get());
+        carrinhoAbertoOptional.getProdutos().forEach(produto -> estoquePedidoProducer.removerEstoque(produto));
 
-            carrinhoFinalizado.setDataDoPagamento(LocalDateTime.now());
-            carrinhoFinalizado.setStatusPagamento(true);
-            carrinhoFinalizado.setStatusDoPedido(Status.PAGAMENTOAPROVADO);
+        CarrinhoFinalizado carrinhoFinalizado =
+                new CarrinhoFinalizado(carrinhoAbertoOptional);
 
-            var pedidoEfetuado = carrinhoFinalizadoRepository.save(carrinhoFinalizado);
+        carrinhoFinalizado.setDataDoPagamento(LocalDateTime.now());
+        carrinhoFinalizado.setStatusPagamento(true);
+        carrinhoFinalizado.setStatusDoPedido(Status.PAGAMENTOAPROVADO);
 
-            carrinhoRepository.deleteById(pedidoEfetuado.getUsuarioId());
+        var pedidoEfetuado = carrinhoFinalizadoRepository.save(carrinhoFinalizado);
 
-            return pedidoEfetuado;
+        carrinhoRepository.deleteById(pedidoEfetuado.getUsuarioId());
 
-        } else {
-            throw new RuntimeException("Erro ao efetuar pedido");
-        }
+        return pedidoEfetuado;
     }
 
     public void deletarCarrinho(String usuarioId) {
 
         carrinhoRepository.deleteById(usuarioId);
     }
-
 
 
     // <>----- Metodos Complementares Privados Apenas a classe pode usar
@@ -85,7 +86,7 @@ public class CarrinhoService {
         } else {
             carrinhoAberto.getProdutos().forEach(produtosNoCarrinho -> {
                 if (produtosNoCarrinho.getProdutoId() == produto.getProdutoId()) {
-                    produtosNoCarrinho.addQuantidade(produto.getEstoque());
+                    produtosNoCarrinho.addQuantidade(produto.getQuantidade());
                 }
             });
         }

@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class Produtos {
     private String produtoId;
-    private Long estoque;
+    private Long quantidade;
 
-    public Produtos(String produtoId, Long estoque) {
+    public Produtos(String produtoId, Long quantidade) {
         this.produtoId = produtoId;
-        this.estoque = estoque;
+        this.quantidade = quantidade;
     }
     public Produtos() {
     }
@@ -18,15 +18,15 @@ public class Produtos {
         return produtoId;
     }
 
-    public Long getEstoque() {
-        return estoque;
+    public Long getQuantidade() {
+        return quantidade;
     }
-    public Produtos setEstoque(Long estoque) {
-        this.estoque = estoque;
+    public Produtos setQuantidade(Long quantidade) {
+        this.quantidade = quantidade;
         return this;
     }
 
     public void addQuantidade(Long quantidadeParaAdicionar){
-        this.estoque += quantidadeParaAdicionar;
+        this.quantidade += quantidadeParaAdicionar;
     }
 }

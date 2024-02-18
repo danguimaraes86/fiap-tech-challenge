@@ -17,8 +17,6 @@ configurations {
     }
 }
 
-def serverPort = 8081
-
 
 repositories {
     mavenCentral()

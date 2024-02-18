@@ -1,12 +1,12 @@
-package br.com.fiap.techchallenge.carrinho.producers;
+package br.com.fiap.techchallenge.carrinho.functions;
 
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(value = "estoque", url = "http://localhost:8081")
+@FeignClient(value = "produtos", url = "http://localhost:3002")
 public interface EstoquePedidoProducer {
 
-    @PostMapping(value = "/consumer-remover-estoque")
+    @PostMapping(value = "/consumer-removerestoque")
     void removerEstoque(Produtos produto);
 }
