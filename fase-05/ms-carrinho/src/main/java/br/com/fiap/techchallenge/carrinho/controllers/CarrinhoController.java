@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.carrinho.controllers;
 
+import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
 import br.com.fiap.techchallenge.carrinho.services.CarrinhoService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,13 @@ public class CarrinhoController {
         this.carrinhoService = carrinhoService;
     }
 
-    @PostMapping("finalizarcompra")
+    @PostMapping("/adcproduto")
+    public CarrinhoAberto adcionaProdutosCarrinho(String usuarioId, Produtos produto){
+
+        return carrinhoService.addItemsOuCriarCarrinho(usuarioId, produto);
+    }
+
+    @PostMapping("/finalizarcompra")
     public boolean finalizarCompra(String usuarioId){
 
         CarrinhoFinalizado carrinhoFinalizado = carrinhoService.efetuandoCompraDoCarrrinho(usuarioId);
