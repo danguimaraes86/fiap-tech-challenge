@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.usuarios.services;
 
-import br.com.fiap.techchallenge.usuarios.exceptions.UsuarioJaCadastradoException;
-import br.com.fiap.techchallenge.usuarios.exceptions.UsuarioNaoEncontradoException;
+import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioJaCadastradoException;
+import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioNaoEncontradoException;
 import br.com.fiap.techchallenge.usuarios.models.Role;
 import br.com.fiap.techchallenge.usuarios.models.Usuario;
 import br.com.fiap.techchallenge.usuarios.models.dtos.UsuarioDTO;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.List;

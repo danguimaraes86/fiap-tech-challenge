@@ -1,5 +1,8 @@
 package br.com.fiap.techchallenge.usuarios.exceptions;
 
+import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioJaCadastradoException;
+import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioLoginException;
+import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioNaoEncontradoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
