@@ -1,10 +1,12 @@
 package br.com.fiap.techchallenge.usuarios.services;
 
+import br.com.fiap.techchallenge.usuarios.exceptions.UsuarioJaCadastradoException;
 import br.com.fiap.techchallenge.usuarios.exceptions.UsuarioNaoEncontradoException;
+import br.com.fiap.techchallenge.usuarios.models.Role;
 import br.com.fiap.techchallenge.usuarios.models.Usuario;
 import br.com.fiap.techchallenge.usuarios.models.dtos.UsuarioDTO;
 import br.com.fiap.techchallenge.usuarios.repositories.UsuarioRespository;
-import net.bytebuddy.utility.RandomString;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -13,11 +15,12 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,12 +34,14 @@ public class UsuarioServiceTest {
     private UsuarioService usuarioService;
     @Mock
     private UsuarioRespository usuarioRespository;
+    private static final Faker faker = new Faker(Locale.forLanguageTag("pt_BR"));
 
     private static Usuario getUsuarioMock() {
         return new Usuario(
-                RandomString.make(),
-                RandomString.make(),
-                RandomString.make()
+                faker.internet().emailAddress(),
+                faker.artist().name(),
+                faker.internet().password(),
+                Role.USER
         );
     }
 
@@ -69,9 +74,10 @@ public class UsuarioServiceTest {
         @Test
         void deveBuscarUsuarios_RetornaPageable() {
             Page<Usuario> usuarioPageFake = new PageImpl<>(List.of(
-                    mock(Usuario.class),
-                    mock(Usuario.class),
-                    mock(Usuario.class)));
+                    getUsuarioMock(),
+                    getUsuarioMock(),
+                    getUsuarioMock()
+            ));
             when(usuarioRespository.findAll(any(Pageable.class))).thenReturn(usuarioPageFake);
 
             Page<Usuario> usuarioPage = usuarioService.findAllUsuarios(Pageable.unpaged());
@@ -83,17 +89,18 @@ public class UsuarioServiceTest {
 
         @Test
         void deveBuscarUsuarioPorId() {
-            String id = UUID.randomUUID().toString();
             Usuario usuarioMock = getUsuarioMock();
+            String email = usuarioMock.getEmail();
             when(usuarioRespository.findById(anyString())).thenReturn(Optional.of(usuarioMock));
 
-            Usuario produto = usuarioService.findUsuarioById(id);
-            verify(usuarioRespository, times(1)).findById(id);
+            Usuario usuario = usuarioService.findUsuarioByEmail(email);
+            verify(usuarioRespository, times(1)).findById(email);
 
-            assertThat(produto).isEqualTo(usuarioMock);
-            assertThat(produto.getEmail()).isEqualTo(usuarioMock.getEmail());
-            assertThat(produto.getNome()).isEqualTo(usuarioMock.getNome());
-            assertThat(produto.getPassword()).isEqualTo(usuarioMock.getPassword());
+            assertThat(usuario).isEqualTo(usuarioMock);
+            assertThat(usuario.getEmail()).isEqualTo(usuarioMock.getEmail());
+            assertThat(usuario.getNome()).isEqualTo(usuarioMock.getNome());
+            assertThat(usuario.getPassword()).isEqualTo(usuarioMock.getPassword());
+            assertThat(usuario.getRole()).isEqualTo(Role.USER);
         }
 
         @Test
@@ -115,9 +122,9 @@ public class UsuarioServiceTest {
         @Test
         void deveBuscarUsuariosPor_EmailOuNome_RetornaPageable() {
             Page<Usuario> usuarioPageFake = new PageImpl<>(List.of(
-                    mock(Usuario.class),
-                    mock(Usuario.class),
-                    mock(Usuario.class)));
+                    getUsuarioMock(),
+                    getUsuarioMock(),
+                    getUsuarioMock()));
             when(usuarioRespository.findByEmailIgnoreCaseOrNomeLikeIgnoreCase(
                     any(Pageable.class), anyString(), anyString())).thenReturn(usuarioPageFake);
 
@@ -140,12 +147,13 @@ public class UsuarioServiceTest {
                 UsuarioDTO usuarioDTO = usuarioMock.toUsuarioDTO();
                 when(usuarioRespository.save(any(Usuario.class))).thenReturn(usuarioMock);
 
-                Usuario usuario = usuarioService.insertUsuario(usuarioDTO);
+                Usuario usuario = usuarioService.createUsuario(usuarioDTO);
                 verify(usuarioRespository, times(1)).save(any(Usuario.class));
 
                 assertThat(usuario.getEmail()).isEqualTo(usuarioMock.getEmail());
                 assertThat(usuario.getNome()).isEqualTo(usuarioMock.getNome());
                 assertThat(usuario.getPassword()).isEqualTo(usuarioMock.getPassword());
+                assertThat(usuario.getRole()).isEqualTo(usuarioMock.getRole());
             }
         }
 
@@ -154,12 +162,24 @@ public class UsuarioServiceTest {
 
             @Test
             void deveLancarExcecao_buscarUsuarioPorId_usuarioNaoEncontrado() {
-                String id = UUID.randomUUID().toString();
+                String email = faker.internet().emailAddress();
                 when(usuarioRespository.findById(anyString())).thenReturn(Optional.empty());
 
-                assertThatThrownBy(() -> usuarioService.findUsuarioById(id))
+                assertThatThrownBy(() -> usuarioService.findUsuarioByEmail(email))
                         .isInstanceOf(UsuarioNaoEncontradoException.class)
-                        .hasMessage("usuario_id não encontrado");
+                        .hasMessage("usuario_email não encontrado");
+                verify(usuarioRespository, times(1)).findById(anyString());
+            }
+
+            @Test
+            void deveLancarExcecao_inserirUsuario_usuarioJaCadastrado() {
+                Usuario usuarioMock = getUsuarioMock();
+                UsuarioDTO usuarioDTO = usuarioMock.toUsuarioDTO();
+                when(usuarioRespository.findById(anyString())).thenReturn(Optional.of(usuarioMock));
+
+                assertThatThrownBy(() -> usuarioService.createUsuario(usuarioDTO))
+                        .isInstanceOf(UsuarioJaCadastradoException.class)
+                        .hasMessage(String.format("usario_email %s já existe", usuarioDTO.email()));
                 verify(usuarioRespository, times(1)).findById(anyString());
             }
         }
