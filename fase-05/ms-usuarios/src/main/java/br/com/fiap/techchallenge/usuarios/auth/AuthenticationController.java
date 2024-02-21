@@ -37,7 +37,6 @@ public class AuthenticationController {
                         authRequest.email(), authRequest.password()
                 ));
         String token = tokenService.generateToken(usuarioService.findUsuarioByEmail(authRequest.email()));
-        
         return ResponseEntity.ok(new AuthResponse(token));
     }
 }
