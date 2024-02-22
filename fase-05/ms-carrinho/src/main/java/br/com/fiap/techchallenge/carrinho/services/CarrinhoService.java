@@ -2,7 +2,7 @@ package br.com.fiap.techchallenge.carrinho.services;
 
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
-import br.com.fiap.techchallenge.carrinho.entities.DTOs.ProdutoRequestDTO;
+import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import br.com.fiap.techchallenge.carrinho.entities.enums.Status;
 import br.com.fiap.techchallenge.carrinho.functions.EstoquePedidoProducer;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
@@ -32,7 +32,7 @@ public class CarrinhoService {
         return carrinhoAbertoEncontrado.orElseThrow(() -> new NoSuchElementException("Não há carrinho em aberto"));
     }
 
-    public CarrinhoAberto addItemsOuCriarCarrinho(String usuarioId, ProdutoRequestDTO produto) {
+    public CarrinhoAberto addItemsOuCriarCarrinho(String usuarioId, Produtos produto) {
 
         Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
 
@@ -75,11 +75,11 @@ public class CarrinhoService {
 
 
     // <>----- Metodos Complementares Privados Apenas a classe pode usar
-    private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, ProdutoRequestDTO produto) {
+    private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produtos produto) {
 
         boolean exists = carrinhoAberto.getProdutos().stream()
                 .anyMatch(produtosNoCarrinho ->
-                        produtosNoCarrinho.produtoId.equals(produto.produtoId);
+                        produtosNoCarrinho.getProdutoId().equals(produto.getProdutoId()));
 
         if (!exists) {
             carrinhoAberto.addProduto(produto);
