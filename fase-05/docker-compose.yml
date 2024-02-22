@@ -32,9 +32,9 @@ services:
     container_name: ms-carrinho
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: mongodb
-      MONGO_INITDB_ROOT_PASSWORD: mongodb
-      MONGO_INITDB_DATABASE: ms-carrinho
+      MONGO_INITDB_ROOT_USERNAME: "mongodb"
+      MONGO_INITDB_ROOT_PASSWORD: "mongodb"
+      MONGO_INITDB_DATABASE: "ms-carrinho"
     volumes:
       - ms-carrinho-data:/data/db
       - ms-carrinho-config:/data/configdb

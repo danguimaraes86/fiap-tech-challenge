@@ -49,10 +49,11 @@ public class CarrinhoService {
     }
 
     public CarrinhoFinalizado efetuandoCompraDoCarrrinho(String usuarioId) {
-        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId)
+       var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId)
                 .orElseThrow(() -> new NoSuchElementException("Não ha carrinho aberto"));
 
         carrinhoAbertoOptional.getProdutos().forEach(produto -> estoquePedidoProducer.removerEstoque(produto));
+
 
         CarrinhoFinalizado carrinhoFinalizado =
                 new CarrinhoFinalizado(carrinhoAbertoOptional);
@@ -92,3 +93,9 @@ public class CarrinhoService {
         }
     }
 }
+
+//
+//spring.data.mongodb.database=ms-carrinho
+//        spring.data.mongodb.authentication-database=admin
+//        spring.data.mongodb.username=mongodb
+//        spring.data.mongodb.password=mongodb

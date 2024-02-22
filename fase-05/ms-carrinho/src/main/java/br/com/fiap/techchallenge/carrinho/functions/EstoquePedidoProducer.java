@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(value = "produtos", url = "http://localhost:3002")
 public interface EstoquePedidoProducer {
 
-    @PostMapping(value = "/consumer-removerestoque")
+    @PostMapping(value = "/removerestoque")
     void removerEstoque(Produtos produto);
 }
