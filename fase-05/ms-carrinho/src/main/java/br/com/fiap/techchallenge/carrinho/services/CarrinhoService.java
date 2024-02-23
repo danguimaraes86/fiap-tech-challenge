@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -79,6 +80,7 @@ public class CarrinhoService {
     private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produtos produto) {
 
         boolean exists = carrinhoAberto.getProdutos().stream()
+                .filter(produtos -> produtos.getProdutoId() != null)
                 .anyMatch(produtosNoCarrinho ->
                         produtosNoCarrinho.getProdutoId().equals(produto.getProdutoId()));
 
@@ -86,7 +88,7 @@ public class CarrinhoService {
             carrinhoAberto.addProduto(produto);
         } else {
             carrinhoAberto.getProdutos().forEach(produtosNoCarrinho -> {
-                if (produtosNoCarrinho.getProdutoId() == produto.getProdutoId()) {
+                if (Objects.equals(produtosNoCarrinho.getProdutoId(), produto.getProdutoId())) {
                     produtosNoCarrinho.addQuantidade(produto.getQuantidade());
                 }
             });

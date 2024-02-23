@@ -26,7 +26,8 @@ public class Produtos {
         return this;
     }
 
-    public void addQuantidade(Long quantidadeParaAdicionar){
+    public Produtos addQuantidade(Long quantidadeParaAdicionar){
         this.quantidade += quantidadeParaAdicionar;
+        return this;
     }
 }

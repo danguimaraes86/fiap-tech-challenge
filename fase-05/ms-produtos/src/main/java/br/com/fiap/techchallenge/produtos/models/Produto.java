@@ -34,7 +34,7 @@ public class Produto {
     }
 
     public void updateEstoqe(Long alteracaoEstoque) {
-        this.estoque += alteracaoEstoque;
+        this.estoque -= alteracaoEstoque;
     }
 
     public ProdutoDTO toProdutoDTO() {
