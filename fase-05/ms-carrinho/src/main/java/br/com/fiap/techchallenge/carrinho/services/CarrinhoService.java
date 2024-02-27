@@ -8,6 +8,7 @@ import br.com.fiap.techchallenge.carrinho.functions.EstoquePedidoProducer;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -49,12 +50,17 @@ public class CarrinhoService {
         }
     }
 
+    @Transactional
     public CarrinhoFinalizado efetuandoCompraDoCarrrinho(String usuarioId) {
        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId)
                 .orElseThrow(() -> new NoSuchElementException("Não ha carrinho aberto"));
 
-        carrinhoAbertoOptional.getProdutos().forEach(produto -> estoquePedidoProducer.removerEstoque(produto));
+       checarSeTemEstoque(carrinhoAbertoOptional);
 
+        carrinhoAbertoOptional.getProdutos().forEach(
+                produto -> produto.setQuantidade(produto.getQuantidade() - (produto.getQuantidade() *2))); //Negativando a quantidade para simular a compra
+
+        carrinhoAbertoOptional.getProdutos().forEach(produto -> estoquePedidoProducer.removerEstoque(produto));
 
         CarrinhoFinalizado carrinhoFinalizado =
                 new CarrinhoFinalizado(carrinhoAbertoOptional);
@@ -77,6 +83,15 @@ public class CarrinhoService {
 
 
     // <>----- Metodos Complementares Privados Apenas a classe pode usar
+    private void checarSeTemEstoque(CarrinhoAberto carrinhoAberto) {
+        carrinhoAberto.getProdutos().forEach(
+                produto -> {
+                    if (!estoquePedidoProducer.checarSeHaEstoque(produto)) {
+                        throw new RuntimeException("Produto sem estoque");
+                    }
+                });
+    }
+
     private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produtos produto) {
 
         boolean exists = carrinhoAberto.getProdutos().stream()

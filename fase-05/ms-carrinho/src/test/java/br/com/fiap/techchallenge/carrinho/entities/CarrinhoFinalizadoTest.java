@@ -15,7 +15,7 @@ public class CarrinhoFinalizadoTest {
     @Test
     void constructorTest(){
         Produtos produto = new Produtos("1", 10l);
-        CarrinhoFinalizado car = new CarrinhoFinalizado(1l, "1", produto, null, false, Status.AGUARDANDOPAGAMENTO);
+        CarrinhoFinalizado car = new CarrinhoFinalizado("oi", "1", produto, null, false, Status.AGUARDANDOPAGAMENTO);
         car.getUsuarioId();
         car.setDataDoPagamento(LocalDateTime.now());
         car.setStatusPagamento(true);

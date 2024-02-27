@@ -13,8 +13,7 @@ import java.util.Set;
 public class CarrinhoFinalizado {
 
     @Id
-
-    private Long id;
+    private String id;
     private String usuarioId;
     private Set<Produtos> produtos;
     private LocalDateTime dataDoPagamento;
@@ -22,7 +21,7 @@ public class CarrinhoFinalizado {
     private Status statusDoPedido;
 
     // <>------ Construtores
-    public CarrinhoFinalizado(Long id, String usuarioId, Produtos produtos, LocalDateTime dataDoPagamento, Boolean statusPagamento, Status statusDoPedido) {
+    public CarrinhoFinalizado(String id, String usuarioId, Produtos produtos, LocalDateTime dataDoPagamento, Boolean statusPagamento, Status statusDoPedido) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.produtos = new HashSet<>();

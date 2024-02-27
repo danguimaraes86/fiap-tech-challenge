@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.produtos.services.ProdutoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 @Component
@@ -16,8 +17,19 @@ public class ProdutoConsumer {
         this.produtoService = produtoService;
     }
 
+    @Bean(name = "checarsetemestoque")
+    BooleanSupplier checarsetemestoque(ProdutoRequestDTO produtoRequestDTO) {
+        return () -> {
+            var produtoEncontrado = produtoService.findProdutoById(
+                    produtoRequestDTO.produtoId());
+            return produtoEncontrado.getEstoque() >= produtoRequestDTO.quantidade();
+        };
+    }
+
     @Bean(name = "removerestoque")
     Consumer<ProdutoRequestDTO> consumer(){
+
+
         return produtoRequestDTO ->
                 produtoService.updateProdutoEstoque(
                         produtoRequestDTO.produtoId(), produtoRequestDTO.quantidade());
