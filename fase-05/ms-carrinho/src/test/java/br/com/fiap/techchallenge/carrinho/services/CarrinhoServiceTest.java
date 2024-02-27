@@ -5,14 +5,16 @@ import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import br.com.fiap.techchallenge.carrinho.functions.EstoquePedidoProducer;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.Assert;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 public class CarrinhoServiceTest {
@@ -26,6 +28,9 @@ public class CarrinhoServiceTest {
     @Mock
     EstoquePedidoProducer estoquePedidoProducer;
 
+    @Mock
+    CarrinhoAberto carrinhoAberto;
+
     CarrinhoService carrinhoService;
 
     @BeforeEach
@@ -34,12 +39,15 @@ public class CarrinhoServiceTest {
     }
 
     @Test
-    void deveBuscarCarrinhoAberto(){
+    void deveLancarExceçãoAoBuscarCarrinhoAberto(){
         Produtos p = geraProduto();
         CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", p);
         carrinhoRepository.save(carrinhoAberto);
-        carrinhoService = new CarrinhoService(carrinhoRepository, carrinhoFinalizadoRepository, estoquePedidoProducer);
-        Mockito.when(carrinhoService.findCarrinhoOpen(Mockito.any())).thenReturn(new CarrinhoAberto());
+        Mockito.when(carrinhoRepository.findById("1")).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> carrinhoService.findCarrinhoOpen("1"))
+                .isInstanceOf(NoSuchElementException.class);
+
     }
 
     @Test
