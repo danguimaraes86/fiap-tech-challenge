@@ -3,6 +3,7 @@ package br.com.fiap.techchallenge.usuarios.controllers;
 import br.com.fiap.techchallenge.usuarios.models.Usuario;
 import br.com.fiap.techchallenge.usuarios.models.dtos.UsuarioDTO;
 import br.com.fiap.techchallenge.usuarios.services.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -27,6 +29,12 @@ public class UsuarioController {
     @GetMapping("/{email}")
     public ResponseEntity<UsuarioDTO> findUsuarioById(@PathVariable String email) {
         Usuario usuario = usuarioService.findUsuarioByEmail(email);
+        return ResponseEntity.ok(usuario.toUsuarioDTO());
+    }
+
+    @PostMapping("/novo")
+    public ResponseEntity<UsuarioDTO> createUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioService.createUsuario(usuarioDTO);
         return ResponseEntity.ok(usuario.toUsuarioDTO());
     }
 
