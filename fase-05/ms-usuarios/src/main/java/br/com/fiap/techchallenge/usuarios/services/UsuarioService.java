@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 @RequiredArgsConstructor
 @Service
 public class UsuarioService {
@@ -40,8 +42,10 @@ public class UsuarioService {
                     String.format("usario_email %s já existe", usuario.getEmail()));
         });
         String encodedPassword = passwordEncoder.encode(usuarioDTO.password());
+        Role role = isEmpty(usuarioDTO.role()) ?
+                Role.USER : Role.valueOf(usuarioDTO.role().toUpperCase());
         Usuario usuario = new Usuario(
-                usuarioDTO.email(), usuarioDTO.nome(), encodedPassword, Role.USER);
+                usuarioDTO.email(), usuarioDTO.nome(), encodedPassword, role);
         return usuarioRespository.save(usuario);
     }
 }
