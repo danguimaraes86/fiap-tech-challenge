@@ -36,15 +36,5 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return new ProviderManager(authProvider);
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return usuarioService::findUsuarioByEmail;
     }
 }
