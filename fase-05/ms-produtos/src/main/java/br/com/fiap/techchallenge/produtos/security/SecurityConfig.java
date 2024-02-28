@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.usuarios.security;
+package br.com.fiap.techchallenge.produtos.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
