@@ -2,7 +2,6 @@ package br.com.fiap.techchallenge.carrinho.services;
 
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
-import br.com.fiap.techchallenge.carrinho.functions.EstoquePedidoProducer;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
 import org.junit.jupiter.api.Assertions;
@@ -28,16 +27,13 @@ public class CarrinhoServiceTest {
     CarrinhoFinalizadoRepository carrinhoFinalizadoRepository;
 
     @Mock
-    EstoquePedidoProducer estoquePedidoProducer;
-
-    @Mock
     CarrinhoAberto carrinhoAberto;
 
     CarrinhoService carrinhoService;
 
     @BeforeEach
     void setup(){
-        carrinhoService = new CarrinhoService(carrinhoRepository, carrinhoFinalizadoRepository, estoquePedidoProducer);
+        carrinhoService = new CarrinhoService(carrinhoRepository, carrinhoFinalizadoRepository);
     }
 
     @Test
