@@ -5,12 +5,14 @@ import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
 import br.com.fiap.techchallenge.carrinho.entities.Produtos;
 import br.com.fiap.techchallenge.carrinho.entities.enums.Status;
 import br.com.fiap.techchallenge.carrinho.functions.EstoquePedidoProducer;
+import static br.com.fiap.techchallenge.carrinho.functions.webRequest.WebClientLinkRequest.requisitionGeneric;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
+
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -55,7 +57,7 @@ public class CarrinhoService {
        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId)
                 .orElseThrow(() -> new NoSuchElementException("Não ha carrinho aberto"));
 
-       checarSeTemEstoque(carrinhoAbertoOptional);
+        checarSeTemEstoque(carrinhoAbertoOptional);
 
         carrinhoAbertoOptional.getProdutos().forEach(
                 produto -> produto.setQuantidade(produto.getQuantidade() - (produto.getQuantidade() *2))); //Negativando a quantidade para simular a compra
@@ -84,10 +86,11 @@ public class CarrinhoService {
 
     // <>----- Metodos Complementares Privados Apenas a classe pode usar
     private void checarSeTemEstoque(CarrinhoAberto carrinhoAberto) {
-        carrinhoAberto.getProdutos().forEach(
-                produto -> {
-                    if (!estoquePedidoProducer.checarSeHaEstoque(produto)) {
-                        throw new RuntimeException("Produto sem estoque");
+        carrinhoAberto.getProdutos().stream()
+                .forEach(produto -> {
+                    var temEstoque = requisitionGeneric("/produtos/checarsetemestoque", HttpMethod.GET, produto, Boolean.class);
+                    if (!temEstoque) {
+                        throw new NoSuchElementException("Produto sem estoque");
                     }
                 });
     }

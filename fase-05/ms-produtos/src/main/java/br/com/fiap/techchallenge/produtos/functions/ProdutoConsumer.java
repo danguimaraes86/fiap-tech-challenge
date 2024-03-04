@@ -17,14 +17,6 @@ public class ProdutoConsumer {
         this.produtoService = produtoService;
     }
 
-    @Bean(name = "checarsetemestoque")
-    BooleanSupplier checarsetemestoque(ProdutoRequestDTO produtoRequestDTO) {
-        return () -> {
-            var produtoEncontrado = produtoService.findProdutoById(
-                    produtoRequestDTO.produtoId());
-            return produtoEncontrado.getEstoque() >= produtoRequestDTO.quantidade();
-        };
-    }
 
     @Bean(name = "removerestoque")
     Consumer<ProdutoRequestDTO> consumer(){

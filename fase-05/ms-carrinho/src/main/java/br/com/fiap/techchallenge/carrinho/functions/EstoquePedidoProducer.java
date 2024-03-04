@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(value = "produtos", url = "http://localhost:3002")
 public interface EstoquePedidoProducer {
 
-    @GetMapping(value = "/checarsetemestoque")
-    boolean checarSeHaEstoque(Produtos produto);
+//    @GetMapping(value = "/produtos/checarsetemestoque")
+//    boolean checarSeHaEstoque(Produtos produto);
     @PostMapping(value = "/removerestoque")
     void removerEstoque(Produtos produto);
 }
