@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.usuarios.services;
 
 import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioJaCadastradoException;
-import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioNaoEncontradoException;
 import br.com.fiap.techchallenge.usuarios.models.Role;
 import br.com.fiap.techchallenge.usuarios.models.Usuario;
 import br.com.fiap.techchallenge.usuarios.models.dtos.UsuarioDTO;
@@ -13,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @RequiredArgsConstructor
@@ -22,18 +23,15 @@ public class UsuarioService {
     private final UsuarioRespository usuarioRespository;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Page<Usuario> findAllUsuarios(Pageable pageable) {
-        return usuarioRespository.findAll(pageable);
-    }
-
-    public Usuario findUsuarioByEmail(String email) {
-        return usuarioRespository.findById(email).orElseThrow(() ->
-                new UsuarioNaoEncontradoException("usuario_email não encontrado")
-        );
+    public Optional<Usuario> findUsuarioByEmail(String email) {
+        return usuarioRespository.findById(email);
     }
 
     public Page<Usuario> findUsuarioByEmailOrNome(Pageable pageable, String email, String nome) {
-        return usuarioRespository.findByEmailIgnoreCaseOrNomeLikeIgnoreCase(pageable, email, nome);
+        if (isEmpty(email) && isEmpty(nome)) {
+            return usuarioRespository.findAll(pageable);
+        }
+        return usuarioRespository.findByEmailContainingIgnoreCaseOrNomeContainingIgnoreCase(pageable, email, nome);
     }
 
     public Usuario createUsuario(UsuarioDTO usuarioDTO) {

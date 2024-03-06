@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UsuarioRespository extends JpaRepository<Usuario, String> {
-    Page<Usuario> findByEmailIgnoreCaseOrNomeLikeIgnoreCase(Pageable pageable, String email, String nome);
+    Page<Usuario> findByEmailContainingIgnoreCaseOrNomeContainingIgnoreCase(Pageable pageable, String email, String nome);
 }

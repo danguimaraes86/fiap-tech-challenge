@@ -11,39 +11,32 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<Page<UsuarioDTO>> findAllUsuarios(
-            @SortDefault(sort = "nome") Pageable pageable) {
-        Page<Usuario> usuarios = usuarioService.findAllUsuarios(pageable);
+            @SortDefault(sort = "email") Pageable pageable,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String nome) {
+        Page<Usuario> usuarios = usuarioService.findUsuarioByEmailOrNome(pageable, email, nome);
         return ResponseEntity.ok(usuarios.map(Usuario::toUsuarioDTO));
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<UsuarioDTO> findUsuarioById(@PathVariable String email) {
-        Usuario usuario = usuarioService.findUsuarioByEmail(email);
-        return ResponseEntity.ok(usuario.toUsuarioDTO());
+    @GetMapping("/busca")
+    public ResponseEntity<Optional<Usuario>> findUsuarioById(@RequestParam String email) {
+        return ResponseEntity.ok(usuarioService.findUsuarioByEmail(email));
     }
 
     @PostMapping("/novo")
     public ResponseEntity<UsuarioDTO> createUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioService.createUsuario(usuarioDTO);
         return ResponseEntity.ok(usuario.toUsuarioDTO());
-    }
-
-    @GetMapping("/busca")
-    public ResponseEntity<Page<UsuarioDTO>> findUsuarioByEmailOrNome(
-            @SortDefault(sort = "nome") Pageable pageable,
-            @RequestParam(required = false, defaultValue = "") String email,
-            @RequestParam(required = false, defaultValue = "") String nome) {
-        Page<Usuario> usuarios = usuarioService.findUsuarioByEmailOrNome(pageable, email, nome);
-        return ResponseEntity.ok(usuarios.map(Usuario::toUsuarioDTO));
     }
 }
