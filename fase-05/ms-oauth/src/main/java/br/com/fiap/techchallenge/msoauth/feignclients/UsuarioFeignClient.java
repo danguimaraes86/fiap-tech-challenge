@@ -1,10 +1,13 @@
 package br.com.fiap.techchallenge.msoauth.feignclients;
 
+import br.com.fiap.techchallenge.msoauth.models.Usuario;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Component
 @FeignClient(
@@ -13,6 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
         path = "/usuarios"
 )
 public interface UsuarioFeignClient {
-    @GetMapping("/{email}")
-    ResponseEntity<UsuarioDTO> findUsuarioByEmail(@PathVariable String email);
+    @GetMapping("/busca")
+    Optional<Usuario> findUsuarioByEmail(@RequestParam String email);
 }

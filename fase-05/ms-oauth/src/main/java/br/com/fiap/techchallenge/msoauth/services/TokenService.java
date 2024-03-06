@@ -1,9 +1,9 @@
 package br.com.fiap.techchallenge.msoauth.services;
 
+import br.com.fiap.techchallenge.msoauth.models.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,10 +16,10 @@ public class TokenService {
     @Value("${oauth.jwt.secret}")
     private String secret;
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(Usuario usuario) {
         return JWT.create()
                 .withIssuer("magazine-fiap")
-                .withSubject(userDetails.getUsername())
+                .withSubject(usuario.email())
                 .withExpiresAt(genExpirationDate())
                 .sign(Algorithm.HMAC256(secret));
     }
