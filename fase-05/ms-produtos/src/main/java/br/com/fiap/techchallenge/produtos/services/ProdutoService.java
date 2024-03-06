@@ -5,11 +5,15 @@ import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoJaCadastradoE
 import br.com.fiap.techchallenge.produtos.exceptions.domain.ProdutoNaoEncontradoException;
 import br.com.fiap.techchallenge.produtos.models.Produto;
 import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoDTO;
+import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoRequestDTO;
 import br.com.fiap.techchallenge.produtos.repositories.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static br.com.fiap.techchallenge.produtos.exceptions.domain.MensagensErro.*;
 
@@ -31,6 +35,12 @@ public class ProdutoService {
 
     public Page<Produto> findProdutosNomeDescricao(Pageable pageable, String nome, String descricao) {
         return produtoRepository.findByNomeContainsIgnoreCaseAndDescricaoContainsIgnoreCase(pageable, nome, descricao);
+    }
+
+    public Boolean checarSeHaEstoque(ProdutoRequestDTO produtoDTO) {
+        Produto produtoFound = findProdutoById(produtoDTO.produtoId());
+
+        return produtoFound.getEstoque() >= produtoDTO.quantidade();
     }
 
     public Produto insertProduto(ProdutoDTO produtoDTO) {
@@ -60,4 +70,5 @@ public class ProdutoService {
             );
         }
     }
+
 }

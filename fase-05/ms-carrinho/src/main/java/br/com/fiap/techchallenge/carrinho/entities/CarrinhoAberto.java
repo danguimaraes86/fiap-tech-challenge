@@ -26,7 +26,8 @@ public class CarrinhoAberto {
     public CarrinhoAberto(String usuarioId) {
         this.usuarioId = usuarioId;
     }
-
+    public CarrinhoAberto() {
+    }
 
     // <>------ GETs e SETs
     public String getUsuarioId() {

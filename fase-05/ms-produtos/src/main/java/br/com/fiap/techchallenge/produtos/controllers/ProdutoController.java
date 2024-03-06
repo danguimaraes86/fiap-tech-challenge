@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.produtos.controllers;
 
 import br.com.fiap.techchallenge.produtos.models.Produto;
 import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoDTO;
+import br.com.fiap.techchallenge.produtos.models.dtos.ProdutoRequestDTO;
 import br.com.fiap.techchallenge.produtos.services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,11 @@ public class ProdutoController {
         return ResponseEntity.ok(produtos.map(Produto::toProdutoDTO));
     }
 
+    @GetMapping("/checarsetemestoque")
+    public ResponseEntity<Boolean> checarSeHaEstoque(@RequestBody @Valid ProdutoRequestDTO produtoDTO) {
+
+        return ResponseEntity.ok(produtoService.checarSeHaEstoque(produtoDTO));
+    }
     @PostMapping
     public ResponseEntity<ProdutoDTO> insertProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
         Produto produto = produtoService.insertProduto(produtoDTO);
