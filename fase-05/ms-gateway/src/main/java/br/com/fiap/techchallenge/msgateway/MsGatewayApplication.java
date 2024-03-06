@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class MsGatewayApplication {
 
-    private static final String USUARIO_BASE_URL = "http://localhost:3001";
+    private static final String USUARIO_BASE_URL = "http://localhost:3001/usuarios/";
+    private static final String OAUTH_BASE_URL = "http://localhost:3001/oauth/";
     private static final String PRODUTOS_BASE_URL = "http://localhost:3002";
-    private static final String OAUTH_BASE_URL = "http://localhost:3333";
 
     public static void main(String[] args) {
         SpringApplication.run(MsGatewayApplication.class, args);
@@ -21,10 +21,10 @@ public class MsGatewayApplication {
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(auth -> auth
-                        .path("/oauth/**")
+                        .path("/**")
                         .uri(OAUTH_BASE_URL))
                 .route(usuario -> usuario
-                        .path("/usuarios/**")
+                        .path("/**")
                         .uri(USUARIO_BASE_URL))
                 .route(produto -> produto
                         .path("/produtos/**")

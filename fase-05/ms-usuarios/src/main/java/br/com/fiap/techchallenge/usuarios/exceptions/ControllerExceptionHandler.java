@@ -1,11 +1,11 @@
 package br.com.fiap.techchallenge.usuarios.exceptions;
 
 import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioJaCadastradoException;
-import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioLoginException;
 import br.com.fiap.techchallenge.usuarios.exceptions.domain.UsuarioNaoEncontradoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -72,9 +72,9 @@ public class ControllerExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(UsuarioLoginException.class)
+    @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<DefaultError> usuarioLoginException(
-            UsuarioLoginException exception, HttpServletRequest request
+            BadCredentialsException exception, HttpServletRequest request
     ) {
         return ResponseEntity.unprocessableEntity().body(
                 new DefaultError(
