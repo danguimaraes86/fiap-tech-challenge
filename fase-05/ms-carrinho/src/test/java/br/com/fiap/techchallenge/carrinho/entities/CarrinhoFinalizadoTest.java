@@ -5,23 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
 
 @SpringBootTest
-public class CarrinhoFinalizadoTest {
+class CarrinhoFinalizadoTest {
 
     @Test
-    void constructorTest(){
-        Produtos produto = new Produtos("1", 10l);
+    void constructorTest() {
+        Produto produto = new Produto("1", 10L);
         CarrinhoFinalizado car = new CarrinhoFinalizado("oi", "1", produto, null, false, Status.AGUARDANDOPAGAMENTO);
         car.getUsuarioId();
         car.setDataDoPagamento(LocalDateTime.now());
         car.setStatusPagamento(true);
         car.setStatusDoPedido(Status.PAGAMENTOAPROVADO);
-        Status.PAGAMENTOAPROVADO.getMensagemDoStatus();
-        CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", produto);
+        Status.PAGAMENTOAPROVADO.getMensagem();
+        CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", Collections.singleton(produto));
         CarrinhoFinalizado carrinho = new CarrinhoFinalizado(carrinhoAberto);
     }
 }

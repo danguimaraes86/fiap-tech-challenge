@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.msoauth.models;
+package br.com.fiap.techchallenge.carrinho.feignclients.usuario;
 
 public record Usuario(
         String email,

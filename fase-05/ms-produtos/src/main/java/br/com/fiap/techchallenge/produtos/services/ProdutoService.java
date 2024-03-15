@@ -12,10 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 import static br.com.fiap.techchallenge.produtos.exceptions.domain.MensagensErro.*;
+import static java.lang.String.format;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +27,7 @@ public class ProdutoService {
 
     public Produto findProdutoById(String id) {
         return produtoRepository.findById(id).orElseThrow(() ->
-                new ProdutoNaoEncontradoException(String.format(PRODUTO_NAO_ENCONTRADO.getMensagem(), id))
+                new ProdutoNaoEncontradoException(format(PRODUTO_NAO_ENCONTRADO.getMensagem(), id))
         );
     }
 
@@ -39,13 +37,12 @@ public class ProdutoService {
 
     public Boolean checarSeHaEstoque(ProdutoRequestDTO produtoDTO) {
         Produto produtoFound = findProdutoById(produtoDTO.produtoId());
-
         return produtoFound.getEstoque() >= produtoDTO.quantidade();
     }
 
     public Produto insertProduto(ProdutoDTO produtoDTO) {
         if (produtoRepository.findByNomeIgnoreCase(produtoDTO.nome()).isPresent()) {
-            throw new ProdutoJaCadastradoException(String.format(NOME_JA_CADASTRADO.getMensagem(), produtoDTO.nome()));
+            throw new ProdutoJaCadastradoException(format(NOME_JA_CADASTRADO.getMensagem(), produtoDTO.nome()));
         }
         return produtoRepository.save(
                 new Produto(
@@ -66,7 +63,7 @@ public class ProdutoService {
     private void validateEstoque(Long estoque, Long alteracaoEstoque) {
         if (estoque + alteracaoEstoque < 0) {
             throw new EstoqueInsuficienteException(
-                    String.format(ESTOQUE_INSUFICIENTE.getMensagem(), alteracaoEstoque, estoque)
+                    format(ESTOQUE_INSUFICIENTE.getMensagem(), alteracaoEstoque, estoque)
             );
         }
     }

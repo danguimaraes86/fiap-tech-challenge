@@ -1,5 +1,10 @@
 package br.com.fiap.techchallenge.carrinho.entities.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
 public enum Status {
 
     AGUARDANDOPAGAMENTO("Aguardando Pagamento"),
@@ -9,13 +14,6 @@ public enum Status {
     ENVIADO("Pedido Enviado"),
     ENTREGUE("Pedido entregue ao Destinatario");
 
-    private final String mensagemDoStatus;
+    private final String mensagem;
 
-    Status(String mensagemDoStatus) {
-        this.mensagemDoStatus = mensagemDoStatus;
-    }
-
-    public String getMensagemDoStatus() {
-        return mensagemDoStatus;
-    }
 }

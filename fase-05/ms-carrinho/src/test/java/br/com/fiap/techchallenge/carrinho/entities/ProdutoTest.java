@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ProdutosTest {
+public class ProdutoTest {
 
     @Test
-    void produtoTest(){
-        Produtos p = new Produtos("1", 10l);
+    void produtoTest() {
+        Produto p = new Produto("1", 10l);
         p.getProdutoId();
         p.getQuantidade();
         p.setQuantidade(1l);

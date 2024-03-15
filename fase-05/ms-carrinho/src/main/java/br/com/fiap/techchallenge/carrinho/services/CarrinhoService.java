@@ -2,140 +2,94 @@ package br.com.fiap.techchallenge.carrinho.services;
 
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoFinalizado;
-import br.com.fiap.techchallenge.carrinho.entities.Produtos;
+import br.com.fiap.techchallenge.carrinho.entities.Produto;
 import br.com.fiap.techchallenge.carrinho.entities.enums.Status;
-
-import static br.com.fiap.techchallenge.carrinho.functions.webRequest.WebClientLinkRequest.requisitionGeneric;
-
-import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
+import br.com.fiap.techchallenge.carrinho.feignclients.ProdutoFeignClient;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
-import org.springframework.http.HttpMethod;
+import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static java.lang.String.format;
+
+@RequiredArgsConstructor
 @Service
 public class CarrinhoService {
+
     private final CarrinhoRepository carrinhoRepository;
     private final CarrinhoFinalizadoRepository carrinhoFinalizadoRepository;
+    private final ProdutoFeignClient produtoFeignClient;
 
-    public CarrinhoService(CarrinhoRepository carrinhoRepository, CarrinhoFinalizadoRepository carrinhoFinalizadoRepository) {
-        this.carrinhoRepository = carrinhoRepository;
-        this.carrinhoFinalizadoRepository = carrinhoFinalizadoRepository;
+    private static String getBearerToken(JwtAuthenticationToken token) {
+        return format("Bearer %s", token.getToken().getTokenValue());
     }
 
-    // <>------ Services ----------------------------------------------------------------
-    public CarrinhoAberto findCarrinhoOpen(String usuarioId) {
-        Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
-
-        return carrinhoAbertoEncontrado.orElseThrow(() -> new NoSuchElementException("Não há carrinho em aberto"));
+    private static DecodedJWT getDecodedJwt(Jwt token) {
+        return JWT.decode(token.getTokenValue());
     }
 
-    public CarrinhoAberto addItemsOuCriarCarrinho(String usuarioId, Produtos produto) {
-        checarSeTemEstoque(produto);
-        Optional<CarrinhoAberto> carrinhoAbertoEncontrado = carrinhoRepository.findById(usuarioId);
-
-        if (!carrinhoAbertoEncontrado.isEmpty() && produto.getQuantidade() > 0) {
-            var carrinho = carrinhoAbertoEncontrado.get();
-
-            produtoExistenteNoCarrinhoSomarQuantidade(carrinho, produto);
-
-            return carrinhoRepository.save(carrinho);
-        } else if(carrinhoAbertoEncontrado.isEmpty() && produto.getQuantidade() > 0){
-            CarrinhoAberto novoCarrinhoAberto = new CarrinhoAberto(usuarioId, produto);
-
-            return carrinhoRepository.save(novoCarrinhoAberto);
-        } else {
-            throw new NoSuchElementException("Produto sem estoque");
-        }
+    public CarrinhoAberto findCarrinhoOpen(JwtAuthenticationToken token) {
+        DecodedJWT decodedJwt = getDecodedJwt(token.getToken());
+        return carrinhoRepository.findById(decodedJwt.getSubject())
+                .orElseThrow(() -> new NoSuchElementException("Não há carrinho em aberto"));
     }
 
-    @Transactional
-    public CarrinhoFinalizado efetuandoCompraDoCarrrinho(String usuarioId) {
-        var carrinhoAbertoOptional = carrinhoRepository.findById(usuarioId)
-                .orElseThrow(() -> new NoSuchElementException("Não ha carrinho aberto"));
+    public CarrinhoAberto criarNovoCarrinho(String usuarioId) {
+        carrinhoRepository.findById(usuarioId).ifPresent(carrinhoRepository::delete);
+        return carrinhoRepository.save(new CarrinhoAberto(usuarioId));
+    }
 
+    public CarrinhoAberto addItems(JwtAuthenticationToken token, Produto produto) {
+        CarrinhoAberto carrinhoAberto = findCarrinhoOpen(token);
+        checarSeTemEstoque(getBearerToken(token), produto);
 
-        carrinhoAbertoOptional.getProdutos()
-                .forEach(produto -> {
-                            checarSeTemEstoque(produto);
-                            negativaOuPositivaQuantidade(produto); //Negativando a quantidade para simular a compra
-                        });
+        produtoExistenteNoCarrinhoSomarQuantidade(carrinhoAberto, produto);
+        return carrinhoRepository.save(carrinhoAberto);
+    }
 
-        carrinhoAbertoOptional.getProdutos()
-                .forEach(produto -> {
-                    String requisitionPath = ("/produtos/" + produto.getProdutoId() + "?alteracaoEstoque=" + produto.getQuantidade());
-                    requisitionGeneric(requisitionPath, HttpMethod.PUT, null, Object.class);
+    public CarrinhoFinalizado efetuandoCompraDoCarrrinho(JwtAuthenticationToken jwtToken) {
+        CarrinhoAberto carrinhoAberto = findCarrinhoOpen(jwtToken);
 
-                    negativaOuPositivaQuantidade(produto); //Positivando Quantidade pra salvar carrinho finalizado
-                });
+        String bearerToken = getBearerToken(jwtToken);
+        carrinhoAberto.getProdutos().forEach(produto -> {
+            checarSeTemEstoque(bearerToken, produto);
+            produtoFeignClient.updateEstoqueProduto(
+                    bearerToken, produto.getProdutoId(), (produto.getQuantidade() * -1));
+        });
 
-        CarrinhoFinalizado carrinhoFinalizado =
-                new CarrinhoFinalizado(carrinhoAbertoOptional);
-
+        CarrinhoFinalizado carrinhoFinalizado = new CarrinhoFinalizado(carrinhoAberto);
         carrinhoFinalizado.setDataDoPagamento(LocalDateTime.now());
         carrinhoFinalizado.setStatusPagamento(true);
         carrinhoFinalizado.setStatusDoPedido(Status.PAGAMENTOAPROVADO);
 
-        var pedidoEfetuado = carrinhoFinalizadoRepository.save(carrinhoFinalizado);
-
-        carrinhoRepository.deleteById(pedidoEfetuado.getUsuarioId());
-
-        return pedidoEfetuado;
+        carrinhoRepository.deleteById(carrinhoAberto.getUsuarioId());
+        return carrinhoFinalizadoRepository.save(carrinhoFinalizado);
     }
 
-    public void deletarCarrinho(String usuarioId) {
-
-        carrinhoRepository.deleteById(usuarioId);
-    }
-
-
-    // <>----- Metodos Complementares Privados Apenas a classe pode usar
-    private void checarSeTemEstoque(Produtos produto) {
-
-        var temEstoque = requisitionGeneric("/produtos/checarsetemestoque", HttpMethod.GET, produto, Boolean.class);
-        if (!temEstoque) {
+    private void checarSeTemEstoque(String token, Produto produto) {
+        if (Boolean.FALSE.equals(produtoFeignClient.checarSeHaEstoque(token, produto))) {
             throw new NoSuchElementException("Produto sem estoque");
         }
-
     }
 
-    private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produtos produto) {
+    private void produtoExistenteNoCarrinhoSomarQuantidade(CarrinhoAberto carrinhoAberto, Produto produto) {
+        Map<String, Produto> produtoMap = carrinhoAberto.getProdutos()
+                .stream().collect(Collectors.toMap(Produto::getProdutoId, Function.identity()));
 
-        boolean exists = carrinhoAberto.getProdutos().stream()
-                .filter(produtos -> produtos.getProdutoId() != null)
-                .anyMatch(produtosNoCarrinho ->
-                        produtosNoCarrinho.getProdutoId().equals(produto.getProdutoId()));
-
-        if (!exists) {
+        if (produtoMap.containsKey(produto.getProdutoId())) {
+            produtoMap.get(produto.getProdutoId()).addQuantidade(produto.getQuantidade());
+        } else {
             carrinhoAberto.addProduto(produto);
-        } else {
-            carrinhoAberto.getProdutos().forEach(produtosNoCarrinho -> {
-                if (Objects.equals(produtosNoCarrinho.getProdutoId(), produto.getProdutoId())) {
-                    produtosNoCarrinho.addQuantidade(produto.getQuantidade());
-                }
-            });
-        }
-    }
-
-    private void negativaOuPositivaQuantidade(Produtos produto) {
-        if (produto.getQuantidade() < 0) {
-            // If quantity is negative, make it positive for creating finished cart with quantity
-            produto.setQuantidade(produto.getQuantidade() - (produto.getQuantidade() * 2));
-        } else {
-            // If quantity is positive, negate it to deduct from stock
-            produto.setQuantidade(produto.getQuantidade() - (produto.getQuantidade() * 2));
         }
     }
 }
-
-//
-//spring.data.mongodb.database=ms-carrinho
-//        spring.data.mongodb.authentication-database=admin
-//        spring.data.mongodb.username=mongodb
-//        spring.data.mongodb.password=mongodb

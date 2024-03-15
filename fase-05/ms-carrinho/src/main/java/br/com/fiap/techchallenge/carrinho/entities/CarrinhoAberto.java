@@ -1,51 +1,31 @@
 package br.com.fiap.techchallenge.carrinho.entities;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.Set;
 
-
-// Carrinho aberto, compra ainda não finalizada, como não pode te mais de 1 carrinho aberto por usuario
-// Então o ID é o propio UsuarioID
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Document
 public class CarrinhoAberto {
     @Id
     private String usuarioId;
-    private Set<Produtos> produtos;
+    @Setter
+    private Set<Produto> produtos = new HashSet<>();
 
-
-    // <>------ Construtores
-    public CarrinhoAberto(String usuarioId, Produtos produtos) {
-        this.usuarioId = usuarioId;
-        this.produtos = new HashSet<>();
-        this.produtos.add(produtos);
-    }
     public CarrinhoAberto(String usuarioId) {
         this.usuarioId = usuarioId;
     }
-    public CarrinhoAberto() {
-    }
 
-    // <>------ GETs e SETs
-    public String getUsuarioId() {
-        return usuarioId;
-    }
-
-    public Set<Produtos> getProdutos() {
-        return produtos;
-    }
-    public CarrinhoAberto setProdutos(Set<Produtos> produtos) {
-        this.produtos = produtos;
-        return this;
-    }
-
-
-
-    // <>----- Serviços Internos
-    public void addProduto(Produtos produtos){
-        this.produtos.add(produtos);
+    public void addProduto(Produto produto) {
+        this.produtos.add(produto);
     }
 }

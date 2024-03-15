@@ -1,92 +1,80 @@
 package br.com.fiap.techchallenge.carrinho.services;
 
 import br.com.fiap.techchallenge.carrinho.entities.CarrinhoAberto;
-import br.com.fiap.techchallenge.carrinho.entities.Produtos;
+import br.com.fiap.techchallenge.carrinho.entities.Produto;
+import br.com.fiap.techchallenge.carrinho.feignclients.ProdutoFeignClient;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoFinalizadoRepository;
 import br.com.fiap.techchallenge.carrinho.repository.CarrinhoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
+import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class CarrinhoServiceTest {
+class CarrinhoServiceTest {
 
     @Mock
     CarrinhoRepository carrinhoRepository;
-
     @Mock
     CarrinhoFinalizadoRepository carrinhoFinalizadoRepository;
-
     @Mock
-    CarrinhoAberto carrinhoAberto;
-
+    ProdutoFeignClient produtoFeignClient;
     CarrinhoService carrinhoService;
 
     @BeforeEach
-    void setup(){
-        carrinhoService = new CarrinhoService(carrinhoRepository, carrinhoFinalizadoRepository);
+    void setup() {
+        carrinhoService = new CarrinhoService(carrinhoRepository, carrinhoFinalizadoRepository, produtoFeignClient);
     }
 
     @Test
-    void deveLancarExceçãoAoBuscarCarrinhoAberto(){
-        Produtos p = geraProduto();
-        CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", p);
+    void deveLancarExcecaoAoBuscarCarrinhoAberto() {
+        Produto p = geraProduto();
+        CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", Collections.singleton(p));
         carrinhoRepository.save(carrinhoAberto);
-        Mockito.when(carrinhoRepository.findById("1")).thenReturn(Optional.empty());
+        when(carrinhoRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> carrinhoService.findCarrinhoOpen("1"))
+        assertThatThrownBy(() -> carrinhoService.findCarrinhoOpen(mock(JwtAuthenticationToken.class)))
                 .isInstanceOf(NoSuchElementException.class);
-
     }
 
     @Test
-    void deveCriarCarrinhoAoNaoEncontrarUmAberto(){
-        Produtos p = geraProduto();
-        Mockito.when(carrinhoService.addItemsOuCriarCarrinho("1", p)).thenReturn(new CarrinhoAberto());
-    }
-
-    @Test
-    void deveAdicionarItemAoCarrinhoAberto(){
-        Produtos p = geraProduto();
-        CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", p);
-        Mockito.when(carrinhoRepository.save(carrinhoAberto)).thenReturn(carrinhoAberto);
-        Mockito.when(carrinhoRepository.findById("1")).thenReturn(Optional.of(carrinhoAberto));
-        var car = carrinhoService.addItemsOuCriarCarrinho(carrinhoAberto.getUsuarioId(), p);
+    void deveAdicionarItemAoCarrinhoAberto() {
+        Produto p = geraProduto();
+        CarrinhoAberto carrinhoAberto = new CarrinhoAberto("1", Collections.singleton(p));
+        when(carrinhoRepository.save(carrinhoAberto)).thenReturn(carrinhoAberto);
+        when(carrinhoRepository.findById(anyString())).thenReturn(Optional.of(carrinhoAberto));
+        var car = carrinhoService.addItems(mock(JwtAuthenticationToken.class), p);
         assertThat(car).isNotNull();
-        Assertions.assertEquals( "1", car.getUsuarioId());
+        Assertions.assertEquals("1", car.getUsuarioId());
     }
 
     @Test
-    void deveLançarExceçãoAoNãoAcharEstoque(){
+    void deveLançarExceçãoAoNãoAcharEstoque() {
         CarrinhoAberto car = geraCarrinhoAberto();
-        Mockito.when(carrinhoRepository.save(car)).thenReturn(car);
-        Mockito.when(carrinhoRepository.findById("1")).thenReturn(Optional.of(car));
-        assertThatThrownBy(() -> carrinhoService.efetuandoCompraDoCarrrinho(car.getUsuarioId()))
+        when(carrinhoRepository.save(car)).thenReturn(car);
+        when(carrinhoRepository.findById(anyString())).thenReturn(Optional.of(car));
+        assertThatThrownBy(() -> carrinhoService.efetuandoCompraDoCarrrinho(mock(JwtAuthenticationToken.class)))
                 .isInstanceOf(RuntimeException.class);
     }
 
-    @Test
-    void deveDeletarCarrinho(){
-        var car = geraCarrinhoAberto();
-        carrinhoService.deletarCarrinho(car.getUsuarioId());
+    CarrinhoAberto geraCarrinhoAberto() {
+        Produto p = geraProduto();
+        return new CarrinhoAberto("1", Collections.singleton(p));
     }
 
-    CarrinhoAberto geraCarrinhoAberto(){
-        Produtos p = geraProduto();
-        CarrinhoAberto car = new CarrinhoAberto("1", p);
-        return car;
-    }
-    Produtos geraProduto(){
-        Produtos produtos = new Produtos("1", 2l);
-        return produtos;
+    Produto geraProduto() {
+        return new Produto("1", 2L);
     }
 }
