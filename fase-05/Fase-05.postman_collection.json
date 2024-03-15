@@ -1,0 +1,797 @@
+{
+	"info": {
+		"_postman_id": "9ad607b9-4c66-46aa-a561-069ec4241d2f",
+		"name": "Fiap Tech Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27560229"
+	},
+	"item": [
+		{
+			"name": "Fase 05",
+			"item": [
+				{
+					"name": "Gateway",
+					"item": [
+						{
+							"name": "Auth",
+							"item": [
+								{
+									"name": "login",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"Gordon.Mueller@yahoo.com\",\n  \"password\": \"teste01\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/oauth/token",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"oauth",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "novo usuario",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"Nikita.White72@yahoo.com\",\n  \"password\": \"teste01\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/oauth/novo",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"oauth",
+												"novo"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Usuarios",
+							"item": [
+								{
+									"name": "token",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"Gordon.Mueller@yahoo.com\",\n  \"password\": \"teste0\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/oauth/token",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"oauth",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findAll",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/usuarios",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"usuarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findById",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/usuarios/busca",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"usuarios",
+												"busca"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": null,
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "busca",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/usuarios",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"usuarios"
+											],
+											"query": [
+												{
+													"key": "nome",
+													"value": "Margarette_Jones4",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "bearer",
+								"bearer": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiTmlraXRhLldoaXRlNzJAeWFob28uY29tIiwiZXhwIjoxNzA5MzExMjAxfQ.lbV1HpysvxS5cYKtKisNHgoLquPOj2sfPrNySqpWtmM",
+										"type": "string"
+									}
+								]
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Produtos",
+							"item": [
+								{
+									"name": "create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nome\": \"{{$randomLoremWord}}\",\n  \"preco\": 10.0,\n  \"estoque\": 10,\n  \"descricao\": \"{{$randomLoremSentence}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/produtos",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos/28ca6ff5-dada-4cc9-82fb-a3945edfa335",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos",
+												"28ca6ff5-dada-4cc9-82fb-a3945edfa335"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "busca",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos/busca?nome=repellendus",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos",
+												"busca"
+											],
+											"query": [
+												{
+													"key": "nome",
+													"value": "repellendus"
+												},
+												{
+													"key": "descricao",
+													"value": "rerum",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateEstoque",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos/28ca6ff5-dada-4cc9-82fb-a3945edfa335?alteracaoEstoque=16",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos",
+												"28ca6ff5-dada-4cc9-82fb-a3945edfa335"
+											],
+											"query": [
+												{
+													"key": "alteracaoEstoque",
+													"value": "16"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "bearer",
+								"bearer": [
+									{
+										"key": "token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiZXhwIjoxNzA5NzQ1Mjg2fQ.FGeh7Dm0Ivqmy_tS4oUffGt8QQW64MvLgQQ7Z-JyZ5M",
+										"type": "string"
+									}
+								]
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "OAuth",
+					"item": [
+						{
+							"name": "token",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"Gordon.Mueller@yahoo.com\",\n  \"password\": \"teste01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3333/oauth/token",
+									"host": [
+										"localhost"
+									],
+									"port": "3333",
+									"path": [
+										"oauth",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Usuarios",
+					"item": [
+						{
+							"name": "token",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"Gordon.Muelle@yahoo.com\",\n  \"password\": \"teste01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3001/oauth/token",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"oauth",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"role\": \"ADMIN\",\n  \"nome\": \"{{$randomUserName}}\",\n  \"password\": \"teste01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3001/usuarios/novo",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"usuarios",
+										"novo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAll",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiZXhwIjoxNzA5MzIxNTI1fQ.n7DtQTYHcimaE7xmvmS-4aN-_sr3sEIJbH-VEs0_vA8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3001/usuarios?nome=Cheyanne",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "Adella_Batz99",
+											"disabled": true
+										},
+										{
+											"key": "nome",
+											"value": "Cheyanne"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findByEmail",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3001/usuarios/busca?email=Gordon.Mueller@yahoo.com",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"usuarios",
+										"busca"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "Gordon.Mueller@yahoo.com"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Produtos",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"{{$randomLoremWord}}\",\n  \"preco\": 10.0,\n  \"estoque\": 0,\n  \"descricao\": \"{{$randomLoremSentence}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3002/produtos",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiZXhwIjoxNzEwNTUzNzkyfQ.bcMGor0R0YSfvIlBX9MYXcgtuft_e24ikGY0C6-9Rf0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos/4c97fe8d-62c5-46f9-a3e9-0d17b1106c76",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos",
+										"4c97fe8d-62c5-46f9-a3e9-0d17b1106c76"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "busca",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos/busca",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos",
+										"busca"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "odit",
+											"disabled": true
+										},
+										{
+											"key": "descricao",
+											"value": "rerum",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateEstoque",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiY2FycmluaG9JZCI6IkdvcmRvbi5NdWVsbGVyQHlhaG9vLmNvbSIsImV4cCI6MTcxMDI4OTAxM30.XhRnot-ZjOt7o9fZ6Ty9oWuP7f5mVwuQloCUtf9TB3s",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos/28ca6ff5-dada-4cc9-82fb-a3945edfa335?alteracaoEstoque=-3",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos",
+										"28ca6ff5-dada-4cc9-82fb-a3945edfa335"
+									],
+									"query": [
+										{
+											"key": "alteracaoEstoque",
+											"value": "-3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Carrinho",
+					"item": [
+						{
+							"name": "findCarrinhoAberto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiY2FycmluaG9JZCI6IkdvcmRvbi5NdWVsbGVyQHlhaG9vLmNvbSIsImV4cCI6MTcxMDU1MjExN30.kaabgVq1Z8u5voNc6_kG_uBnEQ4nKkg1p-Oan_wDJa8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3003/carrinhos",
+									"host": [
+										"localhost"
+									],
+									"port": "3003",
+									"path": [
+										"carrinhos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adicionarProduto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiZXhwIjoxNzEwNTUzNzkyfQ.bcMGor0R0YSfvIlBX9MYXcgtuft_e24ikGY0C6-9Rf0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"produtoId\": \"28ca6ff5-dada-4cc9-82fb-a3945edfa335\",\n  \"quantidade\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3003/carrinhos/adicionarproduto",
+									"host": [
+										"localhost"
+									],
+									"port": "3003",
+									"path": [
+										"carrinhos",
+										"adicionarproduto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "finalizarCompra",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiZXhwIjoxNzEwNTUzNzkyfQ.bcMGor0R0YSfvIlBX9MYXcgtuft_e24ikGY0C6-9Rf0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3003/carrinhos/finalizarcompra",
+									"host": [
+										"localhost"
+									],
+									"port": "3003",
+									"path": [
+										"carrinhos",
+										"finalizarcompra"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
