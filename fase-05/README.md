@@ -15,11 +15,11 @@ encontrará detalhes abrangentes sobre a API, que foi desenvolvida como parte de
 - Java 17
 - Gradle
 - Spring Web
-- Spring Web Reactive
+- Postgres
 - MongoDB
+- Spring Data JPA
 - Spring Data MongoDB
-- Spring Data Reactive MongoDB
-- Validation (Bean Validation with Hibernate validator)
+- Validation
 - Lombok
 - Postman
 - IntelliJ
@@ -30,7 +30,7 @@ encontrará detalhes abrangentes sobre a API, que foi desenvolvida como parte de
 ## Como inicar o projeto
 
 Para inicar o projeto, utilize o `gradle`. Caso não tenha o Gradle instalado, você pode utilizar o wrapper que
-acompanha o projeto. Neste caso, entre na pasta raiz da Fase-04 e utilize o comando `./gradlew`.
+acompanha o projeto. Neste caso, entre na pasta raiz da Fase-05 e utilize o comando `./gradlew`.
 É necessário estar com `Docker` rodando para conexão com banco de dados.
 
 | Comando                | Descrição                           | Requisitos                  |
@@ -48,7 +48,6 @@ acompanha o projeto. Neste caso, entre na pasta raiz da Fase-04 e utilize o coma
 | Comando                     | Descrição                                                  | Requisitos                  |
 |-----------------------------|------------------------------------------------------------|-----------------------------|
 | `./gradlew test`            | Realização dos Testes Unitários                            | Nenhum                      |
-| `./gradlew integrationTest` | Realização dos Testes de Integração                        | Docker rodando com MongoDB  |
 | `docker-compose up -d`      | Subir os serviços necessários para os Testes de Integração | Docker instalado na máquina |
 
 ### Relatórios

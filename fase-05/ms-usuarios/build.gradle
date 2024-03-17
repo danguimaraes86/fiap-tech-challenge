@@ -30,12 +30,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'com.auth0:java-jwt:4.4.0'
-
-    // Spring Cloud
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
