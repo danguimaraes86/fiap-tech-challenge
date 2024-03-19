@@ -27,7 +27,7 @@ public class RoutesConfig {
                 .route(auth -> auth.path("/oauth/**").uri(oauthBaseUrl))
                 .route(usuario -> usuario.path("/usuarios/**").uri(usuarioBaseUrl))
                 .route(produto -> produto.path("/produtos/**").uri(produtosBaseUrl))
-                .route(carrinho -> carrinho.path("/novocarrinho/**").uri(carrinhosBaseUrl))
+                .route(carrinho -> carrinho.path("/carrinhos/**").uri(carrinhosBaseUrl))
                 .build();
     }
 }
