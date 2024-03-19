@@ -14,10 +14,10 @@ public class TokenService {
     @Value("${oauth.jwt.secret}")
     private String secret;
 
-    public String generateToken(String email, String carrinhoId) {
+    public String generateToken(String usuarioEmail) {
         return JWT.create()
                 .withIssuer("magazine-fiap")
-                .withSubject(email)
+                .withSubject(usuarioEmail)
                 .withExpiresAt(genExpirationDate())
                 .sign(Algorithm.HMAC256(secret));
     }

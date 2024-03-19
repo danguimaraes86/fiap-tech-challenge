@@ -1,9 +1,11 @@
 package br.com.fiap.techchallenge.msoauth.feignclients;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @Component
 @FeignClient(
@@ -14,5 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface CarrinhoFeignClient {
 
     @PostMapping("/novo")
-    String createNovoCarrinho(@RequestBody String email);
+    String createNovoCarrinho(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestBody String email);
 }
