@@ -52,159 +52,76 @@ acompanha o projeto. Neste caso, entre na pasta raiz da Fase-04 e utilize o coma
 
 ### Relatórios
 
-Após a execução dos testes, os relatórios gerados pelo JaCoCo estarão disponíveis na pasta `fase-04/build/reports`.
+Após a execução dos testes, os relatórios gerados pelo JaCoCo estarão disponíveis na pasta `fase-05/build/reports`.
 
 ## Endpoints
 
-### Endpoints – Videos
+### Endpoints – Carrinho
 
 | Método | Url                                       | Descrição                                                 |
 |--------|-------------------------------------------|-----------------------------------------------------------|
-| GET    | /videos                                   | Retorna todos os video cadastrados                        |                             
-| GET    | /videos/{id: ObjectId}                    | Retorna um vídeo com ID específico                        |                             
-| POST   | /videos                                   | Cadastra um vídeo                                         | 
-| PUT    | /videos/{id: ObjectId}                    | Atualiza um vídeo com ID específico                       | 
-| DELETE | /videos/{id: ObjectId}                    | Deleta um vídeo com ID específico                         |                             
-| GET    | /videos/busca                             | Retorna uma lista de vídeos com base nos filtros de busca |                             
-| GET    | /videos/categoria/{codeCategoria: String} | Retorna uma lista de vídeos com base na categoria         |                             
-| GET    | /videos/{id: ObjectId}/watch              | Retorna um vídeo em endpoint reativo para streaming       |                             
+| GET    | /carrinhos                                | Faz a busca de um carrinho pelo código de usuario         |                             
+| POST   | /carrinhos/adicionarproduto               | Adiciona um novo produto ao carrinho                      |                             
+| POST   | /carrinhos/finalizarcompra                | Efetua a comrpa dos produtos do cliente                   | 
+| POST   | /carrinhos/novo                           | Cria um novo carrinho                                     | 
 
 #### Exemplos de entrada
 
-#### POST /videos
+#### POST /carrinhos/adicionarproduto
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Video Schema Request Body",
-  "type": "object",
-  "properties": {
-    "titulo": {
-      "type": "string"
-    },
-    "descricao": {
-      "type": "string"
-    },
-    "url": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "titulo",
-    "descricao",
-    "url"
-  ]
+  "produtoId": "28ca6ff5-dada-4cc9-82fba3945edfa335",
+  "quantidade": 5
 }
 ```
 
-#### PUT /video/{id}
+### Endpoints – Produtos
 
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Video Schema Request Body",
-  "type": "object",
-  "properties": {
-    "titulo": {
-      "type": "string"
-    },
-    "descricao": {
-      "type": "string"
-    },
-    "url": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "titulo",
-    "descricao",
-    "url"
-  ]
-}
-```
-
-### Endpoints – Usuário
-
-| Método | Url                                         | Descrição                                          | 
-|--------|---------------------------------------------|----------------------------------------------------|
-| GET    | /usuarios                                   | Retorna todos os video cadastrados                 |
-| GET    | /usuarios/{id: ObjectId}                    | Retorna um Usuário com ID específico               |
-| POST   | /usuarios                                   | Cadastra um Usuário                                |
-| POST   | /usuarios/{id: ObjectId}/adicionarFavoritos | Cadastra os Favoritos de um Usuário                |
-| GET    | /usuarios/{id: ObjectId}/recomendacoes      | Retorna uma lista de vídeos com base nos favoritos |
+| Método | Url                          | Descrição                                                                        |
+|--------|------------------------------|----------------------------------------------------------------------------------|
+| GET    | /produtos                    | Faz a busca de todos os produtos                                                 |                             
+| GET    | /produtos/{id}               | Faz a busca de um produto a partir do seu id                                     |                             
+| GET    | /produtos/busca              | Faz a busca de produtos pela descrição                                           | 
+| POST   | /produtos/checarsetemestoque | Verifica se um determinado produto tem estoque                                   |    
+| POST   | /produtos                    | Insere um novo produto no Eommerce                                               | 
+| POST   | /produtos/estoque/{id}       | Faz a alteração de estoque de um produto, adicionando ou removendo mais produtos |                             
 
 #### Exemplos de entrada
 
-#### POST /usuarios
+#### POST /produtos
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Usuário Schema Request Body",
-  "type": "object",
-  "properties": {
-    "favoritos": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "nome": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "nome"
-  ]
+  "nome": "relogio",
+  "preco": 10.0,
+  "estoque": 0,
+  "descricao": "relogio inteligente"
 }
 ```
 
-#### PUT /pessoa/{id}/adicionarFavoritos
+### Endpoints – Usuarios
+
+| Método | Url             | Descrição                                            |
+|--------|-----------------|------------------------------------------------------|
+| GET    | /usuarios       | Faz a busca de todos os usuarios                     |                             
+| GET    | /usuarios/busca | AFaz a busca de um usuario específico a partir do id |                             
+| POST   | /usuarios/novo  | Cria um novo usuario                                 | 
+
+#### Exemplos de entrada
+
+#### POST /produtos
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Favorito Schema Request Body",
-  "type": "object",
-  "properties": {
-    "favoritos": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    }
-  },
-  "required": [
-    "favoritos"
-  ]
+  "email": "rafael@fiap.com.br",
+  "role": "ADMIN",
+  "nome": "Rafael",
+  "password": "teste01"
 }
 ```
 
-### Endpoints – Estatísticas
+                           
 
-| Método | Url           | Descrição                          | 
-|--------|---------------|------------------------------------|
-| GET    | /estatisticas | Retorna as estatísticas do sistema |
 
-#### Exemplos de saída
 
-#### GET /estatisticas
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Estatística Schema Response",
-  "type": "object",
-  "properties": {
-    "qntTotalVideos": {
-      "type": "number"
-    },
-    "qntVideosFavoritos": {
-      "type": "number"
-    },
-    "mediaVizualizacoes": {
-      "type": "number"
-    }
-  }
-}
-```
