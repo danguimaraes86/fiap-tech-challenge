@@ -37,18 +37,7 @@ acompanha o projeto. Neste caso, entre na pasta raiz da Fase-05 e utilize o coma
 |------------------------|-------------------------------------|-----------------------------|
 | `docker-compose up -d` | Subir os serviços de banco de dados | Docker instalado na máquina |
 | `./gradlew bootRun`    | Realização dos Testes Unitários     | MongoDB rodando             |
-
-## Testes
-
-### Comandos
-
-Para realizar os testes, utilize o `gradle`. Caso não tenha o Gradle instalado, você pode utilizar o wrapper que
-acompanha o projeto. Neste caso, entre na pasta raiz da Fase-04 e utilize o comando `./gradlew`.
-
-| Comando                     | Descrição                                                  | Requisitos                  |
-|-----------------------------|------------------------------------------------------------|-----------------------------|
-| `./gradlew test`            | Realização dos Testes Unitários                            | Nenhum                      |
-| `docker-compose up -d`      | Subir os serviços necessários para os Testes de Integração | Docker instalado na máquina |
+| `./gradlew test`       | Realização dos Testes Unitários     | Nenhum                      |
 
 ### Relatórios
 
@@ -58,12 +47,12 @@ Após a execução dos testes, os relatórios gerados pelo JaCoCo estarão dispo
 
 ### Endpoints – Carrinho
 
-| Método | Url                                       | Descrição                                                 |
-|--------|-------------------------------------------|-----------------------------------------------------------|
-| GET    | /carrinhos                                | Faz a busca de um carrinho pelo código de usuario         |                             
-| POST   | /carrinhos/adicionarproduto               | Adiciona um novo produto ao carrinho                      |                             
-| POST   | /carrinhos/finalizarcompra                | Efetua a comrpa dos produtos do cliente                   | 
-| POST   | /carrinhos/novo                           | Cria um novo carrinho                                     | 
+| Método | Url                         | Descrição                                         |
+|--------|-----------------------------|---------------------------------------------------|
+| GET    | /carrinhos                  | Faz a busca de um carrinho pelo código de usuario |                             
+| POST   | /carrinhos/adicionarproduto | Adiciona um novo produto ao carrinho              |                             
+| POST   | /carrinhos/finalizarcompra  | Efetua a comrpa dos produtos do cliente           | 
+| POST   | /carrinhos/novo             | Cria um novo carrinho                             | 
 
 #### Exemplos de entrada
 
