@@ -46,7 +46,7 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoService.checarSeHaEstoque(produtoDTO));
     }
 
-    @PostMapping
+    @PostMapping("/novo")
     public ResponseEntity<ProdutoDTO> insertProduto(@RequestBody @Valid ProdutoDTO produtoDTO) {
         Produto produto = produtoService.insertProduto(produtoDTO);
         return ResponseEntity.ok(produto.toProdutoDTO());

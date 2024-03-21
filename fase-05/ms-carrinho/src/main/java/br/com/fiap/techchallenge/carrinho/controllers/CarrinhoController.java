@@ -16,15 +16,15 @@ public class CarrinhoController {
 
     private final CarrinhoService carrinhoService;
 
+    @GetMapping
+    public ResponseEntity<CarrinhoAberto> findCarrinhoAberto(JwtAuthenticationToken jwtToken) {
+        return ResponseEntity.ok(carrinhoService.findCarrinhoOpen(jwtToken));
+    }
+
     @PostMapping("/novo")
     public ResponseEntity<String> createNovoCarrinho(@RequestBody String email) {
         CarrinhoAberto carrinho = carrinhoService.criarNovoCarrinho(email);
         return ResponseEntity.ok(carrinho.getUsuarioId());
-    }
-
-    @GetMapping
-    public ResponseEntity<CarrinhoAberto> findCarrinhoAberto(JwtAuthenticationToken jwtToken) {
-        return ResponseEntity.ok(carrinhoService.findCarrinhoOpen(jwtToken));
     }
 
     @PostMapping("/adicionarproduto")
