@@ -4,10 +4,6 @@ Bem-vindo(a) a documentação oficial dos projetos desenvolvidos para o **Tech C
 Separamos nosso projeto por branchs e pastas para facilitar a localização dos respectivos módulos.
 Você encontra os links para as Fases abaixo:
 
-- [Fase 01](fase-01)
-- [Fase 02](fase-02)
-- [Fase 03](fase-03)
-- [Fase 04](fase-04)
 - [Fase 05](fase-05)
 
 ## Link do Repositório
