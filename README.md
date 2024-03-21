@@ -8,6 +8,7 @@ Você encontra os links para as Fases abaixo:
 - [Fase 02](fase-02)
 - [Fase 03](fase-03)
 - [Fase 04](fase-04)
+- [Fase 05](fase-05)
 
 ## Link do Repositório
 
