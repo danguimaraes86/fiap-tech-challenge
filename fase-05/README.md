@@ -44,6 +44,10 @@ Para inicar o projeto, utilize o `gradle`. Caso não tenha o Gradle instalado, v
 acompanha o projeto. Neste caso, entre na pasta raiz da Fase-05 e utilize o comando `./gradlew`.
 É necessário estar com `Docker` rodando para conexão com banco de dados.
 
+**É necessário subir cada microsserviço separadamente.**
+
+**É possível utlizar o projeto sem o Gateway, mas recomendamos o uso para centralizar as chamadas aos serviços.**
+
 | Comando                | Descrição                           | Requisitos                  |
 |------------------------|-------------------------------------|-----------------------------|
 | `docker-compose up -d` | Subir os serviços de banco de dados | Docker instalado na máquina |
