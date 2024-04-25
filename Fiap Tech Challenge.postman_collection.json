@@ -1,0 +1,2209 @@
+{
+	"info": {
+		"_postman_id": "9ad607b9-4c66-46aa-a561-069ec4241d2f",
+		"name": "Fiap Tech Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27560229"
+	},
+	"item": [
+		{
+			"name": "Fase 2",
+			"item": [
+				{
+					"name": "Eletrodoméstico",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/eletrodomestico",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"eletrodomestico"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "geladeira",
+											"disabled": true
+										},
+										{
+											"key": "modelo",
+											"value": "brastemp",
+											"disabled": true
+										},
+										{
+											"key": "fabricacao",
+											"value": "2022-01-",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/eletrodomestico/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"eletrodomestico",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Eletrodoméstico",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "usuarioId",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"aspirador\",\n    \"potencia\": \"500w\",\n    \"modelo\": \"xiaomi\",\n    \"fabricacao\": \"2020-12-11\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/eletrodomestico",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"eletrodomestico"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update Eletrodoméstico",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/eletrodomestico/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"eletrodomestico",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete Eletrodoméstico",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/eletrodomestico/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"eletrodomestico",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Endereço",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/enderecos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"enderecos"
+									],
+									"query": [
+										{
+											"key": "nomeInstalacao",
+											"value": "escritorio",
+											"disabled": true
+										},
+										{
+											"key": "estado",
+											"value": "sp",
+											"disabled": true
+										},
+										{
+											"key": "cidade",
+											"value": "anapolis",
+											"disabled": true
+										},
+										{
+											"key": "bairro",
+											"value": "plano piloto",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/enderecos/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"enderecos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Endereço",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "usuarioId",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nomeInstalacao\": \"casa2\",\n    \"rua\": \"rua 18\",\n    \"numero\": \"numero 1\",\n    \"bairro\": \"plano piloto\",\n    \"cidade\": \"brasilia\",\n    \"estado\": \"df\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/enderecos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"enderecos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update Endereço",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endereco/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endereco",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete Endereço",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/endereco/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endereco",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Usuário",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/usuario",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario"
+									],
+									"query": [
+										{
+											"key": "tipoUsuario",
+											"value": "MEMBRO",
+											"disabled": true
+										},
+										{
+											"key": "tipoUsuario",
+											"value": "RESPONSAVEL",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/usuario/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Usuário",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"email@email.com\",\n    \"senha\": \"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/usuario",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update Usuário",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/usuario/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete Usuário",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/usuario/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuario",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Consumidor",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/consumidor",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"consumidor"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "juliane",
+											"disabled": true
+										},
+										{
+											"key": "sexo",
+											"value": "feminino",
+											"disabled": true
+										},
+										{
+											"key": "parentesco",
+											"value": "teste",
+											"disabled": true
+										},
+										{
+											"key": "dataNascimento",
+											"value": "2000",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/consumidor/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"consumidor",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Consumidor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "usuarioId",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"juliane\",\n    \"dataNascimento\": \"2020-11-12\",\n    \"sexo\": \"feminino\",\n    \"parentesco\": \"esposa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/consumidor",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"consumidor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update Consumidor",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-\",\n    \"sexo\": \"teste\",\n    \"parentesco\": \"filho\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/consumidor/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"consumidor",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete Consumidor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Rafael\",\n    \"dataNascimento\": \"2018-12-30\",\n    \"sexo\": \"Masculino\",\n    \"parentesco\": \"irmão\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/consumidor/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"consumidor",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Fase 3",
+			"item": [
+				{
+					"name": "Condutor",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/condutor",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"condutor"
+									],
+									"query": [
+										{
+											"key": "cpf",
+											"value": "70555346153",
+											"disabled": true
+										},
+										{
+											"key": "nome",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "teste@teste",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/condutor/5aed845d-c5d4-4304-b334-0d2507dc6342",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"condutor",
+										"5aed845d-c5d4-4304-b334-0d2507dc6342"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createCondutor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Daniel\",\n    // \"cpf\": \"22111204153\",\n    \"cpf\": \"70555346153\",\n    \"email\": \"teste@teste\",\n    \"celular\": \"(61) 98116-3500\",\n    \"formaPagamento\": \"pix\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/condutor",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"condutor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCondutor",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Daniel\",\n    \"cpf\": \"70555346153\",\n    \"email\": \"email@email.com\",\n    \"celular\": \"999999999\",\n    \"formaPagamento\": \"debito\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/condutor/70555346153",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"condutor",
+										"70555346153"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCondutor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Daniel\",\n    \"cpf\": \"70555346153\",\n    // \"email\": \"teste@teste\",\n    \"celular\": \"61981163500\",\n    \"formaPagamento\": \"debito\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/condutor/70555346153",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"condutor",
+										"70555346153"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Veiculo",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/veiculo",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"veiculo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/veiculo/8ddce509-80da-4f48-88f4-",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"veiculo",
+										"8ddce509-80da-4f48-88f4-"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createVeiculo",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "condutorCpf",
+										"value": "22111204153",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "condutorCpf",
+										"value": "70555346153",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"marca\": \"VW\",\n    \"modelo\": \"Polo\",\n    // \"placa\": \"aaa1111\"\n    \"placa\": \"bbb2222\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/veiculo",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"veiculo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateVeiculo",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"marca\": \"VW\",\n    \"modelo\": \"Polo\",\n    \"placa\": \"ABC9876\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/veiculo",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"veiculo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteVeiculo",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Daniel\",\n    \"cpf\": \"70555346153\",\n    // \"email\": \"teste@teste\",\n    \"celular\": \"61981163500\",\n    \"formaPagamento\": \"debito\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/veiculo",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"veiculo"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ticket",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/ticket",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"ticket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/ticket/a04f4bef-a5c5-4c1c-b58b-a685a5401931",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"ticket",
+										"a04f4bef-a5c5-4c1c-b58b-a685a5401931"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "registrarEntrada",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"condutorCpf\": \"70555346153\",\n    \"placaVeiculo\": \"bbb2222\",\n    \"tipoCobranca\": \"flexivel\"\n    // \"condutorCpf\": \"22111204153\",\n    // \"placaVeiculo\": \"aaa1111\",\n    // \"tipoCobranca\": \"fixo\"\n    // \"permanencia\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/ticket/registrarEntrada",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"ticket",
+										"registrarEntrada"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "registrarSaida",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    // \"condutorCpf\": \"22111204153\",\n    // \"placaVeiculo\": \"aaa1111\"\n    \"condutorCpf\": \"70555346153\",\n    \"placaVeiculo\": \"bbb2222\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/ticket/registrarSaida",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"ticket",
+										"registrarSaida"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "emitirRecibo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/ticket/emitirRecibo/1dfb0fa0-2a30-455d-aeae-316b64712f15",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"ticket",
+										"emitirRecibo",
+										"1dfb0fa0-2a30-455d-aeae-316b64712f15"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteTicket",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Daniel\",\n    \"cpf\": \"70555346153\",\n    // \"email\": \"teste@teste\",\n    \"celular\": \"61981163500\",\n    \"formaPagamento\": \"debito\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:4000/ticket",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"ticket"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Fase 04",
+			"item": [
+				{
+					"name": "Video",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/videos",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"videos"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "dataPublicacao,asc",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/videos/65a9284de65dd97e36704c5",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"videos",
+										"65a9284de65dd97e36704c5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findByAtributo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/videos/busca?titulo=teste03666&publicacao=2024-01-12",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"videos",
+										"busca"
+									],
+									"query": [
+										{
+											"key": "titulo",
+											"value": "teste03666"
+										},
+										{
+											"key": "publicacao",
+											"value": "2024-01-12"
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": "titulo,desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "watch",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/videos/65aaef0445149e11939fef39/watch",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"videos",
+										"65aaef0445149e11939fef39",
+										"watch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "insert",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"{{$randomFullName}}\",\n  \"descricao\": \"{{$randomCatchPhrase}}\",\n  \"url\": \"{{$randomUrl}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/videos",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"videos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"titulo\": \"{{$randomFirstName}}\",\n  \"descricao\": \"{{$randomCatchPhrase}}\",\n  \"url\": \"{{$randomUrl}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/videos/65a92a2f3093873c428a6e5a",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"videos",
+										"65a92a2f3093873c428a6e5a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Usuario",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/usuarios",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "dataPublicacao,asc",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/usuarios/65a95c9423f37d3f0fb40df0",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"usuarios",
+										"65a95c9423f37d3f0fb40df0"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "dataPublicacao,asc",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "insert",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"favoritos\": [\n    \"65a9284de65dd97e36704c54\",\n    \"65a92a2f3093873c428a6e5\"\n  ],\n  \"nome\": \"{{$randomUserName}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/usuarios",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "dataPublicacao,asc",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Estatistica",
+					"item": [
+						{
+							"name": "estatistica",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/estatisticas",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"estatisticas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Fase 05",
+			"item": [
+				{
+					"name": "Gateway",
+					"item": [
+						{
+							"name": "OAuth",
+							"item": [
+								{
+									"name": "login",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"Pascale.Conn31@gmail.com\",\n  \"password\": \"teste01\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/oauth/token",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"oauth",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "novo usuario",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"role\": \"ADMIN\",\n  \"nome\": \"{{$randomUserName}}\",\n  \"password\": \"teste01\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/oauth/novo",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"oauth",
+												"novo"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Usuarios",
+							"item": [
+								{
+									"name": "findAll",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/usuarios",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"usuarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findByEmail",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/usuarios/busca?email=Barney77@yahoo.com",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"usuarios",
+												"busca"
+											],
+											"query": [
+												{
+													"key": "email",
+													"value": "Barney77@yahoo.com"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "novo usuario",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"role\": \"ADMIN\",\n  \"nome\": \"{{$randomUserName}}\",\n  \"password\": \"teste01\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/usuarios/novo",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"usuarios",
+												"novo"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Produtos",
+							"item": [
+								{
+									"name": "create",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nome\": \"{{$randomLoremWord}}\",\n  \"preco\": 10.0,\n  \"estoque\": 10,\n  \"descricao\": \"{{$randomLoremSentence}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/produtos",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findAll",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos/cf5e2a6b-aeab-418e-9d5a-e205c826dab0",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos",
+												"cf5e2a6b-aeab-418e-9d5a-e205c826dab0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "busca",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos/busca?nome=voluptat",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos",
+												"busca"
+											],
+											"query": [
+												{
+													"key": "nome",
+													"value": "voluptat"
+												},
+												{
+													"key": "descricao",
+													"value": "rerum",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateEstoque",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/produtos/estoque/cf5e2a6b-aeab-418e-9d5a-e205c826dab0?alteracaoEstoque=16",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"produtos",
+												"estoque",
+												"cf5e2a6b-aeab-418e-9d5a-e205c826dab0"
+											],
+											"query": [
+												{
+													"key": "alteracaoEstoque",
+													"value": "16"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Carrinho",
+							"item": [
+								{
+									"name": "findCarrinhoAberto",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/carrinhos",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"carrinhos"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "adicionarProduto",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"produtoId\": \"cf5e2a6b-aeab-418e-9d5a-e205c826dab0\",\n  \"quantidade\": 5\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:3000/carrinhos/adicionarproduto",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"carrinhos",
+												"adicionarproduto"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "finalizarCompra",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:3000/carrinhos/finalizarcompra",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"carrinhos",
+												"finalizarcompra"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "OAuth",
+					"item": [
+						{
+							"name": "token",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"Meagan.Hoeger@hotmail.com\",\n  \"password\": \"teste01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3333/oauth/token",
+									"host": [
+										"localhost"
+									],
+									"port": "3333",
+									"path": [
+										"oauth",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Usuario",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"role\": \"user\",\n  \"nome\": \"{{$randomUserName}}\",\n  \"password\": \"teste01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3333/oauth/novo",
+									"host": [
+										"localhost"
+									],
+									"port": "3333",
+									"path": [
+										"oauth",
+										"novo"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Usuarios",
+					"item": [
+						{
+							"name": "findAll",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiTGlzZXR0ZS5Nb2VuQGhvdG1haWwuY29tIiwiZXhwIjoxNzA4NTU2OTY4fQ.oCMw63ZlhW3kCa6D1pE-Akwp728XK2o5nQ__vUSOZ_c",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3001/usuarios",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findByEmail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiRXJhMzRAaG90bWFpbC5jb20iLCJleHAiOjE3MDg1NDkwNDJ9.8k4zNi0Ohffzc0ZCUht6lfmWCkklSike0nGzMXOWRpw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3001/usuarios/busca?email=Barney77@yahoo.com",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"usuarios",
+										"busca"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "Barney77@yahoo.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "novo usuario",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"role\": \"ADMIN\",\n  \"nome\": \"{{$randomUserName}}\",\n  \"password\": \"teste01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3001/usuarios/novo",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"usuarios",
+										"novo"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Produtos",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"{{$randomLoremWord}}\",\n  \"preco\": 10.0,\n  \"estoque\": 10,\n  \"descricao\": \"{{$randomLoremSentence}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3002/produtos",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos/cf5e2a6b-aeab-418e-9d5a-e205c826dab0",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos",
+										"cf5e2a6b-aeab-418e-9d5a-e205c826dab0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "busca",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos/busca?nome=voluptat",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos",
+										"busca"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "voluptat"
+										},
+										{
+											"key": "descricao",
+											"value": "rerum",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateEstoque",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:3002/produtos/estoque/cf5e2a6b-aeab-418e-9d5a-e205c826dab0?alteracaoEstoque=16",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"produtos",
+										"estoque",
+										"cf5e2a6b-aeab-418e-9d5a-e205c826dab0"
+									],
+									"query": [
+										{
+											"key": "alteracaoEstoque",
+											"value": "16"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Carrinho",
+					"item": [
+						{
+							"name": "findCarrinhoAberto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiUGhpbGlwMEB5YWhvby5jb20iLCJleHAiOjE3MTA3OTc2MzR9.WLM1ppX7Whtv5NHi7sLPAO5sLlimpgzTPn-ZiEfklSY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3003/carrinhos",
+									"host": [
+										"localhost"
+									],
+									"port": "3003",
+									"path": [
+										"carrinhos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "adicionarProduto",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiR29yZG9uLk11ZWxsZXJAeWFob28uY29tIiwiZXhwIjoxNzEwNTUzNzkyfQ.bcMGor0R0YSfvIlBX9MYXcgtuft_e24ikGY0C6-9Rf0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"produtoId\": \"cf5e2a6b-aeab-418e-9d5a-e205c826dab0\",\n  \"quantidade\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3003/carrinhos/adicionarproduto",
+									"host": [
+										"localhost"
+									],
+									"port": "3003",
+									"path": [
+										"carrinhos",
+										"adicionarproduto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "finalizarCompra",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtYWdhemluZS1maWFwIiwic3ViIjoiUGhpbGlwMEB5YWhvby5jb20iLCJleHAiOjE3MTA3OTcwNzB9.Yvkz2lYdYSYqX6Kgi4bewdg_86oJjuCDpTmkG4Y3Sj4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3003/carrinhos/finalizarcompra",
+									"host": [
+										"localhost"
+									],
+									"port": "3003",
+									"path": [
+										"carrinhos",
+										"finalizarcompra"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
